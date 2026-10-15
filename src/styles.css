@@ -444,7 +444,7 @@ body::before {
   z-index: 0;
   content: '';
   pointer-events: none;
-  opacity: 0.27;
+  opacity: 0.32;
   background: url('/map-lines.svg') center / min(1400px, 100vw) auto no-repeat;
 }
 .game-title { color: #f3dfad; }
