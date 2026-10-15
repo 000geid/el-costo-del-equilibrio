@@ -31,14 +31,14 @@ export function CardDetail({ cardId, scenario, entry, onClose, onConcept }: {
 }) {
   const c = cardById(cardId);
   return (
-    <Modal title={`Carta ${c.id}`} onClose={onClose}>
+    <Modal title={c.title} onClose={onClose}>
       <div className="detail">
         <div className="detail-art">
           <Portrait spec={c.portrait} scene={{ mode: scenario.mode, colors: scenario.colors, emblem: scenario.emblem }} title={c.imageHint} />
-          <div className="card-ribbon"><span className="card-character">{c.character}</span><span className="card-id">{c.id}</span></div>
+          <div className="card-ribbon"><span className="card-character">{c.character}</span></div>
         </div>
         <div className="detail-text">
-          <span className="label">{entry ? `Turno ${entry.turn}` : 'Carta'} · {c.id}</span>
+          <span className="label">{entry ? `Turno ${entry.turn}` : 'Carta'}</span>
           <h2>{c.title}</h2>
           <p>{capitalize(adaptText(c.text, scenario.vocab))}</p>
           {entry && (
@@ -47,7 +47,7 @@ export function CardDetail({ cardId, scenario, entry, onClose, onConcept }: {
               <p><strong>Cambio inmediato:</strong> <VecText mode={c.mode} vec={entry.immediate} /></p>
               {entry.created && <p><strong>Compromiso creado:</strong> tras la carta {entry.created.dueTurn}: <VecText mode={c.mode} vec={entry.created.vec} /></p>}
               {entry.dueApplied.length > 0 && (
-                <p><strong>Vencieron en este turno:</strong> {entry.dueApplied.map((d) => <span key={d.id}>{d.cardId} (<VecText mode={c.mode} vec={d.vec} />) </span>)}</p>
+                <p><strong>Vencieron en este turno:</strong> {entry.dueApplied.map((d) => <span key={d.id}><VecText mode={c.mode} vec={d.vec} /> </span>)}</p>
               )}
               <p className="explanation">{c.explanation}</p>
             </>

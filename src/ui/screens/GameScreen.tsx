@@ -1,9 +1,9 @@
-import { useEffect, useMemo, useState } from 'react';
-import { adaptText, capitalize, cardById, STATS, studyById } from '../../data';
-import { effectiveOption, isConditionActive, previewSigns, TOTAL_TURNS } from '../../engine/engine';
+import { useMemo } from 'react';
+import { adaptText, capitalize, cardById, STATS } from '../../data';
+import { isConditionActive, TOTAL_TURNS } from '../../engine/engine';
 import type { Card, GameState, Mode, OptionKey, PendingEffect, Scenario, Vec } from '../../engine/types';
 import { Portrait } from '../components/Portrait';
-import { SignText, StatsBar, VecText } from '../components/Stats';
+import { StatsBar, VecText } from '../components/Stats';
 import { SwipeCard } from '../components/SwipeCard';
 
 interface Props {
@@ -14,21 +14,15 @@ interface Props {
   onNext: () => void;
   onPause: () => void;
   onStudy: () => void;
-  onConcept: (studyId: string) => void;
 }
 
 export const sceneOf = (s: Scenario) => ({ mode: s.mode, colors: s.colors, emblem: s.emblem });
 
-export function GameScreen({ game, scenario, reduceMotion, onDecide, onNext, onPause, onStudy, onConcept }: Props) {
+export function GameScreen({ game, scenario, reduceMotion, onDecide, onNext, onPause, onStudy }: Props) {
   const inConsequence = game.phase === 'consequence';
   const last = inConsequence ? game.history[game.history.length - 1] : undefined;
   const card = cardById(inConsequence && last ? last.cardId : game.deck[game.turn]);
-  const [hover, setHover] = useState<OptionKey | null>(null);
-
-  useEffect(() => setHover(null), [game.turn, game.phase]);
-
   const before = inConsequence && last ? last.before : game.stats;
-  const preview = !inConsequence && hover ? previewSigns(card, hover, game.stats) : null;
   const delta = inConsequence && last ? (last.after.map((x, i) => x - last.before[i]) as Vec) : null;
   const cardNo = inConsequence ? game.turn : game.turn + 1;
 
@@ -48,29 +42,27 @@ export function GameScreen({ game, scenario, reduceMotion, onDecide, onNext, onP
         </div>
       </header>
 
-      <StatsBar mode={game.mode} stats={game.stats} preview={preview} delta={delta} />
+      <StatsBar mode={game.mode} stats={game.stats} delta={delta} />
 
       <div className="game-body">
         <section className="table" aria-label="Carta actual">
           <div className="situation parchment">
             <h2 className="card-title">{card.title}</h2>
             <p>{capitalize(adaptText(card.text, scenario.vocab))}</p>
-            {card.condition && !inConsequence && <ConditionBox card={card} mode={game.mode} stats={game.stats} />}
+            {card.condition && <ConditionBox card={card} mode={game.mode} stats={before} />}
           </div>
 
           <SwipeCard
-            key={`${card.id}-${game.phase}`}
+            key={card.id}
             labels={{ A: card.options.A.label, B: card.options.B.label }}
             disabled={inConsequence}
             reduceMotion={reduceMotion}
-            onHover={setHover}
             onChoose={onDecide}
           >
             <div className={`card-face ${inConsequence ? 'is-resolved' : ''} ${reduceMotion ? '' : 'anim-deal'}`}>
               <Portrait spec={card.portrait} scene={sceneOf(scenario)} title={card.imageHint} />
               <div className="card-ribbon">
                 <span className="card-character">{card.character}</span>
-                <span className="card-id">{card.id}</span>
               </div>
             </div>
           </SwipeCard>
@@ -82,9 +74,6 @@ export function GameScreen({ game, scenario, reduceMotion, onDecide, onNext, onP
                   key={k}
                   k={k}
                   card={card}
-                  game={game}
-                  hovered={hover === k}
-                  onHover={setHover}
                   onChoose={onDecide}
                 />
               ))}
@@ -97,7 +86,6 @@ export function GameScreen({ game, scenario, reduceMotion, onDecide, onNext, onP
                 card={card}
                 before={before}
                 onNext={onNext}
-                onConcept={() => onConcept(card.studyIds[0])}
               />
             )
           )}
@@ -106,45 +94,22 @@ export function GameScreen({ game, scenario, reduceMotion, onDecide, onNext, onP
         <aside className="side">
           <Timeline game={game} />
           <Commitments mode={game.mode} pending={game.pending} turn={game.turn} />
-          <div className="concept-chip parchment">
-            <span className="label">Concepto de la carta</span>
-            <button className="link" onClick={() => onConcept(card.studyIds[0])}>
-              {card.concept}{'\u00a0'}→
-            </button>
-          </div>
         </aside>
       </div>
     </div>
   );
 }
 
-function ChoiceButton({ k, card, game, hovered, onHover, onChoose }: {
-  k: OptionKey; card: Card; game: GameState; hovered: boolean;
-  onHover: (k: OptionKey | null) => void; onChoose: (k: OptionKey) => void;
+function ChoiceButton({ k, card, onChoose }: {
+  k: OptionKey; card: Card; onChoose: (k: OptionKey) => void;
 }) {
-  const eff = effectiveOption(card, k, game.stats);
   return (
     <button
-      className={`choice ${hovered ? 'is-hovered' : ''}`}
-      onMouseEnter={() => onHover(k)}
-      onMouseLeave={() => onHover(null)}
-      onFocus={() => onHover(k)}
-      onBlur={() => onHover(null)}
+      className="choice"
       onClick={() => onChoose(k)}
     >
       <span className="choice-side" aria-hidden="true">{k === 'A' ? '◀' : '▶'}</span>
-      <span className="choice-label">{eff.label}</span>
-      <span className="choice-effects">
-        <span className="choice-now">Ahora: <SignText mode={game.mode} vec={eff.immediate} /></span>
-        {eff.deferred && (
-          <span className="choice-later">
-            ⏳ Compromiso: tras la carta {game.turn + 1 + eff.deferred.delay}
-            {game.turn + 1 + eff.deferred.delay > TOTAL_TURNS ? ' (después del cierre)' : ''}
-            {' — '}
-            <SignText mode={game.mode} vec={eff.deferred.vec} />
-          </span>
-        )}
-      </span>
+      <span className="choice-label">{card.options[k].label}</span>
     </button>
   );
 }
@@ -163,8 +128,8 @@ function ConditionBox({ card, mode, stats }: { card: Card; mode: Mode; stats: Ve
   );
 }
 
-function Consequence({ game, card, before, onNext, onConcept }: {
-  game: GameState; card: Card; before: Vec; onNext: () => void; onConcept: () => void;
+function Consequence({ game, card, before, onNext }: {
+  game: GameState; card: Card; before: Vec; onNext: () => void;
 }) {
   const last = game.history[game.history.length - 1];
   const ended = game.status !== 'active';
@@ -189,7 +154,7 @@ function Consequence({ game, card, before, onNext, onConcept }: {
             <dd>
               {last.dueApplied.map((d) => (
                 <div key={d.id}>
-                  {d.cardId} «{d.optionLabel}»: <VecText mode={game.mode} vec={d.vec} />
+                  «{d.optionLabel}»: <VecText mode={game.mode} vec={d.vec} />
                 </div>
               ))}
             </dd>
@@ -216,10 +181,9 @@ function Consequence({ game, card, before, onNext, onConcept }: {
         <p className="defeat-note">⚠ Una barra llegó a cero. La gestión termina en esta carta.</p>
       )}
       <div className="row">
-        <button className="btn btn-primary" onClick={onNext} autoFocus>
+        <button className="btn btn-primary" onClick={onNext}>
           {ended ? 'Ver resultado' : 'Siguiente carta'}
         </button>
-        <button className="btn" onClick={onConcept}>Ver concepto: {studyById(card.studyIds[0])?.title}</button>
       </div>
     </div>
   );
@@ -270,7 +234,7 @@ function Commitments({ mode, pending, turn }: { mode: Mode; pending: PendingEffe
           {list.map((p) => (
             <li key={p.id}>
               <div className="commit-head">
-                <strong>{p.cardId}</strong> «{p.optionLabel}»
+                <strong>«{p.optionLabel}»</strong>
                 <span className="commit-due">
                   {p.dueTurn > TOTAL_TURNS ? 'después del cierre' : p.dueTurn - turn <= 1 ? `¡tras la carta ${p.dueTurn}!` : `tras la carta ${p.dueTurn}`}
                 </span>

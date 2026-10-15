@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { ALL_CARDS, QUESTIONS, STUDY, studyById } from '../../data';
+import { QUESTIONS, STUDY, studyById } from '../../data';
 import type { Question } from '../../data/questions';
 import type { Mode } from '../../engine/types';
 
@@ -73,17 +73,15 @@ export function ArchiveScreen({ initialMode, highlight, resumeLabel, onOpen, onB
   );
 }
 
-export function FicheScreen({ id, canResume, onPractice, onArchive, onResume, onCard }: {
+export function FicheScreen({ id, canResume, onPractice, onArchive, onResume }: {
   id: string;
   canResume: boolean;
   onPractice: (studyId: string) => void;
   onArchive: () => void;
   onResume: () => void;
-  onCard: (cardId: string) => void;
 }) {
   const s = studyById(id);
   if (!s) return null;
-  const cards = ALL_CARDS.filter((c) => c.studyIds.includes(id));
   const hasQuestion = QUESTIONS.some((qq) => qq.studyId === id);
   return (
     <div className="page">
@@ -96,14 +94,6 @@ export function FicheScreen({ id, canResume, onPractice, onArchive, onResume, on
         <p>{s.example}</p>
         <h2 className="h-small">Para decidir mejor</h2>
         <p>{s.tip}</p>
-        <h2 className="h-small">Cartas relacionadas</h2>
-        <ul className="related-cards">
-          {cards.map((c) => (
-            <li key={c.id}>
-              <button className="link" onClick={() => onCard(c.id)}><strong>{c.id}</strong> {c.title}</button>
-            </li>
-          ))}
-        </ul>
         <div className="row">
           <button className="btn" onClick={() => onPractice(id)}>{hasQuestion ? 'Practicar' : 'Practicar (pregunta al azar)'}</button>
           <button className="btn" onClick={onArchive}>Volver al archivo</button>

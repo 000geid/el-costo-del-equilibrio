@@ -6,7 +6,6 @@ interface Props {
   labels: Record<OptionKey, string>;
   disabled?: boolean;
   reduceMotion?: boolean;
-  onHover: (key: OptionKey | null) => void;
   onChoose: (key: OptionKey) => void;
 }
 
@@ -16,7 +15,7 @@ const THRESHOLD = 110;
  * Carta que se puede arrastrar a izquierda (opción A) o derecha (opción B), como en Reigns.
  * El arrastre es opcional: los botones de abajo siempre están disponibles.
  */
-export function SwipeCard({ children, labels, disabled, reduceMotion, onHover, onChoose }: Props) {
+export function SwipeCard({ children, labels, disabled, reduceMotion, onChoose }: Props) {
   const [dx, setDx] = useState(0);
   const [dragging, setDragging] = useState(false);
   const start = useRef<{ x: number; id: number } | null>(null);
@@ -27,14 +26,13 @@ export function SwipeCard({ children, labels, disabled, reduceMotion, onHover, o
     start.current = null;
     setDragging(false);
     setDx(0);
-    onHover(null);
   };
 
   return (
     <div
       className={`swipe ${dragging ? 'is-dragging' : ''} ${disabled ? 'is-disabled' : ''}`}
       style={{
-        transform: reduceMotion ? undefined : `translateX(${dx}px) rotate(${dx / 14}deg)`,
+        transform: dx ? `translateX(${dx}px)${reduceMotion ? '' : ` rotate(${dx / 14}deg)`}` : undefined,
         touchAction: 'pan-y',
       }}
       onPointerDown={(e) => {
@@ -47,7 +45,6 @@ export function SwipeCard({ children, labels, disabled, reduceMotion, onHover, o
         if (!start.current || start.current.id !== e.pointerId) return;
         const nx = Math.max(-180, Math.min(180, e.clientX - start.current.x));
         setDx(nx);
-        onHover(nx < -30 ? 'A' : nx > 30 ? 'B' : null);
       }}
       onPointerUp={() => end(true)}
       onPointerCancel={() => end(false)}

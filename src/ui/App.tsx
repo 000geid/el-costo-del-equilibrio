@@ -4,6 +4,7 @@ import { advance, beginPlay, createGame, decide, recordStudyVisit } from '../eng
 import { load, save, type SaveData } from '../engine/storage';
 import type { GameState, Mode, OptionKey } from '../engine/types';
 import { CardDetail, Modal } from './components/CardDetail';
+import { MusicToggle } from './components/MusicToggle';
 import { GameScreen } from './screens/GameScreen';
 import { InstructionsScreen, PracticeCardScreen } from './screens/Instructions';
 import { HomeScreen, MenuScreen, ScenarioScreen } from './screens/Intro';
@@ -30,6 +31,7 @@ export default function App() {
   const [paused, setPaused] = useState(false);
   const [confirmMode, setConfirmMode] = useState<Mode | null>(null);
   const [detail, setDetail] = useState<DetailState>(null);
+  const [reduceMotion, setReduceMotion] = useState(() => window.matchMedia('(prefers-reduced-motion: reduce)').matches);
 
   // Guardado local tras cada cambio de estado (decisión, pausa, estudio, consecuencia).
   useEffect(() => save(data), [data]);
@@ -44,8 +46,12 @@ export default function App() {
   const setGame = (g: GameState | undefined) => setData((d) => ({ ...d, game: g }));
 
   useEffect(() => {
-    document.documentElement.classList.toggle('reduce-motion', data.settings.reduceMotion);
-  }, [data.settings.reduceMotion]);
+    const media = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const onChange = (event: MediaQueryListEvent) => setReduceMotion(event.matches);
+    setReduceMotion(media.matches);
+    media.addEventListener('change', onChange);
+    return () => media.removeEventListener('change', onChange);
+  }, []);
 
   // Escape abre/cierra la pausa durante la partida.
   useEffect(() => {
@@ -124,14 +130,12 @@ export default function App() {
             active={game}
             activeScenario={game ? scenarioById(game.scenarioId) : undefined}
             hasLast={!!last}
-            reduceMotion={data.settings.reduceMotion}
             onMode={requestMode}
             onResume={resumeGame}
             onArchive={() => push({ name: 'archive', mode: game?.mode ?? 'macro' })}
             onLast={() => push({ name: 'analysis' })}
             onInstructions={() => push({ name: 'instructions' })}
             onChangeName={() => reset({ name: 'home' })}
-            onToggleMotion={() => setData((d) => ({ ...d, settings: { ...d.settings, reduceMotion: !d.settings.reduceMotion } }))}
           />
         );
       case 'play': {
@@ -152,7 +156,7 @@ export default function App() {
           <GameScreen
             game={game}
             scenario={scenario}
-            reduceMotion={data.settings.reduceMotion}
+            reduceMotion={reduceMotion}
             onDecide={onDecide}
             onNext={onNext}
             onPause={() => setPaused(true)}
@@ -161,14 +165,12 @@ export default function App() {
               const ids = card ? cardById(card).studyIds : [];
               push({ name: 'archive', mode: game.mode, highlight: ids });
             }}
-            onConcept={openFiche}
           />
         );
       }
       case 'instructions':
         return (
           <InstructionsScreen
-            mode={game?.mode}
             canStart={!!game}
             onPractice={() => push({ name: 'practice', mode: game?.mode ?? 'macro' })}
             onStart={() => {
@@ -204,7 +206,6 @@ export default function App() {
               else push({ name: 'archive', mode: screen.id && game ? game.mode : 'macro' });
             }}
             onResume={resumeGame}
-            onCard={(cardId) => setDetail({ cardId, source: game ? 'game' : 'none' })}
           />
         );
       case 'quiz':
@@ -240,6 +241,7 @@ export default function App() {
 
   return (
     <div className="app">
+      <MusicToggle />
       <main className="main">{view}</main>
 
       {paused && screen.name === 'play' && game && (
