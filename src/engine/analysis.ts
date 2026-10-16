@@ -106,7 +106,7 @@ export function managementProfile(s: GameState): Profile {
     const up = IDX.filter((i) => sum[i] > 0).sort((a, b) => sum[b] - sum[a])[0];
     const down = IDX.filter((i) => sum[i] < 0).sort((a, b) => sum[a] - sum[b])[0];
     const exText = examples
-      .map((h) => `en la carta ${h.cardId} elegiste «${h.optionLabel}»`)
+      .map((h) => `en «${cardById(h.cardId).title}» elegiste «${h.optionLabel}»`)
       .join(examples.length > 1 ? ' y ' : '');
     let effect = '';
     if (up !== undefined && down !== undefined) {
@@ -146,7 +146,7 @@ export function learnedConcepts(s: GameState, max = 5): LearnedConcept[] {
     seen.add(studyId);
     const card = entry ? cardById(entry.cardId) : undefined;
     const example = entry && card
-      ? `Turno ${entry.turn}, carta ${card.id} «${card.title}»: elegiste «${entry.optionLabel}» (${fmtVec(s, entry.immediate)}).`
+      ? `Turno ${entry.turn}, «${card.title}»: elegiste «${entry.optionLabel}» (${fmtVec(s, entry.immediate)}).`
       : study.example;
     out.push({ study, entry, example, recommendation: study.tip, causal });
   };

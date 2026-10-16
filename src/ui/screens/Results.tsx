@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { cardById, MODE_LABEL, STATS, TAG_SHORT } from '../../data';
 import {
-  financingSummary, indicatorSummaries, learnedConcepts, managementProfile, riskyPending, solidDecisions, topDecisions,
+  financingSummary, indicatorSummaries, learnedConcepts, managementProfile, solidDecisions, topDecisions,
 } from '../../engine/analysis';
 import { TOTAL_TURNS } from '../../engine/engine';
 import type { DefeatCause, GameState, Scenario, Vec } from '../../engine/types';
@@ -14,10 +14,10 @@ function causeText(game: GameState, c: DefeatCause) {
   const card = cardById(c.cardId);
   if (c.source === 'decision') {
     const h = game.history.find((x) => x.turn === c.turn);
-    return `${meta.name} llegó a cero en el turno ${c.turn} por la decisión «${h?.optionLabel}» de la carta ${card.id} «${card.title}».`;
+    return `${meta.name} llegó a cero en el turno ${c.turn} por la decisión «${h?.optionLabel}» en «${card.title}».`;
   }
   const origin = game.history.find((x) => x.created?.cardId === c.cardId);
-  return `${meta.name} llegó a cero en el turno ${c.turn} cuando venció el compromiso de «${origin?.optionLabel ?? card.title}» (carta ${card.id}, elegida en el turno ${origin?.turn ?? '?'}).`;
+  return `${meta.name} llegó a cero en el turno ${c.turn} cuando venció el compromiso de «${origin?.optionLabel ?? card.title}» (elegida en el turno ${origin?.turn ?? '?'}).`;
 }
 
 export function EndScreen({ game, scenario, onAnalysis, onNew, onStudy, onMenu }: {
@@ -62,7 +62,7 @@ export function EndScreen({ game, scenario, onAnalysis, onNew, onStudy, onMenu }
   );
 }
 
-type Tab = 'res' | 'dec' | 'learn';
+type Tab = 'res' | 'dec';
 
 export function AnalysisScreen({ game, scenario, onCard, onConcept, onNew, onMenu }: {
   game: GameState; scenario: Scenario; onCard: (turn: number) => void; onConcept: (id: string) => void; onNew: () => void; onMenu: () => void;
@@ -81,7 +81,7 @@ export function AnalysisScreen({ game, scenario, onCard, onConcept, onNew, onMen
       </header>
 
       <div className="tabs" role="tablist">
-        {([['res', 'Resultados'], ['dec', 'Tus decisiones'], ['learn', 'Lo que aprendiste']] as [Tab, string][]).map(([k, label]) => (
+        {([['res', 'Resultados'], ['dec', 'Decisiones y aprendizaje']] as [Tab, string][]).map(([k, label]) => (
           <button key={k} role="tab" aria-selected={tab === k} className={`tab ${tab === k ? 'is-active' : ''}`} onClick={() => setTab(k)}>{label}</button>
         ))}
       </div>
@@ -92,7 +92,7 @@ export function AnalysisScreen({ game, scenario, onCard, onConcept, onNew, onMen
           {!won && (game.defeat ?? []).map((c, i) => <p key={i}>{causeText(game, c)}</p>)}
           {won && <p>Completaste las {TOTAL_TURNS} decisiones sin barras en cero, incluidos los compromisos que vencían en el último turno.</p>}
           <div className="table-wrap">
-            <table className="data-table">
+            <table className="data-table summary-table">
               <thead>
                 <tr><th scope="col">Indicador</th><th scope="col">Inicial</th><th scope="col">Final</th><th scope="col">Mínimo</th><th scope="col">Máximo</th><th scope="col">Variación</th><th scope="col">Turnos en alerta</th></tr>
               </thead>
@@ -100,9 +100,10 @@ export function AnalysisScreen({ game, scenario, onCard, onConcept, onNew, onMen
                 {indicatorSummaries(game).map((s) => (
                   <tr key={s.stat}>
                     <th scope="row">{meta[s.stat].name}</th>
-                    <td>{s.initial}</td><td>{s.final}</td><td>{s.min}</td><td>{s.max}</td>
-                    <td className={s.net > 0 ? 'up' : s.net < 0 ? 'down' : ''}>{s.net > 0 ? `+${s.net}` : s.net}</td>
-                    <td>{s.alertTurns}</td>
+                    <td data-label="Inicial">{s.initial}</td><td data-label="Final">{s.final}</td>
+                    <td data-label="Mínimo">{s.min}</td><td data-label="Máximo">{s.max}</td>
+                    <td data-label="Variación" className={s.net > 0 ? 'up' : s.net < 0 ? 'down' : ''}>{s.net > 0 ? `+${s.net}` : s.net}</td>
+                    <td data-label="Turnos en alerta">{s.alertTurns}</td>
                   </tr>
                 ))}
               </tbody>
@@ -114,11 +115,21 @@ export function AnalysisScreen({ game, scenario, onCard, onConcept, onNew, onMen
             <summary>Tabla de datos del gráfico</summary>
             <TrajectoryTable game={game} />
           </details>
+          <h2 className="h-small">Compromisos pendientes</h2>
+          {game.pending.length === 0 ? <p>No quedan compromisos pendientes.</p> : (
+            <ul>{game.pending.map((p) => (
+              <li key={p.id}>«{p.optionLabel}» — vence tras la carta {p.dueTurn}{p.dueTurn > TOTAL_TURNS ? ' (después del cierre)' : ''}: <VecText mode={game.mode} vec={p.vec} /></li>
+            ))}</ul>
+          )}
         </section>
       )}
 
-      {tab === 'dec' && <DecisionsTab game={game} onCard={onCard} />}
-      {tab === 'learn' && <LearnTab game={game} onConcept={onConcept} onCard={onCard} />}
+      {tab === 'dec' && (
+        <>
+          <DecisionsTab game={game} onCard={onCard} />
+          <LearnTab game={game} onConcept={onConcept} onCard={onCard} />
+        </>
+      )}
 
       <div className="row center">
         <button className="btn btn-primary" onClick={onNew}>Nueva partida</button>
@@ -139,7 +150,7 @@ function DecisionsTab({ game, onCard }: { game: GameState; onCard: (turn: number
         {top.map(({ entry, impact }) => (
           <li key={entry.turn}>
             <button className="link" onClick={() => onCard(entry.turn)}>
-              Turno {entry.turn} · {entry.cardId} «{cardById(entry.cardId).title}»
+              Turno {entry.turn} · «{cardById(entry.cardId).title}»
             </button>{' '}
             — «{entry.optionLabel}» <span className="muted">(magnitud {impact} puntos)</span>
           </li>
@@ -164,7 +175,7 @@ function DecisionsTab({ game, onCard }: { game: GameState; onCard: (turn: number
                 <div><span className="muted">Inmediato:</span> <VecText mode={game.mode} vec={h.immediate} /></div>
                 {h.created && <div><span className="muted">Compromiso creado (tras la carta {h.created.dueTurn}):</span> <VecText mode={game.mode} vec={h.created.vec} /></div>}
                 {h.dueApplied.map((d) => (
-                  <div key={d.id}><span className="muted">Venció {d.cardId} «{d.optionLabel}»:</span> <VecText mode={game.mode} vec={d.vec} /></div>
+                  <div key={d.id}><span className="muted">Venció «{d.optionLabel}»:</span> <VecText mode={game.mode} vec={d.vec} /></div>
                 ))}
                 {h.defeat && <div className="down">⚠ Una barra llegó a cero en esta decisión.</div>}
               </div>
@@ -179,21 +190,13 @@ function DecisionsTab({ game, onCard }: { game: GameState; onCard: (turn: number
         <div>
           <h3>Financiamiento aceptado</h3>
           {fin.accepted.length === 0 ? <p className="muted">Ninguno.</p> : (
-            <ul>{fin.accepted.map((h) => <li key={h.turn}>Turno {h.turn}: {h.cardId} «{h.optionLabel}»</li>)}</ul>
+            <ul>{fin.accepted.map((h) => <li key={h.turn}>Turno {h.turn}: «{h.optionLabel}»</li>)}</ul>
           )}
         </div>
         <div>
           <h3>Pagos realizados</h3>
           {fin.payments.length === 0 ? <p className="muted">Ninguno.</p> : (
-            <ul>{fin.payments.map((p) => <li key={p.effect.id}>Turno {p.turn}: {p.effect.cardId} — <VecText mode={game.mode} vec={p.effect.vec} /></li>)}</ul>
-          )}
-        </div>
-        <div>
-          <h3>Compromisos pendientes</h3>
-          {fin.pending.length === 0 ? <p className="muted">Ninguno.</p> : (
-            <ul>{fin.pending.map((p) => (
-              <li key={p.id}>{p.cardId} «{p.optionLabel}» — vence tras la carta {p.dueTurn}{p.dueTurn > TOTAL_TURNS ? ' (después del cierre)' : ''}: <VecText mode={game.mode} vec={p.vec} /></li>
-            ))}</ul>
+            <ul>{fin.payments.map((p) => <li key={p.effect.id}>Turno {p.turn}: <VecText mode={game.mode} vec={p.effect.vec} /></li>)}</ul>
           )}
         </div>
       </div>
@@ -205,7 +208,6 @@ function LearnTab({ game, onConcept, onCard }: { game: GameState; onConcept: (id
   const concepts = learnedConcepts(game);
   const profile = managementProfile(game);
   const won = game.status === 'won';
-  const risky = riskyPending(game);
   const solid = solidDecisions(game);
   return (
     <section className="parchment page-card">
@@ -240,11 +242,7 @@ function LearnTab({ game, onConcept, onCard }: { game: GameState; onConcept: (id
         <>
           <h2 className="h-small">Decisiones que sumaron dentro del modelo</h2>
           {solid.length === 0 ? <p className="muted">Ninguna decisión tuvo un saldo neto positivo.</p> : (
-            <ul>{solid.map((d) => <li key={d.entry.turn}>Turno {d.entry.turn}: {d.entry.cardId} «{d.entry.optionLabel}» (saldo neto +{d.net} puntos, incluidos efectos diferidos ya realizados).</li>)}</ul>
-          )}
-          <h2 className="h-small">Obligaciones que siguen abiertas</h2>
-          {risky.length === 0 ? <p>No quedan obligaciones negativas pendientes.</p> : (
-            <ul>{risky.map((p) => <li key={p.id}>{p.cardId} «{p.optionLabel}»: <VecText mode={game.mode} vec={p.vec} /> — podría comprometer la continuidad después del cierre.</li>)}</ul>
+            <ul>{solid.map((d) => <li key={d.entry.turn}>Turno {d.entry.turn}: «{d.entry.optionLabel}» (saldo neto +{d.net} puntos, incluidos efectos diferidos ya realizados).</li>)}</ul>
           )}
         </>
       )}

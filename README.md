@@ -24,6 +24,10 @@ npm run dev
 
 Abrí **http://localhost:5173**. El servidor de desarrollo también queda expuesto en tu red local, así que podés probarlo desde el celular entrando a `http://<IP-de-tu-compu>:5173`.
 
+### Música ambiental
+
+La ambientación instrumental se sintetiza localmente con Web Audio a partir de una secuencia original; no usa grabaciones ni recursos externos y no requiere atribución. Comienza silenciada y se activa únicamente desde el control de música.
+
 ### Versión compilada (como se publicaría)
 
 ```bash

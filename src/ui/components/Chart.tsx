@@ -1,4 +1,4 @@
-import { STATS } from '../../data';
+import { cardById, STATS } from '../../data';
 import type { GameState } from '../../engine/types';
 
 const W = 640, H = 280, PAD = { l: 36, r: 14, t: 14, b: 30 };
@@ -55,11 +55,11 @@ export function TrajectoryChart({ game, onTurn }: { game: GameState; onTurn: (tu
             height={H - PAD.t - PAD.b}
             tabIndex={0}
             role="button"
-            aria-label={`Turno ${h.turn}: ver carta ${h.cardId}`}
+            aria-label={`Turno ${h.turn}: ver carta «${cardById(h.cardId).title}»`}
             onClick={() => onTurn(h.turn)}
             onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onTurn(h.turn); } }}
           >
-            <title>{`Turno ${h.turn} · ${h.cardId} · «${h.optionLabel}»`}</title>
+            <title>{`Turno ${h.turn} · «${h.optionLabel}»`}</title>
           </rect>
         ))}
       </svg>
@@ -90,7 +90,7 @@ export function TrajectoryTable({ game }: { game: GameState }) {
           {game.trajectory.map((v, i) => (
             <tr key={i}>
               <th scope="row">{i === 0 ? 'Inicio' : i}</th>
-              <td>{i === 0 ? '—' : game.history[i - 1]?.cardId}</td>
+              <td>{i === 0 ? '—' : cardById(game.history[i - 1].cardId).title}</td>
               {v.map((x, j) => <td key={j} className={x <= 20 ? 'is-alert' : ''}>{x}</td>)}
             </tr>
           ))}

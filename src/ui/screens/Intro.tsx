@@ -19,17 +19,16 @@ export function HomeScreen({ initialName, onEnter }: { initialName: string; onEn
           if (trimmed) onEnter(trimmed.slice(0, 40));
         }}
       >
-        <label htmlFor="player-name">Tu nombre</label>
+        <label htmlFor="player-name">Escribí tu nombre</label>
         <input
           id="player-name"
           value={name}
           maxLength={40}
           autoComplete="nickname"
-          placeholder="Escribí cómo querés que te llamen"
           onChange={(e) => setName(e.target.value)}
         />
         <button className="btn btn-primary" type="submit" disabled={!trimmed}>Entrar al juego</button>
-        <p className="small muted">Solo pedimos un nombre. La partida se guarda en este navegador.</p>
+        <p className="home-promise">Aprendé economía. Elegí tu estrategia. Encontrá el equilibrio</p>
       </form>
     </div>
   );
@@ -40,14 +39,12 @@ interface MenuProps {
   active?: GameState;
   activeScenario?: Scenario;
   hasLast: boolean;
-  reduceMotion: boolean;
   onMode: (m: Mode) => void;
   onResume: () => void;
   onArchive: () => void;
   onLast: () => void;
   onInstructions: () => void;
   onChangeName: () => void;
-  onToggleMotion: () => void;
 }
 
 const MENU_SCENES: Record<Mode, { colors: [string, string, string]; emblem: string }> = {
@@ -113,9 +110,6 @@ export function MenuScreen(p: MenuProps) {
         <button className="btn" onClick={p.onInstructions}>Instrucciones</button>
         {p.hasLast && <button className="btn" onClick={p.onLast}>Último análisis</button>}
         <button className="btn btn-ghost" onClick={p.onChangeName}>Cambiar nombre</button>
-        <label className="toggle">
-          <input type="checkbox" checked={p.reduceMotion} onChange={p.onToggleMotion} /> Reducir movimiento
-        </label>
       </div>
     </div>
   );
