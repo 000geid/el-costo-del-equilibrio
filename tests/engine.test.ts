@@ -43,6 +43,21 @@ describe('contenido', () => {
     expect(QUESTIONS).toHaveLength(10);
     for (const q of QUESTIONS) expect(q.options[q.answer]).toBeTruthy();
   });
+
+  it('ninguna carta tiene una opción dominada componente a componente (inmediato y total)', () => {
+    for (const c of ALL_CARDS) {
+      const aImm = c.options.A.immediate;
+      const bImm = c.options.B.immediate;
+      const aFut = c.options.A.deferred?.vec ?? [0, 0, 0, 0];
+      const bFut = c.options.B.deferred?.vec ?? [0, 0, 0, 0];
+      const aTot = aImm.map((x, i) => x + aFut[i]);
+      const bTot = bImm.map((x, i) => x + bFut[i]);
+      const aDomB = aImm.every((x, i) => x >= bImm[i]) && aTot.every((x, i) => x >= bTot[i]);
+      const bDomA = bImm.every((x, i) => x >= aImm[i]) && bTot.every((x, i) => x >= aTot[i]);
+      expect(aDomB, `${c.id}: A domina a B`).toBe(false);
+      expect(bDomA, `${c.id}: B domina a A`).toBe(false);
+    }
+  });
 });
 
 describe('selección de cartas', () => {
@@ -70,11 +85,12 @@ describe('selección de cartas', () => {
 
 describe('pruebas funcionales (§13)', () => {
   it('resolver la carta veinte con una barra que cae a cero produce derrota, no victoria', () => {
-    // MA25 B: Tesoro −7. Con Tesoro 7 en el turno 20, cae a 0.
+    // MA25 B: Tesoro −6. Con Tesoro 6 en el turno 20, cae a 0.
     const deck = [...MACRO_FILL.slice(0, 19), 'MA25'];
-    const s = { ...fixture(deck, [50, 7, 50, 50]), turn: 19 };
+    const s = { ...fixture(deck, [50, 6, 50, 50]), turn: 19 };
     const r = decide(s, 'B');
     expect(r.turn).toBe(20);
+    expect(r.stats[1]).toBe(0);
     expect(r.status).toBe('lost');
     expect(r.defeat?.[0]).toMatchObject({ stat: 1, source: 'decision', cardId: 'MA25' });
   });
@@ -127,19 +143,20 @@ describe('pruebas funcionales (§13)', () => {
     const ma19 = cardById('MA19');
     expect(effectiveOption(ma19, 'A', [44, 50, 50, 50]).immediate).toEqual([10, -9, 5, 1]);
     expect(effectiveOption(ma19, 'A', [45, 50, 50, 50]).immediate).toEqual([3, -9, 0, -2]);
-    expect(effectiveOption(ma19, 'B', [45, 50, 50, 50]).immediate).toEqual([-2, 4, -2, 0]);
+    expect(effectiveOption(ma19, 'B', [45, 50, 50, 50]).immediate).toEqual([-7, 4, -4, -3]);
 
     const ma18 = cardById('MA18');
     expect(effectiveOption(ma18, 'A', [50, 50, 50, 54]).deferred?.vec).toEqual([0, -17, 0, 0]);
     expect(effectiveOption(ma18, 'A', [50, 50, 50, 55]).deferred?.vec).toEqual([0, -12, 0, 0]);
 
     const ma20 = cardById('MA20');
-    expect(effectiveOption(ma20, 'B', [50, 50, 34, 50]).immediate).toEqual([0, -2, -4, -2]);
+    expect(effectiveOption(ma20, 'B', [50, 50, 39, 50]).immediate).toEqual([-3, -2, -10, -8]);
+    expect(effectiveOption(ma20, 'B', [50, 50, 40, 50]).immediate).toEqual([-3, -2, -4, -2]);
 
     // La condición usa el estado anterior aunque la propia decisión lo cambie.
     const mi01 = cardById('MI01');
-    expect(effectiveOption(mi01, 'A', [50, 55, 50, 50]).immediate).toEqual([7, -4, 0, 0]);
-    expect(effectiveOption(mi01, 'A', [50, 54, 50, 50]).immediate).toEqual([2, -10, 0, 0]);
+    expect(effectiveOption(mi01, 'A', [50, 55, 50, 50]).immediate).toEqual([6, -9, 0, -3]);
+    expect(effectiveOption(mi01, 'A', [50, 54, 50, 50]).immediate).toEqual([2, -12, 0, -2]);
   });
 
   it('un compromiso posterior al turno veinte figura pendiente y no se cobra antes', () => {

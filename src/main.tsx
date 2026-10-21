@@ -6,6 +6,8 @@ import '@fontsource/alegreya/400.css';
 import '@fontsource/alegreya/400-italic.css';
 import '@fontsource/alegreya/700.css';
 import './styles.css';
+import './ui/menus.css';
+import './ui/game.css';
 import App from './ui/App';
 
 createRoot(document.getElementById('root')!).render(

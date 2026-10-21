@@ -12,6 +12,7 @@
     "build": "tsc --noEmit && vite build",
     "start": "npm run build && tsx server/index.ts",
     "serve": "tsx server/index.ts",
+    "deploy": "npx wrangler deploy",
     "test": "vitest run",
     "typecheck": "tsc --noEmit",
     "simulate": "tsx scripts/simulate.ts"

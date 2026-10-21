@@ -17,7 +17,7 @@ Requisitos: **Node.js 18 o superior** (probado con Node 22) y npm.
 ```bash
 git clone https://github.com/000geid/el-costo-del-equilibrio.git
 cd el-costo-del-equilibrio
-git checkout MVP
+git checkout main
 npm install
 npm run dev
 ```
@@ -36,6 +36,21 @@ PORT=8080 npm start  # en otro puerto
 ```
 
 `npm start` ejecuta `npm run build` (chequeo de tipos + build de Vite a `dist/`) y luego `server/index.ts`, un servidor HTTP de Node que sirve `dist/`.
+
+### Publicar en Cloudflare Workers
+
+Versión publicada: [El costo del equilibrio](https://el-costo-del-equilibrio.dmalvaradog26.workers.dev).
+
+Con una versión de Node compatible con Wrangler y una sesión iniciada con `npx wrangler login`:
+
+```bash
+npm test
+npx wrangler deploy
+```
+
+También podés usar `npm run deploy`. La configuración en `wrangler.jsonc` compila el juego antes de publicar y sirve únicamente `dist/` como archivos estáticos, con soporte para navegación de aplicación de una sola página. El servidor Node se usa para la vista local; Cloudflare sirve directamente los archivos compilados.
+
+Las partidas se guardan por navegador y dirección del sitio: una partida en localhost no aparece automáticamente en el dominio publicado.
 
 ### Todos los comandos
 
@@ -133,20 +148,19 @@ Después de cambiar valores, corré `npm test` y `npm run simulate` para ver el 
 
 ### Ajustar la dificultad
 
-Los valores de impacto son los del documento de alcance. `npm run simulate` juega 2000 partidas por escenario con cuatro políticas. Resultado actual con los valores del documento:
+El catálogo actual incorpora ajustes de balance sobre el documento de alcance. `npm run simulate` juega 2000 partidas por escenario con cinco políticas. Resultados del catálogo actual:
 
-| Escenario | Siempre A | Siempre B | Al azar | Cuidar la peor barra |
-|---|---|---|---|---|
-| Macro (5 países) | 0,1 – 1,7 % | 82,8 – 97,8 % | 23 – 43 % | 96 – 99 % |
-| Micro (5 negocios) | 97,6 – 99,9 % | 100 % | 97,8 – 99,5 % | 100 % |
+| Escenario | Siempre A | Siempre B | Al azar | Cuidar la peor barra | Planificar compromisos |
+|---|---|---|---|---|---|
+| Macro (5 países) | 0 – 1,9 % | 0,9 – 6,0 % | 21,7 – 39,3 % | 55,5 – 69,5 % | 61,6 – 80,3 % |
+| Micro (5 negocios) | 5,3 – 17,3 % | 14,9 – 19,6 % | 24,9 – 32,7 % | 93,8 – 96,5 % | 98,9 – 99,8 % |
 
-Lectura: se cumple que «siempre el primer botón» no garantiza ganar, y hay trayectorias ganadoras en todos los escenarios. Pero en **macro**, «siempre el segundo botón» gana casi siempre (la mayoría de las opciones B son de prudencia y suman Tesoro, que es la barra que más derrotas causa), y en **micro** la partida es muy fácil con cualquier política. El documento deja la calibración como tarea de desarrollo (§13), así que el MVP mantiene los valores originales; el ajuste conviene decidirlo en grupo y validarlo con la simulación.
+Los rangos muestran el mínimo y máximo entre escenarios de cada modo. Elegir siempre el mismo botón ya no garantiza ganar y hay trayectorias ganadoras en todos los escenarios. Las políticas que evalúan el estado y los compromisos superan al azar; conocen los impactos exactos y no representan a un jugador principiante. Los estudios de la especificación original y las alternativas exploradas se conservan en `analysis/`, con sus informes en `output/pdf/`. Queda pendiente validar la dificultad y el aprendizaje con personas.
 
 ---
 
 ## Fuera de este MVP
 
-- Sonido (el documento lo marca como opcional).
 - Ilustraciones finales: los retratos son SVG generados por código, pensados como base visual del estilo.
 - Calibración de dificultad (ver arriba) y pruebas con usuarios para confirmar la duración de 10–20 minutos.
 - Multijugador, cuentas, rankings y datos en tiempo real (fuera del alcance inicial según el documento).

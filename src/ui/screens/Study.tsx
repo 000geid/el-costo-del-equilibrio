@@ -1,134 +1,203 @@
-import { useMemo, useState } from 'react';
+import { useLayoutEffect, useRef } from 'react';
 import { QUESTIONS, STUDY, studyById } from '../../data';
-import type { Question } from '../../data/questions';
-import type { Mode } from '../../engine/types';
+import { filterLessons, type ArchiveRoute, type QuizProgress, type StudyArea } from '../studyNavigation';
 
-const norm = (s: string) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+const AREA_LABELS = { macro: 'Macroeconomía', micro: 'Microeconomía y finanzas' };
 
-export function ArchiveScreen({ initialMode, highlight, resumeLabel, onOpen, onBack }: {
-  initialMode: Mode;
-  /** Fichas relacionadas con la carta actual (se muestran primero). */
-  highlight?: string[];
-  resumeLabel: string;
+function StudyNav({ backLabel, onBack, canResume, onResume, onPractice }: {
+  backLabel: string;
+  onBack: () => void;
+  canResume: boolean;
+  onResume: () => void;
+  onPractice?: () => void;
+}) {
+  return (
+    <nav className="study-nav" aria-label="Navegación de estudio">
+      <div className="study-nav-links">
+        <button className="world-back" type="button" onClick={onBack}>{backLabel}</button>
+        {onPractice && <button className="world-back" type="button" onClick={onPractice}>Volver a la práctica</button>}
+      </div>
+      {canResume && <button className="btn btn-small" type="button" onClick={onResume}>Retomar partida</button>}
+    </nav>
+  );
+}
+
+export function ArchiveScreen({ location, canResume, backLabel, onChange, onOpen, onBack, onResume }: {
+  location: ArchiveRoute;
+  canResume: boolean;
+  backLabel: string;
+  onChange: (update: Partial<ArchiveRoute>) => void;
   onOpen: (id: string) => void;
   onBack: () => void;
+  onResume: () => void;
 }) {
-  const [tab, setTab] = useState<Mode>(initialMode);
-  const [q, setQ] = useState('');
-  const list = useMemo(() => {
-    const nq = norm(q.trim());
-    return STUDY.filter((s) => {
-      if (!nq) return s.mode === tab;
-      const hay = norm([s.title, s.definition, s.example, ...s.keywords].join(' '));
-      return hay.includes(nq);
-    });
-  }, [tab, q]);
-  const related = (highlight ?? []).map((id) => studyById(id)).filter(Boolean);
+  const area = location.area ?? location.mode;
+  const query = location.query ?? '';
+  const list = filterLessons(area, query);
+  const related = STUDY.filter((lesson) => location.highlight?.includes(lesson.id));
+  const heading = useRef<HTMLHeadingElement>(null);
+
+  useLayoutEffect(() => {
+    const previous = location.focusId && document.getElementById(`lesson-${location.focusId}`);
+    (previous || heading.current)?.focus({ preventScroll: true });
+    window.scrollTo(0, location.scrollY ?? 0);
+    // Restore only on entry, rather than moving focus while the reader types.
+  }, []);
 
   return (
-    <div className="page archive">
-      <header className="page-head">
-        <h1>Archivo de estudio</h1>
-        <p className="muted-light">Biblioteca de conceptos. Consultarla no consume turnos ni modifica indicadores.</p>
+    <div className="page study-page archive">
+      <StudyNav backLabel={backLabel} onBack={onBack} canResume={canResume} onResume={onResume} />
+      <header className="study-heading">
+        <h1 ref={heading} tabIndex={-1}>Archivo de estudio</h1>
+        <p className="muted">Conceptos de economía, gestión y finanzas. Consultarlos no consume turnos ni modifica indicadores.</p>
       </header>
 
       {related.length > 0 && (
-        <section className="related parchment">
-          <span className="label">Relacionado con la carta actual</span>
-          <div className="scroll-grid">
-            {related.map((s) => (
-              <button key={s!.id} className="scroll-item" onClick={() => onOpen(s!.id)}>
-                <span className="scroll-title">{s!.title}</span>
-              </button>
+        <section className="study-related" aria-labelledby="related-lessons">
+          <h2 className="h-small" id="related-lessons">Para tu decisión actual</h2>
+          <ul>
+            {related.map((lesson) => (
+              <li key={lesson.id}><button className="world-back" type="button" onClick={() => onOpen(lesson.id)}>{lesson.title}</button></li>
             ))}
-          </div>
+          </ul>
         </section>
       )}
 
-      <div className="archive-tools">
-        <div className="tabs" role="tablist" aria-label="Área">
-          <button role="tab" aria-selected={tab === 'macro' && !q} className={`tab ${tab === 'macro' && !q ? 'is-active' : ''}`} onClick={() => { setTab('macro'); setQ(''); }}>Macro</button>
-          <button role="tab" aria-selected={tab === 'micro' && !q} className={`tab ${tab === 'micro' && !q ? 'is-active' : ''}`} onClick={() => { setTab('micro'); setQ(''); }}>Micro y finanzas</button>
-        </div>
-        <label className="search">
-          <span className="sr-only">Buscar por palabra clave</span>
-          <input type="search" placeholder="Buscar: inflación, interés, costo…" value={q} onChange={(e) => setQ(e.target.value)} />
+      <div className="study-tools">
+        <label className="study-search">
+          <span>Buscar una lección</span>
+          <input type="search" placeholder="Inflación, interés, costos…" value={query}
+            onChange={(event) => onChange({ query: event.target.value, scrollY: 0, focusId: undefined })} />
         </label>
+        <div className="study-filters" role="group" aria-label="Filtrar por área">
+          {([['all', 'Todas las áreas'], ['macro', AREA_LABELS.macro], ['micro', AREA_LABELS.micro]] as [StudyArea, string][]).map(([value, label]) => (
+            <button key={value} type="button" aria-pressed={area === value}
+              onClick={() => onChange({ area: value, scrollY: 0, focusId: undefined })}>{label}</button>
+          ))}
+        </div>
       </div>
 
-      <div className="scroll-grid">
-        {list.map((s) => (
-          <button key={s.id} className="scroll-item" onClick={() => onOpen(s.id)}>
-            <span className="scroll-title">{s.title}</span>
-            <span className="scroll-def">{s.definition.split('. ')[0].replace(/\.$/, '')}.</span>
-          </button>
-        ))}
-        {list.length === 0 && <p className="muted-light">No hay fichas con esa palabra.</p>}
-      </div>
-
-      <div className="row center">
-        <button className="btn btn-primary" onClick={onBack}>{resumeLabel}</button>
-      </div>
+      <p className="study-count muted" role="status">{list.length} {list.length === 1 ? 'lección' : 'lecciones'}{query.trim() && ` para «${query.trim()}»`}</p>
+      {(['macro', 'micro'] as const).map((mode) => {
+        const lessons = list.filter((lesson) => lesson.mode === mode);
+        if (!lessons.length) return null;
+        return (
+          <section className="study-index" key={mode} aria-labelledby={`area-${mode}`}>
+            <h2 className="h-small" id={`area-${mode}`}>{AREA_LABELS[mode]}</h2>
+            <ul className="study-lessons">
+              {lessons.map((lesson) => (
+                <li key={lesson.id}>
+                  <button id={`lesson-${lesson.id}`} className="study-lesson" type="button" onClick={() => onOpen(lesson.id)}>
+                    <span className="study-lesson-copy">
+                      <span className="study-lesson-title">{lesson.title}</span>
+                      <span className="study-lesson-description">{lesson.definition.split('. ')[0].replace(/\.$/, '')}.</span>
+                    </span>
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7" /></svg>
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </section>
+        );
+      })}
+      {list.length === 0 && (
+        <div className="study-empty">
+          <p>No encontramos lecciones con esos filtros.</p>
+          <button className="world-back" type="button" onClick={() => onChange({ area: 'all', query: '', scrollY: 0, focusId: undefined })}>Ver todas las lecciones</button>
+        </div>
+      )}
     </div>
   );
 }
 
-export function FicheScreen({ id, canResume, onPractice, onArchive, onResume }: {
+export function FicheScreen({ id, canResume, reviewingPractice, onPractice, onArchive, onResume, onLesson }: {
   id: string;
   canResume: boolean;
+  reviewingPractice: boolean;
   onPractice: (studyId: string) => void;
   onArchive: () => void;
   onResume: () => void;
+  onLesson: (id: string) => void;
 }) {
   const s = studyById(id);
+  const heading = useRef<HTMLHeadingElement>(null);
+  useLayoutEffect(() => {
+    heading.current?.focus({ preventScroll: true });
+    window.scrollTo(0, 0);
+  }, [id]);
   if (!s) return null;
-  const hasQuestion = QUESTIONS.some((qq) => qq.studyId === id);
+  const lessons = STUDY.filter((lesson) => lesson.mode === s.mode);
+  const index = lessons.findIndex((lesson) => lesson.id === id);
+  const previous = lessons[index - 1];
+  const next = lessons[index + 1];
+  const hasQuestion = QUESTIONS.some((question) => question.studyId === id);
   return (
-    <div className="page">
-      <article className="parchment page-card fiche">
-        <span className="label">{s.mode === 'macro' ? 'Macroeconomía' : 'Microeconomía y finanzas'}</span>
-        <h1>{s.title}</h1>
+    <div className="page study-page">
+      <StudyNav backLabel="Volver al archivo" onBack={onArchive} canResume={canResume} onResume={onResume}
+        onPractice={reviewingPractice ? () => onPractice(id) : undefined} />
+      <article className="fiche">
+        <header className="lesson-heading">
+          <h1 ref={heading} tabIndex={-1}>{s.title}</h1>
+          <p className="muted">{AREA_LABELS[s.mode]} · Lección {index + 1} de {lessons.length}</p>
+        </header>
         <h2 className="h-small">Definición</h2>
         <p className="lead">{s.definition}</p>
         <h2 className="h-small">Ejemplo</h2>
         <p>{s.example}</p>
         <h2 className="h-small">Para decidir mejor</h2>
         <p>{s.tip}</p>
-        <div className="row">
-          <button className="btn" onClick={() => onPractice(id)}>{hasQuestion ? 'Practicar' : 'Practicar (pregunta al azar)'}</button>
-          <button className="btn" onClick={onArchive}>Volver al archivo</button>
-          {canResume && <button className="btn btn-primary" onClick={onResume}>Retomar partida</button>}
+        <div className="lesson-practice">
+          <button className="btn btn-primary" type="button" onClick={() => onPractice(id)}>
+            {reviewingPractice ? 'Continuar práctica' : hasQuestion ? 'Practicar este concepto' : 'Practicar esta área'}
+          </button>
+          {!hasQuestion && !reviewingPractice && <p className="small muted">Esta lección no tiene una pregunta propia. Podés practicar otros conceptos de {AREA_LABELS[s.mode].toLowerCase()}.</p>}
         </div>
+        <nav className="lesson-pagination" aria-label="Otras lecciones de esta área">
+          {previous && <button className="lesson-page-link" type="button" onClick={() => onLesson(previous.id)}><span>Lección anterior</span><strong>{previous.title}</strong></button>}
+          {next && <button className="lesson-page-link lesson-next" type="button" onClick={() => onLesson(next.id)}><span>Siguiente lección</span><strong>{next.title}</strong></button>}
+        </nav>
       </article>
     </div>
   );
 }
 
-export function QuizScreen({ studyId, mode, onBack, onFiche }: {
-  studyId?: string; mode?: Mode; onBack: () => void; onFiche: (id: string) => void;
+export function QuizScreen({ studyId, progress, canResume, onChange, onBack, onArchive, onResume, onFiche }: {
+  studyId: string;
+  progress: QuizProgress;
+  canResume: boolean;
+  onChange: (progress: QuizProgress) => void;
+  onBack: () => void;
+  onArchive: () => void;
+  onResume: () => void;
+  onFiche: (id: string) => void;
 }) {
-  const pool = useMemo(() => {
-    const preferred = QUESTIONS.filter((q) => q.studyId === studyId);
-    const rest = QUESTIONS.filter((q) => q.studyId !== studyId && (!mode || q.mode === mode));
-    return [...preferred, ...shuffled(rest)];
-  }, [studyId, mode]);
-  const [idx, setIdx] = useState(0);
-  const [picked, setPicked] = useState<number | null>(null);
-  const [checked, setChecked] = useState(false);
-  const [score, setScore] = useState({ ok: 0, total: 0 });
-  const q: Question = pool[idx % pool.length];
+  const { index, picked, checked, correct, answered } = progress;
+  const q = QUESTIONS.find((question) => question.id === progress.questionIds[index % progress.questionIds.length]);
+  const heading = useRef<HTMLHeadingElement>(null);
+  useLayoutEffect(() => {
+    heading.current?.focus({ preventScroll: true });
+    window.scrollTo(0, 0);
+  }, [index]);
+  if (!q) return null;
+  const origin = studyById(studyId);
+  const questionLesson = studyById(q.studyId);
 
   return (
-    <div className="page">
-      <article className="parchment page-card quiz">
-        <span className="label">Práctica · Pregunta {q.id.slice(1)} de 10 · no consume cartas</span>
-        <h1 className="quiz-q">{q.prompt}</h1>
+    <div className="page study-page">
+      <StudyNav backLabel="Volver al archivo" onBack={onArchive} canResume={canResume} onResume={onResume} />
+      <article className="fiche quiz">
+        <header className="study-heading">
+          <h1 ref={heading} tabIndex={-1}>Práctica de {AREA_LABELS[q.mode].toLowerCase()}</h1>
+          <p className="muted">Pregunta {index % progress.questionIds.length + 1} de {progress.questionIds.length} · No consume turnos.</p>
+          <button className="world-back" type="button" onClick={onBack}>Volver a la lección{origin ? ` «${origin.title}»` : ''}</button>
+        </header>
+        <h2 className="quiz-q">{q.prompt}</h2>
         <fieldset className="quiz-options" disabled={checked}>
           <legend className="sr-only">Opciones</legend>
-          {q.options.map((o, i) => (
+          {q.options.map((option, i) => (
             <label key={i} className={`quiz-option ${checked && i === q.answer ? 'is-right' : ''} ${checked && picked === i && i !== q.answer ? 'is-wrong' : ''}`}>
-              <input type="radio" name={`q-${q.id}`} checked={picked === i} onChange={() => setPicked(i)} />
-              <span className="quiz-letter">{'ABC'[i]}</span> {o}
+              <input type="radio" name={`q-${q.id}`} checked={picked === i} onChange={() => onChange({ ...progress, picked: i })} />
+              <span className="quiz-letter">{'ABC'[i]}</span> {option}
               {checked && i === q.answer && <span className="quiz-mark"> ✔ correcta</span>}
               {checked && picked === i && i !== q.answer && <span className="quiz-mark"> ✘ tu respuesta</span>}
             </label>
@@ -139,29 +208,18 @@ export function QuizScreen({ studyId, mode, onBack, onFiche }: {
             <strong>{picked === q.answer ? 'Correcto.' : `Respuesta: ${'ABC'[q.answer]}.`}</strong> {q.explanation}
           </p>
         )}
-        <p className="small muted">Aciertos en esta práctica: {score.ok} de {score.total}</p>
+        <p className="small muted">Aciertos en esta práctica: {correct} de {answered}</p>
         <div className="row">
           {!checked ? (
-            <button className="btn btn-primary" disabled={picked === null} onClick={() => {
-              setChecked(true);
-              setScore((s) => ({ ok: s.ok + (picked === q.answer ? 1 : 0), total: s.total + 1 }));
-            }}>Comprobar</button>
+            <button className="btn btn-primary" type="button" disabled={picked === null} onClick={() => onChange({
+              ...progress, checked: true, correct: correct + (picked === q.answer ? 1 : 0), answered: answered + 1,
+            })}>Comprobar</button>
           ) : (
-            <button className="btn btn-primary" onClick={() => { setIdx((i) => i + 1); setPicked(null); setChecked(false); }}>Otra pregunta</button>
+            <button className="btn btn-primary" type="button" onClick={() => onChange({ ...progress, index: index + 1, picked: null, checked: false })}>Otra pregunta</button>
           )}
-          <button className="btn" onClick={() => onFiche(q.studyId)}>Ver ficha</button>
-          <button className="btn btn-ghost" onClick={onBack}>Volver</button>
+          <button className="world-back" type="button" onClick={() => onFiche(q.studyId)}>Consultar lección{questionLesson ? `: ${questionLesson.title}` : ''}</button>
         </div>
       </article>
     </div>
   );
-}
-
-function shuffled<T>(a: T[]): T[] {
-  const b = a.slice();
-  for (let i = b.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [b[i], b[j]] = [b[j], b[i]];
-  }
-  return b;
 }

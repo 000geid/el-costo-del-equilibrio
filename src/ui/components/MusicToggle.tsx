@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { forwardRef, useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
 
 interface MusicSession {
   context: AudioContext;
@@ -6,12 +6,22 @@ interface MusicSession {
   playNote: () => void;
 }
 
+export interface MusicControlHandle {
+  resumeIfEnabled: () => void;
+  setEnabled: (enabled: boolean) => void;
+}
+
+interface Props {
+  enabled: boolean;
+  onEnabledChange: (enabled: boolean) => void;
+  onErrorChange: (error: string) => void;
+}
+
 const MELODY = [293.66, 440, 392, 349.23, 293.66, 392, 440, 523.25, 440, 349.23, 392, 293.66];
 
-export function MusicToggle() {
+export const MusicController = forwardRef<MusicControlHandle, Props>(function MusicController({ enabled, onEnabledChange, onErrorChange: setError }, ref) {
   const session = useRef<MusicSession | null>(null);
-  const [enabled, setEnabled] = useState(false);
-  const [error, setError] = useState('');
+  const [playing, setPlaying] = useState(false);
 
   useEffect(() => () => {
     const current = session.current;
@@ -21,9 +31,10 @@ export function MusicToggle() {
     session.current = null;
   }, []);
 
-  const startMusic = async () => {
+  const startMusic = useCallback(async () => {
     if (!window.AudioContext) {
       setError('Este navegador no admite la música ambiental.');
+      onEnabledChange(false);
       return;
     }
 
@@ -81,39 +92,41 @@ export function MusicToggle() {
         current.playNote();
         current.timer = window.setInterval(current.playNote, 2200);
       }
+      onEnabledChange(true);
+      setPlaying(true);
       setError('');
-      setEnabled(true);
     } catch {
-      setError('No se pudo iniciar la música ambiental en este navegador.');
+      onEnabledChange(false);
+      setPlaying(false);
+      setError('No se pudo iniciar la música ambiental. Podés seguir jugando sin música.');
     }
-  };
+  }, [onEnabledChange, setError]);
 
   const stopMusic = async () => {
     const current = session.current;
-    if (!current) return;
-    if (current.timer !== null) window.clearInterval(current.timer);
-    current.timer = null;
-    try {
-      await current.context.suspend();
-      setEnabled(false);
-      setError('');
-    } catch {
-      setError('No se pudo silenciar la música ambiental.');
+    if (current && current.timer !== null) window.clearInterval(current.timer);
+    if (current) {
+      current.timer = null;
+      try {
+        await current.context.suspend();
+      } catch {
+        setError('No se pudo silenciar la música ambiental.');
+      }
     }
+    onEnabledChange(false);
+    setPlaying(false);
+    if (!current) setError('');
   };
 
-  return (
-    <div className="music-control">
-      <button
-        className="music-toggle"
-        type="button"
-        aria-pressed={enabled}
-        onClick={() => { if (enabled) void stopMusic(); else void startMusic(); }}
-      >
-        <span aria-hidden="true">♫</span>
-        <span>Música {enabled ? 'activada' : 'silenciada'}</span>
-      </button>
-      {error && <span className="music-error" role="status">{error}</span>}
-    </div>
-  );
-}
+  useImperativeHandle(ref, () => ({
+    resumeIfEnabled: () => {
+      if (enabled && !playing) void startMusic();
+    },
+    setEnabled: (next: boolean) => {
+      if (next) void startMusic();
+      else void stopMusic();
+    },
+  }), [enabled, playing, startMusic]);
+
+  return null;
+});

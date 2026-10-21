@@ -1,0 +1,940 @@
+{
+  "dev": {
+    "random": {
+      "min_rate": 16.0,
+      "max_rate": 27.0,
+      "avg_rate": 20.0,
+      "by_scenario": {
+        "Panadería": {
+          "win_rate": 16.0,
+          "wilson95": [
+            10.1,
+            24.42
+          ],
+          "mean_turns": 15.05
+        },
+        "Heladería": {
+          "win_rate": 18.0,
+          "wilson95": [
+            11.7,
+            26.67
+          ],
+          "mean_turns": 15.29
+        },
+        "Agencia de traducción": {
+          "win_rate": 27.0,
+          "wilson95": [
+            19.27,
+            36.43
+          ],
+          "mean_turns": 15.45
+        },
+        "Taller de cerámica": {
+          "win_rate": 18.0,
+          "wilson95": [
+            11.7,
+            26.67
+          ],
+          "mean_turns": 14.92
+        },
+        "Taller de reparación": {
+          "win_rate": 21.0,
+          "wilson95": [
+            14.17,
+            29.98
+          ],
+          "mean_turns": 15.37
+        }
+      },
+      "causes": {
+        "0": 254,
+        "1": 42,
+        "2": 93,
+        "3": 25
+      },
+      "stress_fails_among_winners": "0/100",
+      "median_weakest_bar": -2.0
+    },
+    "always_A": {
+      "min_rate": 4.0,
+      "max_rate": 15.0,
+      "avg_rate": 11.4,
+      "by_scenario": {
+        "Panadería": {
+          "win_rate": 15.0,
+          "wilson95": [
+            9.31,
+            23.28
+          ],
+          "mean_turns": 13.1
+        },
+        "Heladería": {
+          "win_rate": 15.0,
+          "wilson95": [
+            9.31,
+            23.28
+          ],
+          "mean_turns": 13.25
+        },
+        "Agencia de traducción": {
+          "win_rate": 10.0,
+          "wilson95": [
+            5.52,
+            17.44
+          ],
+          "mean_turns": 13.27
+        },
+        "Taller de cerámica": {
+          "win_rate": 4.0,
+          "wilson95": [
+            1.57,
+            9.84
+          ],
+          "mean_turns": 12.1
+        },
+        "Taller de reparación": {
+          "win_rate": 13.0,
+          "wilson95": [
+            7.76,
+            20.98
+          ],
+          "mean_turns": 13.78
+        }
+      },
+      "causes": {
+        "0": 443,
+        "1": 0,
+        "2": 0,
+        "3": 0
+      },
+      "stress_fails_among_winners": "0/57",
+      "median_weakest_bar": -2.0
+    },
+    "always_B": {
+      "min_rate": 10.0,
+      "max_rate": 14.0,
+      "avg_rate": 11.4,
+      "by_scenario": {
+        "Panadería": {
+          "win_rate": 10.0,
+          "wilson95": [
+            5.52,
+            17.44
+          ],
+          "mean_turns": 15.72
+        },
+        "Heladería": {
+          "win_rate": 10.0,
+          "wilson95": [
+            5.52,
+            17.44
+          ],
+          "mean_turns": 15.72
+        },
+        "Agencia de traducción": {
+          "win_rate": 14.0,
+          "wilson95": [
+            8.53,
+            22.14
+          ],
+          "mean_turns": 15.13
+        },
+        "Taller de cerámica": {
+          "win_rate": 13.0,
+          "wilson95": [
+            7.76,
+            20.98
+          ],
+          "mean_turns": 15.04
+        },
+        "Taller de reparación": {
+          "win_rate": 10.0,
+          "wilson95": [
+            5.52,
+            17.44
+          ],
+          "mean_turns": 15.3
+        }
+      },
+      "causes": {
+        "0": 33,
+        "1": 217,
+        "2": 235,
+        "3": 3
+      },
+      "stress_fails_among_winners": "0/57",
+      "median_weakest_bar": -1.0
+    },
+    "signs": {
+      "min_rate": 52.0,
+      "max_rate": 70.0,
+      "avg_rate": 59.8,
+      "by_scenario": {
+        "Panadería": {
+          "win_rate": 52.0,
+          "wilson95": [
+            42.32,
+            61.54
+          ],
+          "mean_turns": 16.33
+        },
+        "Heladería": {
+          "win_rate": 54.0,
+          "wilson95": [
+            44.26,
+            63.44
+          ],
+          "mean_turns": 16.56
+        },
+        "Agencia de traducción": {
+          "win_rate": 70.0,
+          "wilson95": [
+            60.42,
+            78.11
+          ],
+          "mean_turns": 17.69
+        },
+        "Taller de cerámica": {
+          "win_rate": 53.0,
+          "wilson95": [
+            43.29,
+            62.49
+          ],
+          "mean_turns": 16.41
+        },
+        "Taller de reparación": {
+          "win_rate": 70.0,
+          "wilson95": [
+            60.42,
+            78.11
+          ],
+          "mean_turns": 17.73
+        }
+      },
+      "causes": {
+        "0": 200,
+        "1": 0,
+        "2": 1,
+        "3": 0
+      },
+      "stress_fails_among_winners": "0/299",
+      "median_weakest_bar": 2.0
+    },
+    "myopic": {
+      "min_rate": 84.0,
+      "max_rate": 94.0,
+      "avg_rate": 91.4,
+      "by_scenario": {
+        "Panadería": {
+          "win_rate": 93.0,
+          "wilson95": [
+            86.25,
+            96.57
+          ],
+          "mean_turns": 19.56
+        },
+        "Heladería": {
+          "win_rate": 93.0,
+          "wilson95": [
+            86.25,
+            96.57
+          ],
+          "mean_turns": 19.56
+        },
+        "Agencia de traducción": {
+          "win_rate": 94.0,
+          "wilson95": [
+            87.52,
+            97.22
+          ],
+          "mean_turns": 19.63
+        },
+        "Taller de cerámica": {
+          "win_rate": 84.0,
+          "wilson95": [
+            75.58,
+            89.9
+          ],
+          "mean_turns": 19.16
+        },
+        "Taller de reparación": {
+          "win_rate": 93.0,
+          "wilson95": [
+            86.25,
+            96.57
+          ],
+          "mean_turns": 19.53
+        }
+      },
+      "causes": {
+        "0": 39,
+        "1": 2,
+        "2": 4,
+        "3": 1
+      },
+      "stress_fails_among_winners": "1/457",
+      "median_weakest_bar": 9.0
+    },
+    "conservative": {
+      "min_rate": 84.0,
+      "max_rate": 95.0,
+      "avg_rate": 90.2,
+      "by_scenario": {
+        "Panadería": {
+          "win_rate": 90.0,
+          "wilson95": [
+            82.56,
+            94.48
+          ],
+          "mean_turns": 19.64
+        },
+        "Heladería": {
+          "win_rate": 95.0,
+          "wilson95": [
+            88.82,
+            97.85
+          ],
+          "mean_turns": 19.92
+        },
+        "Agencia de traducción": {
+          "win_rate": 93.0,
+          "wilson95": [
+            86.25,
+            96.57
+          ],
+          "mean_turns": 19.75
+        },
+        "Taller de cerámica": {
+          "win_rate": 89.0,
+          "wilson95": [
+            81.37,
+            93.75
+          ],
+          "mean_turns": 19.63
+        },
+        "Taller de reparación": {
+          "win_rate": 84.0,
+          "wilson95": [
+            75.58,
+            89.9
+          ],
+          "mean_turns": 19.57
+        }
+      },
+      "causes": {
+        "0": 35,
+        "1": 2,
+        "2": 16,
+        "3": 1
+      },
+      "stress_fails_among_winners": "2/451",
+      "median_weakest_bar": 10.0
+    },
+    "commitments": {
+      "min_rate": 98.0,
+      "max_rate": 100.0,
+      "avg_rate": 99.2,
+      "by_scenario": {
+        "Panadería": {
+          "win_rate": 100.0,
+          "wilson95": [
+            96.3,
+            100
+          ],
+          "mean_turns": 20
+        },
+        "Heladería": {
+          "win_rate": 99.0,
+          "wilson95": [
+            94.55,
+            99.82
+          ],
+          "mean_turns": 19.97
+        },
+        "Agencia de traducción": {
+          "win_rate": 100.0,
+          "wilson95": [
+            96.3,
+            100
+          ],
+          "mean_turns": 20
+        },
+        "Taller de cerámica": {
+          "win_rate": 98.0,
+          "wilson95": [
+            93.0,
+            99.45
+          ],
+          "mean_turns": 19.98
+        },
+        "Taller de reparación": {
+          "win_rate": 99.0,
+          "wilson95": [
+            94.55,
+            99.82
+          ],
+          "mean_turns": 19.98
+        }
+      },
+      "causes": {
+        "0": 1,
+        "1": 0,
+        "2": 3,
+        "3": 0
+      },
+      "stress_fails_among_winners": "0/496",
+      "median_weakest_bar": 14.0
+    },
+    "planner": {
+      "min_rate": 100.0,
+      "max_rate": 100.0,
+      "avg_rate": 100.0,
+      "by_scenario": {
+        "Panadería": {
+          "win_rate": 100.0,
+          "wilson95": [
+            96.3,
+            100
+          ],
+          "mean_turns": 20
+        },
+        "Heladería": {
+          "win_rate": 100.0,
+          "wilson95": [
+            96.3,
+            100
+          ],
+          "mean_turns": 20
+        },
+        "Agencia de traducción": {
+          "win_rate": 100.0,
+          "wilson95": [
+            96.3,
+            100
+          ],
+          "mean_turns": 20
+        },
+        "Taller de cerámica": {
+          "win_rate": 100.0,
+          "wilson95": [
+            96.3,
+            100
+          ],
+          "mean_turns": 20
+        },
+        "Taller de reparación": {
+          "win_rate": 100.0,
+          "wilson95": [
+            96.3,
+            100
+          ],
+          "mean_turns": 20
+        }
+      },
+      "causes": {
+        "0": 0,
+        "1": 0,
+        "2": 0,
+        "3": 0
+      },
+      "stress_fails_among_winners": "0/500",
+      "median_weakest_bar": 9.0
+    },
+    "planner_choice_share_A": {
+      "MI01": 41.6,
+      "MI02": 16.7,
+      "MI03": 96.2,
+      "MI04": 56.4,
+      "MI05": 63.7,
+      "MI06": 15.6,
+      "MI07": 75.4,
+      "MI08": 43.2,
+      "MI09": 11.1,
+      "MI10": 90.2,
+      "MI11": 40.5,
+      "MI12": 57.5,
+      "MI13": 7.7,
+      "MI14": 15.1,
+      "MI15": 97.6,
+      "MI16": 51.5,
+      "MI17": 60.5,
+      "MI18": 52.9,
+      "MI19": 89.5,
+      "MI20": 21.8,
+      "MI21": 19.6,
+      "MI22": 42.0,
+      "MI23": 50.1,
+      "MI24": 87.0,
+      "MI25": 49.1
+    }
+  },
+  "holdout": {
+    "random": {
+      "min_rate": 19.0,
+      "max_rate": 29.0,
+      "avg_rate": 23.8,
+      "by_scenario": {
+        "Panadería": {
+          "win_rate": 19.0,
+          "wilson95": [
+            12.51,
+            27.78
+          ],
+          "mean_turns": 15.65
+        },
+        "Heladería": {
+          "win_rate": 22.0,
+          "wilson95": [
+            15.0,
+            31.07
+          ],
+          "mean_turns": 15.81
+        },
+        "Agencia de traducción": {
+          "win_rate": 29.0,
+          "wilson95": [
+            21.01,
+            38.54
+          ],
+          "mean_turns": 16.38
+        },
+        "Taller de cerámica": {
+          "win_rate": 25.0,
+          "wilson95": [
+            17.55,
+            34.3
+          ],
+          "mean_turns": 15.87
+        },
+        "Taller de reparación": {
+          "win_rate": 24.0,
+          "wilson95": [
+            16.69,
+            33.23
+          ],
+          "mean_turns": 16.06
+        }
+      },
+      "causes": {
+        "0": 235,
+        "1": 27,
+        "2": 114,
+        "3": 9
+      },
+      "stress_fails_among_winners": "0/119",
+      "median_weakest_bar": -1.0
+    },
+    "always_A": {
+      "min_rate": 5.0,
+      "max_rate": 14.0,
+      "avg_rate": 10.4,
+      "by_scenario": {
+        "Panadería": {
+          "win_rate": 12.0,
+          "wilson95": [
+            7.0,
+            19.81
+          ],
+          "mean_turns": 13.39
+        },
+        "Heladería": {
+          "win_rate": 14.0,
+          "wilson95": [
+            8.53,
+            22.14
+          ],
+          "mean_turns": 13.5
+        },
+        "Agencia de traducción": {
+          "win_rate": 8.0,
+          "wilson95": [
+            4.11,
+            15.0
+          ],
+          "mean_turns": 13.15
+        },
+        "Taller de cerámica": {
+          "win_rate": 5.0,
+          "wilson95": [
+            2.15,
+            11.18
+          ],
+          "mean_turns": 12.37
+        },
+        "Taller de reparación": {
+          "win_rate": 13.0,
+          "wilson95": [
+            7.76,
+            20.98
+          ],
+          "mean_turns": 13.67
+        }
+      },
+      "causes": {
+        "0": 448,
+        "1": 0,
+        "2": 0,
+        "3": 0
+      },
+      "stress_fails_among_winners": "0/52",
+      "median_weakest_bar": -3.0
+    },
+    "always_B": {
+      "min_rate": 10.0,
+      "max_rate": 14.0,
+      "avg_rate": 11.8,
+      "by_scenario": {
+        "Panadería": {
+          "win_rate": 11.0,
+          "wilson95": [
+            6.25,
+            18.63
+          ],
+          "mean_turns": 15.67
+        },
+        "Heladería": {
+          "win_rate": 12.0,
+          "wilson95": [
+            7.0,
+            19.81
+          ],
+          "mean_turns": 15.73
+        },
+        "Agencia de traducción": {
+          "win_rate": 12.0,
+          "wilson95": [
+            7.0,
+            19.81
+          ],
+          "mean_turns": 15.36
+        },
+        "Taller de cerámica": {
+          "win_rate": 14.0,
+          "wilson95": [
+            8.53,
+            22.14
+          ],
+          "mean_turns": 15.38
+        },
+        "Taller de reparación": {
+          "win_rate": 10.0,
+          "wilson95": [
+            5.52,
+            17.44
+          ],
+          "mean_turns": 15.23
+        }
+      },
+      "causes": {
+        "0": 29,
+        "1": 192,
+        "2": 259,
+        "3": 5
+      },
+      "stress_fails_among_winners": "0/59",
+      "median_weakest_bar": -1.5
+    },
+    "signs": {
+      "min_rate": 57.0,
+      "max_rate": 65.0,
+      "avg_rate": 61.8,
+      "by_scenario": {
+        "Panadería": {
+          "win_rate": 58.0,
+          "wilson95": [
+            48.21,
+            67.2
+          ],
+          "mean_turns": 16.72
+        },
+        "Heladería": {
+          "win_rate": 64.0,
+          "wilson95": [
+            54.24,
+            72.73
+          ],
+          "mean_turns": 17.12
+        },
+        "Agencia de traducción": {
+          "win_rate": 65.0,
+          "wilson95": [
+            55.25,
+            73.64
+          ],
+          "mean_turns": 17.23
+        },
+        "Taller de cerámica": {
+          "win_rate": 57.0,
+          "wilson95": [
+            47.22,
+            66.27
+          ],
+          "mean_turns": 16.4
+        },
+        "Taller de reparación": {
+          "win_rate": 65.0,
+          "wilson95": [
+            55.25,
+            73.64
+          ],
+          "mean_turns": 17.27
+        }
+      },
+      "causes": {
+        "0": 191,
+        "1": 0,
+        "2": 0,
+        "3": 0
+      },
+      "stress_fails_among_winners": "0/309",
+      "median_weakest_bar": 3.0
+    },
+    "myopic": {
+      "min_rate": 80.0,
+      "max_rate": 92.0,
+      "avg_rate": 88.0,
+      "by_scenario": {
+        "Panadería": {
+          "win_rate": 88.0,
+          "wilson95": [
+            80.19,
+            93.0
+          ],
+          "mean_turns": 19.18
+        },
+        "Heladería": {
+          "win_rate": 91.0,
+          "wilson95": [
+            83.77,
+            95.19
+          ],
+          "mean_turns": 19.55
+        },
+        "Agencia de traducción": {
+          "win_rate": 89.0,
+          "wilson95": [
+            81.37,
+            93.75
+          ],
+          "mean_turns": 19.26
+        },
+        "Taller de cerámica": {
+          "win_rate": 80.0,
+          "wilson95": [
+            71.12,
+            86.66
+          ],
+          "mean_turns": 18.75
+        },
+        "Taller de reparación": {
+          "win_rate": 92.0,
+          "wilson95": [
+            85.0,
+            95.89
+          ],
+          "mean_turns": 19.45
+        }
+      },
+      "causes": {
+        "0": 56,
+        "1": 1,
+        "2": 3,
+        "3": 0
+      },
+      "stress_fails_among_winners": "1/440",
+      "median_weakest_bar": 9.5
+    },
+    "conservative": {
+      "min_rate": 80.0,
+      "max_rate": 91.0,
+      "avg_rate": 87.0,
+      "by_scenario": {
+        "Panadería": {
+          "win_rate": 86.0,
+          "wilson95": [
+            77.86,
+            91.47
+          ],
+          "mean_turns": 19.37
+        },
+        "Heladería": {
+          "win_rate": 89.0,
+          "wilson95": [
+            81.37,
+            93.75
+          ],
+          "mean_turns": 19.55
+        },
+        "Agencia de traducción": {
+          "win_rate": 89.0,
+          "wilson95": [
+            81.37,
+            93.75
+          ],
+          "mean_turns": 19.68
+        },
+        "Taller de cerámica": {
+          "win_rate": 80.0,
+          "wilson95": [
+            71.12,
+            86.66
+          ],
+          "mean_turns": 19.41
+        },
+        "Taller de reparación": {
+          "win_rate": 91.0,
+          "wilson95": [
+            83.77,
+            95.19
+          ],
+          "mean_turns": 19.72
+        }
+      },
+      "causes": {
+        "0": 43,
+        "1": 1,
+        "2": 13,
+        "3": 13
+      },
+      "stress_fails_among_winners": "1/435",
+      "median_weakest_bar": 9.0
+    },
+    "commitments": {
+      "min_rate": 99.0,
+      "max_rate": 100.0,
+      "avg_rate": 99.4,
+      "by_scenario": {
+        "Panadería": {
+          "win_rate": 99.0,
+          "wilson95": [
+            94.55,
+            99.82
+          ],
+          "mean_turns": 19.99
+        },
+        "Heladería": {
+          "win_rate": 100.0,
+          "wilson95": [
+            96.3,
+            100
+          ],
+          "mean_turns": 20
+        },
+        "Agencia de traducción": {
+          "win_rate": 99.0,
+          "wilson95": [
+            94.55,
+            99.82
+          ],
+          "mean_turns": 19.96
+        },
+        "Taller de cerámica": {
+          "win_rate": 99.0,
+          "wilson95": [
+            94.55,
+            99.82
+          ],
+          "mean_turns": 19.91
+        },
+        "Taller de reparación": {
+          "win_rate": 100.0,
+          "wilson95": [
+            96.3,
+            100
+          ],
+          "mean_turns": 20
+        }
+      },
+      "causes": {
+        "0": 2,
+        "1": 0,
+        "2": 1,
+        "3": 0
+      },
+      "stress_fails_among_winners": "0/497",
+      "median_weakest_bar": 14.5
+    },
+    "planner": {
+      "min_rate": 99.0,
+      "max_rate": 100.0,
+      "avg_rate": 99.4,
+      "by_scenario": {
+        "Panadería": {
+          "win_rate": 99.0,
+          "wilson95": [
+            94.55,
+            99.82
+          ],
+          "mean_turns": 19.95
+        },
+        "Heladería": {
+          "win_rate": 100.0,
+          "wilson95": [
+            96.3,
+            100
+          ],
+          "mean_turns": 20
+        },
+        "Agencia de traducción": {
+          "win_rate": 99.0,
+          "wilson95": [
+            94.55,
+            99.82
+          ],
+          "mean_turns": 19.89
+        },
+        "Taller de cerámica": {
+          "win_rate": 99.0,
+          "wilson95": [
+            94.55,
+            99.82
+          ],
+          "mean_turns": 19.9
+        },
+        "Taller de reparación": {
+          "win_rate": 100.0,
+          "wilson95": [
+            96.3,
+            100
+          ],
+          "mean_turns": 20
+        }
+      },
+      "causes": {
+        "0": 3,
+        "1": 0,
+        "2": 0,
+        "3": 0
+      },
+      "stress_fails_among_winners": "0/497",
+      "median_weakest_bar": 9.0
+    },
+    "planner_choice_share_A": {
+      "MI01": 44.7,
+      "MI02": 18.8,
+      "MI03": 98.5,
+      "MI04": 50.8,
+      "MI05": 64.9,
+      "MI06": 25.0,
+      "MI07": 84.7,
+      "MI08": 40.8,
+      "MI09": 16.8,
+      "MI10": 89.2,
+      "MI11": 40.9,
+      "MI12": 60.6,
+      "MI13": 11.4,
+      "MI14": 7.5,
+      "MI15": 98.4,
+      "MI16": 55.8,
+      "MI17": 62.4,
+      "MI18": 47.0,
+      "MI19": 87.5,
+      "MI20": 22.3,
+      "MI21": 10.1,
+      "MI22": 40.1,
+      "MI23": 51.4,
+      "MI24": 83.5,
+      "MI25": 45.4
+    }
+  }
+}

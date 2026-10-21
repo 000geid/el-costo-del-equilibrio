@@ -1,0 +1,18 @@
+{
+  "date": "2026-10-15",
+  "main_simulations": 160000,
+  "sensitivity_simulations": 80000,
+  "independent_validation_simulations": 17500,
+  "pilot_simulations": 12000,
+  "report_pages": 10,
+  "files_sha256": {
+    "output/pdf/informe-balance-el-costo-del-equilibrio-v1.pdf": "bed44eb2fd0a36649d63c32163186fd08859948e5cfb429332a7872fa205ce4d",
+    "analysis/quant_v1/analyze.py": "cff3b8048434f5bfd26f5f70a24d285c820d7a199645df370b63f67c2b760d2b",
+    "analysis/quant_v1/check_robustness.py": "92eb9a01c07943eb34074bcd824ec25992f883475921262da0907ba2a00625a8",
+    "analysis/quant_v1/build_report.py": "eb0bdc421078f89787dff6c2477b82c8a0f85af8038fb8979a1808ebb0a37d75",
+    "analysis/quant_v1/results/results.json": "c003889dfafee03d400d9733b9cb5bb6b2b4304f85df9cacb4450870e8e014a6",
+    "analysis/quant_v1/results/robustness.json": "b1a527d73d0c262b84fba57caf3b212507a1008f6576c78c5a6f52a66dc69bb8",
+    "analysis/quant_v1/results/catalog.json": "843a6ceaff955f217a4941059527573af3db006812cea4249b7c26d16c237cd0",
+    "analysis/quant_v1/results/witnesses.json": "c5b6080ebda989d5c6e5b4d0b66579b4388d89a51d875904054e531b311f1ded"
+  }
+}

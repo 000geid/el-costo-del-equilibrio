@@ -24,6 +24,7 @@ export function TrajectoryChart({ game, onTurn }: { game: GameState; onTurn: (tu
 
   return (
     <figure className="chart">
+      <div className="chart-scroll" role="region" aria-label="Gráfico de trayectoria con desplazamiento horizontal" tabIndex={0}>
       <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label="Gráfico de la trayectoria de los indicadores por turno">
         <rect x={PAD.l} y={y(20)} width={W - PAD.l - PAD.r} height={y(0) - y(20)} fill="#b4483c" opacity="0.12" />
         <text x={W - PAD.r - 4} y={y(20) + 12} textAnchor="end" className="chart-axis" fill="#8c2f2f">zona de alerta (1–20)</text>
@@ -63,6 +64,8 @@ export function TrajectoryChart({ game, onTurn }: { game: GameState; onTurn: (tu
           </rect>
         ))}
       </svg>
+      </div>
+      <p className="chart-scroll-hint small muted">Deslizá el gráfico para ver todos los turnos.</p>
       <figcaption className="legend">
         {meta.map((m, si) => (
           <span key={m.key} className="legend-item">

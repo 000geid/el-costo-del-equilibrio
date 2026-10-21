@@ -20,11 +20,35 @@ function lookahead(s: GameState, key: OptionKey): number {
   return Math.min(...after);
 }
 
+/** Utilidad con aversión al riesgo y proyección de compromisos en los próximos 3 turnos. */
+function utility(stats: number[]): number {
+  const minVal = Math.min(...stats);
+  if (minVal <= 0) return -10000 + minVal;
+  return stats.reduce((acc, x) => acc + Math.log(Math.min(100, x)), 0) + 0.05 * minVal;
+}
+
+function forecastScore(s: GameState, key: OptionKey, horizon = 3): number {
+  const next = decide(s, key, 0);
+  if (next.status === 'lost') return -10000 + Math.min(...next.stats);
+  let cur = next.stats.slice();
+  let worst = utility(cur);
+  for (let t = next.turn + 1; t <= Math.min(20, next.turn + horizon); t++) {
+    for (const p of next.pending) {
+      if (p.dueTurn === t) cur = cur.map((x, i) => x + p.vec[i]);
+    }
+    cur = cur.map((x) => Math.min(100, x));
+    worst = Math.min(worst, utility(cur));
+    if (Math.min(...cur) <= 0) break;
+  }
+  return worst;
+}
+
 const POLICIES: Record<string, Policy> = {
   'Siempre A': () => 'A',
   'Siempre B': () => 'B',
   'Al azar': (_s, r) => (r() < 0.5 ? 'A' : 'B'),
   'Cuidar la peor barra': (s) => (lookahead(s, 'A') >= lookahead(s, 'B') ? 'A' : 'B'),
+  'Planificar (compromisos)': (s) => (forecastScore(s, 'A') >= forecastScore(s, 'B') ? 'A' : 'B'),
 };
 
 function play(mode: 'macro' | 'micro', scenarioId: string, seed: number, policy: Policy) {

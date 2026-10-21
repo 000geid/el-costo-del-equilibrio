@@ -14,7 +14,7 @@ export const MACRO_CARDS: Card[] = [
     studyIds: ['pbi', 'costo-oportunidad'],
     options: {
       A: opt('Reparar el puente', v(-8, -10, 4, 3), 'inversion', later(2, v(14, 0, 3, 2))),
-      B: opt('Postergar la obra', v(-4, 3, -3, -3), 'prudencia'),
+      B: opt('Postergar la obra', v(-9, 3, -5, -4), 'prudencia'),
     },
     explanation: 'La obra compromete recursos presentes para mejorar la capacidad productiva futura. Su beneficio no llega de inmediato.',
   },
@@ -29,7 +29,7 @@ export const MACRO_CARDS: Card[] = [
     studyIds: ['inflacion', 'subsidios'],
     options: {
       A: opt('Dar un refuerzo', v(0, -9, 10, 4), 'social'),
-      B: opt('Conservar los fondos', v(0, 5, -8, -4), 'prudencia'),
+      B: opt('Conservar los fondos', v(-3, 5, -12, -7), 'prudencia'),
     },
     explanation: 'Si los ingresos nominales no cambian y suben los precios, disminuye el poder de compra. El refuerzo ayuda al grupo beneficiado y requiere financiamiento.',
   },
@@ -43,8 +43,8 @@ export const MACRO_CARDS: Card[] = [
     concept: 'Política monetaria y tasa de interés',
     studyIds: ['monetaria', 'inflacion'],
     options: {
-      A: opt('Elevar la tasa', v(-7, 2, 3, 5), 'estabilidad'),
-      B: opt('Reducir la tasa', v(8, -3, -5, -4), 'actividad'),
+      A: opt('Elevar la tasa', v(-10, 2, 3, 5), 'estabilidad'),
+      B: opt('Reducir la tasa', v(8, -3, -10, -8), 'actividad'),
     },
     explanation: 'Una tasa mayor puede moderar el crédito y la demanda, con costos de actividad. Sus efectos sobre precios y bienestar dependen del contexto; estos puntos representan el escenario ficticio.',
   },
@@ -59,7 +59,7 @@ export const MACRO_CARDS: Card[] = [
     studyIds: ['fiscal'],
     options: {
       A: opt('Comprar los insumos', v(0, -8, 9, 4), 'social'),
-      B: opt('Aplazar la compra', v(-2, 4, -8, -5), 'prudencia'),
+      B: opt('Aplazar la compra', v(-4, 4, -12, -8), 'prudencia'),
     },
     explanation: 'El presupuesto es limitado. Una decisión fiscal implica elegir prioridades y considerar a quién afecta el gasto o su reducción.',
   },
@@ -73,8 +73,8 @@ export const MACRO_CARDS: Card[] = [
     concept: 'Tributación y distribución',
     studyIds: ['impuestos', 'fiscal'],
     options: {
-      A: opt('Aplicar el impuesto', v(-3, 10, 4, -3), 'recaudacion'),
-      B: opt('Mantener el esquema', v(4, -3, -2, 2), 'actividad'),
+      A: opt('Aplicar el impuesto', v(-7, 9, 3, -6), 'recaudacion'),
+      B: opt('Mantener el esquema', v(5, -3, -5, 2), 'actividad'),
     },
     explanation: 'Los impuestos financian al Estado y modifican incentivos. La incidencia y la recaudación efectiva dependen del diseño; no todos los impuestos producen los mismos efectos.',
   },
@@ -88,8 +88,8 @@ export const MACRO_CARDS: Card[] = [
     concept: 'Choque de oferta y comercio exterior',
     studyIds: ['oferta-demanda', 'tipo-cambio'],
     options: {
-      A: opt('Apoyar la próxima cosecha', v(-3, -7, -2, 2), 'inversion', later(2, v(9, 0, 6, 2))),
-      B: opt('Importar alimentos', v(0, -9, 8, 2), 'social'),
+      A: opt('Apoyar la próxima cosecha', v(-3, -7, -6, -2), 'inversion', later(2, v(10, 0, 7, 3))),
+      B: opt('Importar alimentos', v(-3, -8, 7, 1), 'social'),
     },
     explanation: 'La sequía reduce la oferta disponible. La recuperación productiva tarda; importar puede aliviar la escasez presente y consumir recursos.',
   },
@@ -104,7 +104,7 @@ export const MACRO_CARDS: Card[] = [
     studyIds: ['subsidios'],
     options: {
       A: opt('Subsidiar la tarifa', v(3, -8, 7, 3), 'social'),
-      B: opt('Permitir el ajuste', v(0, 5, -6, -3), 'prudencia'),
+      B: opt('Permitir el ajuste', v(-5, 5, -9, -6), 'prudencia'),
     },
     explanation: 'Un subsidio puede reducir el precio pagado por el usuario, pero traslada parte del costo al presupuesto público.',
   },
@@ -119,7 +119,7 @@ export const MACRO_CARDS: Card[] = [
     studyIds: ['pbi'],
     options: {
       A: opt('Financiar la feria', v(0, -6, 2, 1), 'inversion', later(2, v(8, 5, 0, 2))),
-      B: opt('Preservar la reserva', v(0, 3, -2, 0), 'prudencia'),
+      B: opt('Preservar la reserva', v(-5, 3, -3, -3), 'prudencia'),
     },
     explanation: 'El turismo demanda servicios y puede generar ingresos y empleo. La inversión inicial no garantiza por sí sola el retorno.',
   },
@@ -134,7 +134,7 @@ export const MACRO_CARDS: Card[] = [
     studyIds: ['deficit-deuda'],
     options: {
       A: opt('Aceptar el préstamo', v(2, 12, 4, 0), 'financiamiento', later(3, v(0, -15, 0, -2))),
-      B: opt('Reducir gastos ahora', v(-4, 5, -7, -3), 'prudencia'),
+      B: opt('Reducir gastos ahora', v(-8, 5, -11, -6), 'prudencia'),
     },
     explanation: 'Un préstamo aporta liquidez, no ingreso permanente. Su costo futuro debe incorporarse al presupuesto antes de aceptarlo.',
   },
@@ -149,7 +149,7 @@ export const MACRO_CARDS: Card[] = [
     studyIds: ['impuestos'],
     options: {
       A: opt('Modernizar el cobro', v(0, -6, 0, 3), 'inversion', later(2, v(0, 11, 0, 2))),
-      B: opt('Mantener el sistema', v(0, 2, -2, -3), 'prudencia'),
+      B: opt('Mantener el sistema', v(-3, 2, -4, -8), 'prudencia'),
     },
     explanation: 'Mejorar el cumplimiento puede elevar la recaudación sin aumentar las tasas de los impuestos. La implementación también tiene costos.',
   },
@@ -163,8 +163,8 @@ export const MACRO_CARDS: Card[] = [
     concept: 'Equilibrio de mercado y precio máximo',
     studyIds: ['oferta-demanda'],
     options: {
-      A: opt('Fijar el precio máximo', v(0, -3, 5, 2), 'regulacion', later(2, v(-5, 0, -8, -4))),
-      B: opt('Dar ayuda focalizada', v(0, -7, 7, 2), 'social'),
+      A: opt('Fijar el precio máximo', v(0, -3, 5, 2), 'regulacion', later(2, v(-8, 0, -10, -6))),
+      B: opt('Dar ayuda focalizada', v(-4, -7, 5, 1), 'social'),
     },
     explanation: 'Un máximo vinculante puede generar exceso de demanda. La ayuda focalizada conserva la señal de precio y exige recursos; ninguna opción elimina el problema de oferta.',
   },
@@ -179,7 +179,7 @@ export const MACRO_CARDS: Card[] = [
     studyIds: ['tipo-cambio'],
     options: {
       A: opt('Reducir los aranceles', v(5, -4, 5, -2), 'actividad'),
-      B: opt('Mantener la protección', v(1, 4, -3, 2), 'regulacion'),
+      B: opt('Mantener la protección', v(-4, 4, -7, -2), 'regulacion'),
     },
     explanation: 'Los aranceles alteran precios e incentivos. La apertura puede beneficiar consumidores y exportadores mientras exige ajustes a algunos productores.',
   },
@@ -194,7 +194,7 @@ export const MACRO_CARDS: Card[] = [
     studyIds: ['costo-oportunidad'],
     options: {
       A: opt('Ampliar el puerto', v(0, -9, 1, 1), 'inversion', later(2, v(11, 5, 0, 1))),
-      B: opt('Renovar la plaza', v(0, -6, 6, 4), 'social'),
+      B: opt('Renovar la plaza', v(-6, -6, 5, 2), 'social'),
     },
     explanation: 'Comparar proyectos exige valorar beneficios y tiempos diferentes. La alternativa que no elegís representa parte del costo de oportunidad.',
   },
@@ -208,8 +208,8 @@ export const MACRO_CARDS: Card[] = [
     concept: 'Capital humano y desempleo',
     studyIds: ['capital-humano'],
     options: {
-      A: opt('Financiar capacitación', v(0, -7, 2, 1), 'inversion', later(2, v(9, 0, 5, 2))),
-      B: opt('Crear empleo temporal', v(5, -9, 6, 3), 'social'),
+      A: opt('Financiar capacitación', v(-4, -7, -2, 1), 'inversion', later(2, v(10, 0, 6, 3))),
+      B: opt('Crear empleo temporal', v(4, -8, 5, 2), 'social'),
     },
     explanation: 'La capacitación busca mejorar habilidades y empleabilidad futura. El empleo temporal puede aliviar la situación inmediata, pero requiere sostén presupuestario.',
   },
@@ -223,8 +223,8 @@ export const MACRO_CARDS: Card[] = [
     concept: 'Tipo de cambio y restricción externa',
     studyIds: ['tipo-cambio'],
     options: {
-      A: opt('Priorizar importaciones', v(2, -6, 5, -2), 'regulacion'),
-      B: opt('Promover exportaciones', v(-2, -5, -2, 2), 'inversion', later(2, v(8, 7, 2, 1))),
+      A: opt('Priorizar importaciones', v(2, -4, 5, -2), 'regulacion'),
+      B: opt('Promover exportaciones', v(-6, -6, -6, 1), 'inversion', later(2, v(9, 8, 2, 2))),
     },
     explanation: 'Las compras externas requieren medios de pago aceptados. Promover exportaciones puede aportar recursos más adelante; priorizar importaciones distribuye la escasez presente.',
   },
@@ -238,8 +238,8 @@ export const MACRO_CARDS: Card[] = [
     concept: 'Sostenibilidad fiscal',
     studyIds: ['deficit-deuda'],
     options: {
-      A: opt('Crear ayuda permanente', v(0, -7, 8, 3), 'social', later(2, v(0, -6, 3, 0))),
-      B: opt('Dar ayuda temporal', v(0, -5, 5, 2), 'prudencia'),
+      A: opt('Crear ayuda permanente', v(0, -6, 8, 3), 'social', later(2, v(0, -5, 3, 0))),
+      B: opt('Dar ayuda temporal', v(-2, -3, -5, -4), 'prudencia'),
     },
     explanation: 'Una medida recurrente compromete recursos futuros. Comparar solo el desembolso inicial oculta parte de su costo.',
   },
@@ -254,7 +254,7 @@ export const MACRO_CARDS: Card[] = [
     studyIds: ['fiscal'],
     options: {
       A: opt('Abrir la auditoría', v(-3, -5, 1, 5), 'estabilidad', later(2, v(0, 8, 0, 3))),
-      B: opt('Continuar los proyectos', v(4, 1, -2, -5), 'actividad'),
+      B: opt('Continuar los proyectos', v(4, 1, -5, -11), 'actividad'),
     },
     explanation: 'La transparencia puede mejorar la confianza y el destino de fondos. El control también tiene costos administrativos y demoras.',
   },
@@ -268,8 +268,8 @@ export const MACRO_CARDS: Card[] = [
     concept: 'Riesgo y costo de financiamiento',
     studyIds: ['deficit-deuda'],
     options: {
-      A: opt('Financiar los servicios', v(2, 10, 4, 0), 'financiamiento', later(2, v(0, -12, 0, 0))),
-      B: opt('No tomar nueva deuda', v(-2, 2, -3, 0), 'prudencia'),
+      A: opt('Financiar los servicios', v(2, 10, 4, -2), 'financiamiento', later(1, v(0, -12, 0, 0))),
+      B: opt('No tomar nueva deuda', v(-6, 2, -6, -4), 'prudencia'),
     },
     condition: {
       stat: 3, op: '<', value: 55, target: 'A', kind: 'replaceDeferred', vec: v(0, -17, 0, 0),
@@ -288,7 +288,7 @@ export const MACRO_CARDS: Card[] = [
     studyIds: ['pbi', 'fiscal'],
     options: {
       A: opt('Aplicar el estímulo', v(10, -9, 5, 1), 'actividad'),
-      B: opt('Preservar los fondos', v(-2, 4, -2, 0), 'prudencia'),
+      B: opt('Preservar los fondos', v(-7, 4, -4, -3), 'prudencia'),
     },
     condition: {
       stat: 0, op: '>=', value: 45, target: 'A', kind: 'replaceImmediate', vec: v(3, -9, 0, -2),
@@ -307,11 +307,11 @@ export const MACRO_CARDS: Card[] = [
     studyIds: ['subsidios'],
     options: {
       A: opt('Dar ayuda focalizada', v(0, -7, 7, 4), 'social'),
-      B: opt('Abrir una negociación', v(0, -2, 1, 3), 'estabilidad'),
+      B: opt('Abrir una negociación', v(-3, -2, -4, -2), 'estabilidad'),
     },
     condition: {
-      stat: 2, op: '<', value: 35, target: 'B', kind: 'addImmediate', vec: v(0, 0, -5, -5),
-      notice: 'Advertencia: si Bienestar es menor que 35, negociar sin alivio material suma Bienestar −5 y Confianza −5.',
+      stat: 2, op: '<', value: 40, target: 'B', kind: 'addImmediate', vec: v(0, 0, -6, -6),
+      notice: 'Advertencia: si Bienestar es menor que 40, negociar sin alivio material suma Bienestar −6 y Confianza −6.',
     },
     explanation: 'Una negociación aporta un canal institucional, pero no reemplaza el alivio material cuando la situación social es crítica.',
   },
@@ -326,7 +326,7 @@ export const MACRO_CARDS: Card[] = [
     studyIds: ['tipo-cambio'],
     options: {
       A: opt('Firmar la alianza', v(3, -6, 1, 2), 'inversion', later(1, v(6, 4, 0, 1))),
-      B: opt('Fortalecer el mercado interno', v(4, -4, 3, 0), 'social'),
+      B: opt('Fortalecer el mercado interno', v(-3, -4, 3, -3), 'social'),
     },
     explanation: 'El intercambio puede ampliar oportunidades productivas. Sus beneficios dependen de adaptación, costos y distribución entre sectores.',
   },
@@ -341,7 +341,7 @@ export const MACRO_CARDS: Card[] = [
     studyIds: ['deficit-deuda'],
     options: {
       A: opt('Pagar el vencimiento', v(0, -9, 0, 6), 'prudencia'),
-      B: opt('Refinanciar', v(0, 4, 0, -3), 'financiamiento', later(1, v(0, -13, 0, 0))),
+      B: opt('Refinanciar', v(-2, 4, -2, -7), 'financiamiento', later(1, v(0, -13, 0, 0))),
     },
     explanation: 'Refinanciar cambia el calendario de pagos, no elimina la obligación. La disponibilidad inmediata debe compararse con el costo futuro.',
   },
@@ -355,8 +355,8 @@ export const MACRO_CARDS: Card[] = [
     concept: 'Infraestructura y productividad',
     studyIds: ['capital-humano', 'pbi'],
     options: {
-      A: opt('Hacer reparación urgente', v(5, -7, 4, 2), 'social'),
-      B: opt('Renovar la red', v(-2, -10, -2, 1), 'inversion', later(2, v(12, 0, 6, 3))),
+      A: opt('Hacer reparación urgente', v(3, -6, 3, -2), 'social'),
+      B: opt('Renovar la red', v(-5, -9, -4, 0), 'inversion', later(2, v(10, 6, 5, 3))),
     },
     explanation: 'Las mejoras de infraestructura pueden reducir restricciones productivas. La decisión debe considerar el tiempo disponible hasta el cierre.',
   },
@@ -370,8 +370,8 @@ export const MACRO_CARDS: Card[] = [
     concept: 'Costos de transacción e instituciones',
     studyIds: ['pbi'],
     options: {
-      A: opt('Simplificar los trámites', v(6, -3, 2, 3), 'actividad'),
-      B: opt('Financiar acompañamiento', v(3, -6, 3, 2), 'social'),
+      A: opt('Simplificar los trámites', v(6, -2, -5, -3), 'actividad'),
+      B: opt('Financiar acompañamiento', v(-3, -5, 4, 3), 'social'),
     },
     explanation: 'La administración afecta el costo de operar. Simplificar exige preservar controles relevantes; acompañar requiere presupuesto.',
   },
@@ -385,8 +385,8 @@ export const MACRO_CARDS: Card[] = [
     concept: 'Presupuesto y sostenibilidad',
     studyIds: ['costo-oportunidad'],
     options: {
-      A: opt('Reforzar la reserva', v(0, 5, -3, 1), 'prudencia'),
-      B: opt('Dar apoyo final', v(0, -7, 7, 3), 'social'),
+      A: opt('Reforzar la reserva', v(-4, 5, -7, -4), 'prudencia'),
+      B: opt('Dar apoyo final', v(2, -6, 7, 4), 'social'),
     },
     explanation: 'Una mejora al cierre no cancela pagos comprometidos. El informe debe mostrar tanto los resultados actuales como las obligaciones aún pendientes.',
   },

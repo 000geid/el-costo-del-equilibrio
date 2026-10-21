@@ -1,0 +1,2002 @@
+{
+  "MA01": {
+    "id": "MA01",
+    "title": "El puente que une dos mercados",
+    "options": [
+      {
+        "label": "Reparar el puente",
+        "immediate": [
+          -8,
+          -10,
+          4,
+          3
+        ],
+        "delay": 2,
+        "future": [
+          14,
+          0,
+          3,
+          2
+        ]
+      },
+      {
+        "label": "Postergar la obra",
+        "immediate": [
+          -4,
+          3,
+          -3,
+          -3
+        ],
+        "delay": 0,
+        "future": [
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    ],
+    "condition": null,
+    "source_line": 457
+  },
+  "MA02": {
+    "id": "MA02",
+    "title": "Jubilaciones bajo presión",
+    "options": [
+      {
+        "label": "Dar un refuerzo",
+        "immediate": [
+          0,
+          -9,
+          10,
+          4
+        ],
+        "delay": 0,
+        "future": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "label": "Conservar los fondos",
+        "immediate": [
+          0,
+          5,
+          -8,
+          -4
+        ],
+        "delay": 0,
+        "future": [
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    ],
+    "condition": null,
+    "source_line": 473
+  },
+  "MA03": {
+    "id": "MA03",
+    "title": "Las tasas y la actividad",
+    "options": [
+      {
+        "label": "Elevar la tasa",
+        "immediate": [
+          -7,
+          2,
+          3,
+          5
+        ],
+        "delay": 0,
+        "future": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "label": "Reducir la tasa",
+        "immediate": [
+          8,
+          -3,
+          -5,
+          -4
+        ],
+        "delay": 0,
+        "future": [
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    ],
+    "condition": null,
+    "source_line": 489
+  },
+  "MA04": {
+    "id": "MA04",
+    "title": "Un hospital sin insumos",
+    "options": [
+      {
+        "label": "Comprar los insumos",
+        "immediate": [
+          0,
+          -8,
+          9,
+          4
+        ],
+        "delay": 0,
+        "future": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "label": "Aplazar la compra",
+        "immediate": [
+          -2,
+          4,
+          -8,
+          -5
+        ],
+        "delay": 0,
+        "future": [
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    ],
+    "condition": null,
+    "source_line": 505
+  },
+  "MA05": {
+    "id": "MA05",
+    "title": "Impuestos a grandes patrimonios",
+    "options": [
+      {
+        "label": "Aplicar el impuesto",
+        "immediate": [
+          -3,
+          10,
+          4,
+          -3
+        ],
+        "delay": 0,
+        "future": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "label": "Mantener el esquema",
+        "immediate": [
+          4,
+          -3,
+          -2,
+          2
+        ],
+        "delay": 0,
+        "future": [
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    ],
+    "condition": null,
+    "source_line": 521
+  },
+  "MA06": {
+    "id": "MA06",
+    "title": "La cosecha perdida",
+    "options": [
+      {
+        "label": "Apoyar la próxima cosecha",
+        "immediate": [
+          -3,
+          -7,
+          -2,
+          2
+        ],
+        "delay": 2,
+        "future": [
+          9,
+          0,
+          6,
+          2
+        ]
+      },
+      {
+        "label": "Importar alimentos",
+        "immediate": [
+          0,
+          -9,
+          8,
+          2
+        ],
+        "delay": 0,
+        "future": [
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    ],
+    "condition": null,
+    "source_line": 537
+  },
+  "MA07": {
+    "id": "MA07",
+    "title": "El precio del transporte",
+    "options": [
+      {
+        "label": "Subsidiar la tarifa",
+        "immediate": [
+          3,
+          -8,
+          7,
+          3
+        ],
+        "delay": 0,
+        "future": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "label": "Permitir el ajuste",
+        "immediate": [
+          0,
+          5,
+          -6,
+          -3
+        ],
+        "delay": 0,
+        "future": [
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    ],
+    "condition": null,
+    "source_line": 553
+  },
+  "MA08": {
+    "id": "MA08",
+    "title": "Una feria para el turismo",
+    "options": [
+      {
+        "label": "Financiar la feria",
+        "immediate": [
+          0,
+          -6,
+          2,
+          1
+        ],
+        "delay": 2,
+        "future": [
+          8,
+          5,
+          0,
+          2
+        ]
+      },
+      {
+        "label": "Preservar la reserva",
+        "immediate": [
+          0,
+          3,
+          -2,
+          0
+        ],
+        "delay": 0,
+        "future": [
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    ],
+    "condition": null,
+    "source_line": 569
+  },
+  "MA09": {
+    "id": "MA09",
+    "title": "Crédito para sostener servicios",
+    "options": [
+      {
+        "label": "Aceptar el préstamo",
+        "immediate": [
+          2,
+          12,
+          4,
+          0
+        ],
+        "delay": 3,
+        "future": [
+          0,
+          -15,
+          0,
+          -2
+        ]
+      },
+      {
+        "label": "Reducir gastos ahora",
+        "immediate": [
+          -4,
+          5,
+          -7,
+          -3
+        ],
+        "delay": 0,
+        "future": [
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    ],
+    "condition": null,
+    "source_line": 585
+  },
+  "MA10": {
+    "id": "MA10",
+    "title": "Recaudación que no llega",
+    "options": [
+      {
+        "label": "Modernizar el cobro",
+        "immediate": [
+          0,
+          -6,
+          0,
+          3
+        ],
+        "delay": 2,
+        "future": [
+          0,
+          11,
+          0,
+          2
+        ]
+      },
+      {
+        "label": "Mantener el sistema",
+        "immediate": [
+          0,
+          2,
+          -2,
+          -3
+        ],
+        "delay": 0,
+        "future": [
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    ],
+    "condition": null,
+    "source_line": 601
+  },
+  "MA11": {
+    "id": "MA11",
+    "title": "Precios máximos para alimentos",
+    "options": [
+      {
+        "label": "Fijar el precio máximo",
+        "immediate": [
+          0,
+          -3,
+          5,
+          2
+        ],
+        "delay": 2,
+        "future": [
+          -5,
+          0,
+          -8,
+          -4
+        ]
+      },
+      {
+        "label": "Dar ayuda focalizada",
+        "immediate": [
+          0,
+          -7,
+          7,
+          2
+        ],
+        "delay": 0,
+        "future": [
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    ],
+    "condition": null,
+    "source_line": 617
+  },
+  "MA12": {
+    "id": "MA12",
+    "title": "Mercancías en la frontera",
+    "options": [
+      {
+        "label": "Reducir los aranceles",
+        "immediate": [
+          5,
+          -4,
+          5,
+          -2
+        ],
+        "delay": 0,
+        "future": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "label": "Mantener la protección",
+        "immediate": [
+          1,
+          4,
+          -3,
+          2
+        ],
+        "delay": 0,
+        "future": [
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    ],
+    "condition": null,
+    "source_line": 633
+  },
+  "MA13": {
+    "id": "MA13",
+    "title": "Obras con fondos limitados",
+    "options": [
+      {
+        "label": "Ampliar el puerto",
+        "immediate": [
+          0,
+          -9,
+          1,
+          1
+        ],
+        "delay": 2,
+        "future": [
+          11,
+          5,
+          0,
+          1
+        ]
+      },
+      {
+        "label": "Renovar la plaza",
+        "immediate": [
+          0,
+          -6,
+          6,
+          4
+        ],
+        "delay": 0,
+        "future": [
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    ],
+    "condition": null,
+    "source_line": 649
+  },
+  "MA14": {
+    "id": "MA14",
+    "title": "Trabajo y capacitación",
+    "options": [
+      {
+        "label": "Financiar capacitación",
+        "immediate": [
+          0,
+          -7,
+          2,
+          1
+        ],
+        "delay": 2,
+        "future": [
+          9,
+          0,
+          5,
+          2
+        ]
+      },
+      {
+        "label": "Crear empleo temporal",
+        "immediate": [
+          5,
+          -9,
+          6,
+          3
+        ],
+        "delay": 0,
+        "future": [
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    ],
+    "condition": null,
+    "source_line": 665
+  },
+  "MA15": {
+    "id": "MA15",
+    "title": "Reservas para importar",
+    "options": [
+      {
+        "label": "Priorizar importaciones",
+        "immediate": [
+          2,
+          -6,
+          5,
+          -2
+        ],
+        "delay": 0,
+        "future": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "label": "Promover exportaciones",
+        "immediate": [
+          -2,
+          -5,
+          -2,
+          2
+        ],
+        "delay": 2,
+        "future": [
+          8,
+          7,
+          2,
+          1
+        ]
+      }
+    ],
+    "condition": null,
+    "source_line": 681
+  },
+  "MA16": {
+    "id": "MA16",
+    "title": "La promesa de ayuda permanente",
+    "options": [
+      {
+        "label": "Crear ayuda permanente",
+        "immediate": [
+          0,
+          -7,
+          8,
+          3
+        ],
+        "delay": 2,
+        "future": [
+          0,
+          -6,
+          3,
+          0
+        ]
+      },
+      {
+        "label": "Dar ayuda temporal",
+        "immediate": [
+          0,
+          -5,
+          5,
+          2
+        ],
+        "delay": 0,
+        "future": [
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    ],
+    "condition": null,
+    "source_line": 697
+  },
+  "MA17": {
+    "id": "MA17",
+    "title": "Una auditoría incómoda",
+    "options": [
+      {
+        "label": "Abrir la auditoría",
+        "immediate": [
+          -3,
+          -5,
+          1,
+          5
+        ],
+        "delay": 2,
+        "future": [
+          0,
+          8,
+          0,
+          3
+        ]
+      },
+      {
+        "label": "Continuar los proyectos",
+        "immediate": [
+          4,
+          1,
+          -2,
+          -5
+        ],
+        "delay": 0,
+        "future": [
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    ],
+    "condition": null,
+    "source_line": 713
+  },
+  "MA18": {
+    "id": "MA18",
+    "title": "Préstamo según tu credibilidad",
+    "options": [
+      {
+        "label": "Financiar los servicios",
+        "immediate": [
+          2,
+          10,
+          4,
+          0
+        ],
+        "delay": 2,
+        "future": [
+          0,
+          -12,
+          0,
+          0
+        ]
+      },
+      {
+        "label": "No tomar nueva deuda",
+        "immediate": [
+          -2,
+          2,
+          -3,
+          0
+        ],
+        "delay": 0,
+        "future": [
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    ],
+    "condition": "Antes de resolver: si Confianza < 55, sustituir la devolución de A por Tesoro -17; los demás cambios futuros son cero.",
+    "source_line": 729
+  },
+  "MA19": {
+    "id": "MA19",
+    "title": "Reactivar o conservar el margen",
+    "options": [
+      {
+        "label": "Aplicar el estímulo",
+        "immediate": [
+          10,
+          -9,
+          5,
+          1
+        ],
+        "delay": 0,
+        "future": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "label": "Preservar los fondos",
+        "immediate": [
+          -2,
+          4,
+          -2,
+          0
+        ],
+        "delay": 0,
+        "future": [
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    ],
+    "condition": "Antes de resolver: si Actividad ≥ 45, sustituir A por [3, -9, 0, -2]. B no cambia.",
+    "source_line": 747
+  },
+  "MA20": {
+    "id": "MA20",
+    "title": "Una marcha frente al consejo",
+    "options": [
+      {
+        "label": "Dar ayuda focalizada",
+        "immediate": [
+          0,
+          -7,
+          7,
+          4
+        ],
+        "delay": 0,
+        "future": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "label": "Abrir una negociación",
+        "immediate": [
+          0,
+          -2,
+          1,
+          3
+        ],
+        "delay": 0,
+        "future": [
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    ],
+    "condition": "Antes de resolver: si Bienestar < 35, añadir a B Bienestar -5 y Confianza -5; mostrar esta advertencia en la carta.",
+    "source_line": 765
+  },
+  "MA21": {
+    "id": "MA21",
+    "title": "El socio que propone una alianza",
+    "options": [
+      {
+        "label": "Firmar la alianza",
+        "immediate": [
+          3,
+          -6,
+          1,
+          2
+        ],
+        "delay": 1,
+        "future": [
+          6,
+          4,
+          0,
+          1
+        ]
+      },
+      {
+        "label": "Fortalecer el mercado interno",
+        "immediate": [
+          4,
+          -4,
+          3,
+          0
+        ],
+        "delay": 0,
+        "future": [
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    ],
+    "condition": null,
+    "source_line": 783
+  },
+  "MA22": {
+    "id": "MA22",
+    "title": "Vencimientos a la vista",
+    "options": [
+      {
+        "label": "Pagar el vencimiento",
+        "immediate": [
+          0,
+          -9,
+          0,
+          6
+        ],
+        "delay": 0,
+        "future": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "label": "Refinanciar",
+        "immediate": [
+          0,
+          4,
+          0,
+          -3
+        ],
+        "delay": 1,
+        "future": [
+          0,
+          -13,
+          0,
+          0
+        ]
+      }
+    ],
+    "condition": null,
+    "source_line": 799
+  },
+  "MA23": {
+    "id": "MA23",
+    "title": "Energía para producir",
+    "options": [
+      {
+        "label": "Hacer reparación urgente",
+        "immediate": [
+          5,
+          -7,
+          4,
+          2
+        ],
+        "delay": 0,
+        "future": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "label": "Renovar la red",
+        "immediate": [
+          -2,
+          -10,
+          -2,
+          1
+        ],
+        "delay": 2,
+        "future": [
+          12,
+          0,
+          6,
+          3
+        ]
+      }
+    ],
+    "condition": null,
+    "source_line": 815
+  },
+  "MA24": {
+    "id": "MA24",
+    "title": "Señales claras para invertir",
+    "options": [
+      {
+        "label": "Simplificar los trámites",
+        "immediate": [
+          6,
+          -3,
+          2,
+          3
+        ],
+        "delay": 0,
+        "future": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "label": "Financiar acompañamiento",
+        "immediate": [
+          3,
+          -6,
+          3,
+          2
+        ],
+        "delay": 0,
+        "future": [
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    ],
+    "condition": null,
+    "source_line": 831
+  },
+  "MA25": {
+    "id": "MA25",
+    "title": "El último presupuesto",
+    "options": [
+      {
+        "label": "Reforzar la reserva",
+        "immediate": [
+          0,
+          5,
+          -3,
+          1
+        ],
+        "delay": 0,
+        "future": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "label": "Dar apoyo final",
+        "immediate": [
+          0,
+          -7,
+          7,
+          3
+        ],
+        "delay": 0,
+        "future": [
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    ],
+    "condition": null,
+    "source_line": 847
+  },
+  "MI01": {
+    "id": "MI01",
+    "title": "El insumo se encarece",
+    "options": [
+      {
+        "label": "Subir el precio",
+        "immediate": [
+          7,
+          -4,
+          0,
+          0
+        ],
+        "delay": 0,
+        "future": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "label": "Absorber el costo",
+        "immediate": [
+          -7,
+          4,
+          0,
+          0
+        ],
+        "delay": 0,
+        "future": [
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    ],
+    "condition": "Antes de resolver: si Demanda < 55, sustituir A por [2, -10, 0, 0]. B no cambia.",
+    "source_line": 877
+  },
+  "MI02": {
+    "id": "MI02",
+    "title": "La herramienta dejó de funcionar",
+    "options": [
+      {
+        "label": "Reparar el equipo",
+        "immediate": [
+          -6,
+          -2,
+          -2,
+          4
+        ],
+        "delay": 0,
+        "future": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "label": "Financiar uno nuevo",
+        "immediate": [
+          0,
+          -3,
+          2,
+          5
+        ],
+        "delay": 3,
+        "future": [
+          -9,
+          4,
+          4,
+          3
+        ]
+      }
+    ],
+    "condition": null,
+    "source_line": 895
+  },
+  "MI03": {
+    "id": "MI03",
+    "title": "El gran pedido a crédito",
+    "options": [
+      {
+        "label": "Aceptar el pedido",
+        "immediate": [
+          -8,
+          4,
+          -2,
+          0
+        ],
+        "delay": 3,
+        "future": [
+          13,
+          2,
+          0,
+          0
+        ]
+      },
+      {
+        "label": "Pedir pago anticipado",
+        "immediate": [
+          3,
+          -4,
+          0,
+          0
+        ],
+        "delay": 0,
+        "future": [
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    ],
+    "condition": null,
+    "source_line": 911
+  },
+  "MI04": {
+    "id": "MI04",
+    "title": "Turnos que agotan al equipo",
+    "options": [
+      {
+        "label": "Contratar apoyo",
+        "immediate": [
+          -6,
+          3,
+          8,
+          2
+        ],
+        "delay": 0,
+        "future": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "label": "Usar horas extra",
+        "immediate": [
+          5,
+          2,
+          -8,
+          -2
+        ],
+        "delay": 0,
+        "future": [
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    ],
+    "condition": null,
+    "source_line": 927
+  },
+  "MI05": {
+    "id": "MI05",
+    "title": "Una compra que reduce costos",
+    "options": [
+      {
+        "label": "Elegir material económico",
+        "immediate": [
+          7,
+          -3,
+          0,
+          -8
+        ],
+        "delay": 0,
+        "future": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "label": "Mantener el material",
+        "immediate": [
+          -4,
+          3,
+          0,
+          5
+        ],
+        "delay": 0,
+        "future": [
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    ],
+    "condition": null,
+    "source_line": 943
+  },
+  "MI06": {
+    "id": "MI06",
+    "title": "La promoción de apertura",
+    "options": [
+      {
+        "label": "Lanzar el descuento",
+        "immediate": [
+          3,
+          8,
+          -4,
+          -2
+        ],
+        "delay": 0,
+        "future": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "label": "Mantener el precio",
+        "immediate": [
+          4,
+          -3,
+          1,
+          1
+        ],
+        "delay": 0,
+        "future": [
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    ],
+    "condition": null,
+    "source_line": 959
+  },
+  "MI07": {
+    "id": "MI07",
+    "title": "Aprender una técnica nueva",
+    "options": [
+      {
+        "label": "Capacitar al equipo",
+        "immediate": [
+          -6,
+          -2,
+          4,
+          2
+        ],
+        "delay": 2,
+        "future": [
+          5,
+          3,
+          4,
+          6
+        ]
+      },
+      {
+        "label": "Seguir trabajando",
+        "immediate": [
+          4,
+          1,
+          -3,
+          -2
+        ],
+        "delay": 0,
+        "future": [
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    ],
+    "condition": null,
+    "source_line": 975
+  },
+  "MI08": {
+    "id": "MI08",
+    "title": "El alquiler aumenta",
+    "options": [
+      {
+        "label": "Renegociar el alquiler",
+        "immediate": [
+          -5,
+          1,
+          1,
+          0
+        ],
+        "delay": 0,
+        "future": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "label": "Mudarse a otro local",
+        "immediate": [
+          -7,
+          -6,
+          -2,
+          0
+        ],
+        "delay": 2,
+        "future": [
+          8,
+          0,
+          0,
+          0
+        ]
+      }
+    ],
+    "condition": null,
+    "source_line": 991
+  },
+  "MI09": {
+    "id": "MI09",
+    "title": "Producir antes de vender",
+    "options": [
+      {
+        "label": "Ampliar la producción",
+        "immediate": [
+          -6,
+          4,
+          -3,
+          0
+        ],
+        "delay": 2,
+        "future": [
+          9,
+          2,
+          0,
+          0
+        ]
+      },
+      {
+        "label": "Producir con prudencia",
+        "immediate": [
+          2,
+          -3,
+          1,
+          1
+        ],
+        "delay": 0,
+        "future": [
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    ],
+    "condition": "Antes de resolver: si Demanda < 50, sustituir el efecto futuro de A por [-4, 0, 0, -3]. B no cambia.",
+    "source_line": 1007
+  },
+  "MI10": {
+    "id": "MI10",
+    "title": "Queja frente a otros clientes",
+    "options": [
+      {
+        "label": "Rehacer y corregir",
+        "immediate": [
+          -6,
+          5,
+          1,
+          6
+        ],
+        "delay": 0,
+        "future": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "label": "Devolver parte del pago",
+        "immediate": [
+          -3,
+          1,
+          0,
+          -3
+        ],
+        "delay": 0,
+        "future": [
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    ],
+    "condition": null,
+    "source_line": 1025
+  },
+  "MI11": {
+    "id": "MI11",
+    "title": "Publicidad o ahorro",
+    "options": [
+      {
+        "label": "Lanzar la campaña",
+        "immediate": [
+          -6,
+          1,
+          0,
+          0
+        ],
+        "delay": 2,
+        "future": [
+          5,
+          9,
+          0,
+          0
+        ]
+      },
+      {
+        "label": "Guardar el dinero",
+        "immediate": [
+          4,
+          0,
+          0,
+          0
+        ],
+        "delay": 0,
+        "future": [
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    ],
+    "condition": "Antes de resolver: si Calidad < 45, sustituir el efecto futuro de A por [0, 2, 0, 0]. B no cambia.",
+    "source_line": 1041
+  },
+  "MI12": {
+    "id": "MI12",
+    "title": "Crédito rápido con intereses",
+    "options": [
+      {
+        "label": "Tomar el crédito",
+        "immediate": [
+          12,
+          0,
+          1,
+          0
+        ],
+        "delay": 2,
+        "future": [
+          -15,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "label": "Ajustar gastos",
+        "immediate": [
+          3,
+          -3,
+          -3,
+          -2
+        ],
+        "delay": 0,
+        "future": [
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    ],
+    "condition": null,
+    "source_line": 1059
+  },
+  "MI13": {
+    "id": "MI13",
+    "title": "El punto de equilibrio",
+    "options": [
+      {
+        "label": "Reducir costos fijos",
+        "immediate": [
+          6,
+          -3,
+          -2,
+          0
+        ],
+        "delay": 0,
+        "future": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "label": "Buscar más pedidos",
+        "immediate": [
+          -5,
+          6,
+          -3,
+          0
+        ],
+        "delay": 2,
+        "future": [
+          8,
+          2,
+          0,
+          0
+        ]
+      }
+    ],
+    "condition": null,
+    "source_line": 1075
+  },
+  "MI14": {
+    "id": "MI14",
+    "title": "El negocio vecino baja precios",
+    "options": [
+      {
+        "label": "Igualar el precio",
+        "immediate": [
+          -4,
+          6,
+          -2,
+          0
+        ],
+        "delay": 0,
+        "future": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "label": "Mejorar el servicio",
+        "immediate": [
+          -6,
+          3,
+          2,
+          5
+        ],
+        "delay": 0,
+        "future": [
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    ],
+    "condition": null,
+    "source_line": 1091
+  },
+  "MI15": {
+    "id": "MI15",
+    "title": "El impuesto del trimestre",
+    "options": [
+      {
+        "label": "Pagar ahora",
+        "immediate": [
+          -8,
+          0,
+          1,
+          0
+        ],
+        "delay": 0,
+        "future": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "label": "Usar el plan de cuotas",
+        "immediate": [
+          3,
+          0,
+          0,
+          0
+        ],
+        "delay": 2,
+        "future": [
+          -12,
+          0,
+          0,
+          0
+        ]
+      }
+    ],
+    "condition": null,
+    "source_line": 1107
+  },
+  "MI16": {
+    "id": "MI16",
+    "title": "Un descanso necesario",
+    "options": [
+      {
+        "label": "Reorganizar descansos",
+        "immediate": [
+          -4,
+          -2,
+          9,
+          3
+        ],
+        "delay": 0,
+        "future": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "label": "Mantener el ritmo",
+        "immediate": [
+          5,
+          2,
+          -6,
+          -2
+        ],
+        "delay": 0,
+        "future": [
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    ],
+    "condition": "Antes de resolver: si Equipo < 40, añadir a B Equipo -4 y Calidad -5; mostrar advertencia en la carta.",
+    "source_line": 1123
+  },
+  "MI17": {
+    "id": "MI17",
+    "title": "Automatizar una tarea",
+    "options": [
+      {
+        "label": "Invertir en la herramienta",
+        "immediate": [
+          -9,
+          -1,
+          -2,
+          1
+        ],
+        "delay": 2,
+        "future": [
+          9,
+          3,
+          5,
+          3
+        ]
+      },
+      {
+        "label": "Mantener el proceso",
+        "immediate": [
+          4,
+          0,
+          -3,
+          0
+        ],
+        "delay": 0,
+        "future": [
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    ],
+    "condition": null,
+    "source_line": 1141
+  },
+  "MI18": {
+    "id": "MI18",
+    "title": "Dos servicios posibles",
+    "options": [
+      {
+        "label": "Ampliar línea estándar",
+        "immediate": [
+          5,
+          5,
+          -3,
+          0
+        ],
+        "delay": 0,
+        "future": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "label": "Crear línea personalizada",
+        "immediate": [
+          -4,
+          2,
+          -2,
+          5
+        ],
+        "delay": 1,
+        "future": [
+          9,
+          4,
+          0,
+          0
+        ]
+      }
+    ],
+    "condition": "Antes de resolver: si Calidad < 55, sustituir el efecto futuro de B por [1, -4, 0, 0]. A no cambia.",
+    "source_line": 1157
+  },
+  "MI19": {
+    "id": "MI19",
+    "title": "Socio con condiciones",
+    "options": [
+      {
+        "label": "Aceptar al socio",
+        "immediate": [
+          10,
+          4,
+          -2,
+          0
+        ],
+        "delay": 0,
+        "future": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "label": "Crecer con recursos propios",
+        "immediate": [
+          -4,
+          2,
+          3,
+          2
+        ],
+        "delay": 0,
+        "future": [
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    ],
+    "condition": null,
+    "source_line": 1175
+  },
+  "MI20": {
+    "id": "MI20",
+    "title": "Pago retrasado",
+    "options": [
+      {
+        "label": "Negociar un anticipo",
+        "immediate": [
+          5,
+          -3,
+          0,
+          0
+        ],
+        "delay": 0,
+        "future": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "label": "Conceder más plazo",
+        "immediate": [
+          -5,
+          3,
+          -1,
+          0
+        ],
+        "delay": 2,
+        "future": [
+          9,
+          0,
+          0,
+          0
+        ]
+      }
+    ],
+    "condition": null,
+    "source_line": 1191
+  },
+  "MI21": {
+    "id": "MI21",
+    "title": "Un control de calidad final",
+    "options": [
+      {
+        "label": "Revisar todo el lote",
+        "immediate": [
+          -5,
+          2,
+          -2,
+          7
+        ],
+        "delay": 0,
+        "future": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "label": "Usar control habitual",
+        "immediate": [
+          4,
+          1,
+          0,
+          -2
+        ],
+        "delay": 0,
+        "future": [
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    ],
+    "condition": "Antes de resolver: si Calidad < 40, añadir a B Caja -7 y Demanda -8; informar el riesgo antes de elegir.",
+    "source_line": 1207
+  },
+  "MI22": {
+    "id": "MI22",
+    "title": "El contrato de suministro",
+    "options": [
+      {
+        "label": "Asegurar el suministro",
+        "immediate": [
+          -8,
+          3,
+          1,
+          4
+        ],
+        "delay": 0,
+        "future": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "label": "Comprar de a poco",
+        "immediate": [
+          3,
+          -2,
+          0,
+          -2
+        ],
+        "delay": 0,
+        "future": [
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    ],
+    "condition": null,
+    "source_line": 1225
+  },
+  "MI23": {
+    "id": "MI23",
+    "title": "Abrir un canal nuevo",
+    "options": [
+      {
+        "label": "Abrir el canal",
+        "immediate": [
+          -5,
+          3,
+          -3,
+          0
+        ],
+        "delay": 1,
+        "future": [
+          6,
+          6,
+          0,
+          0
+        ]
+      },
+      {
+        "label": "Concentrarse en el local",
+        "immediate": [
+          3,
+          -2,
+          2,
+          2
+        ],
+        "delay": 0,
+        "future": [
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    ],
+    "condition": null,
+    "source_line": 1241
+  },
+  "MI24": {
+    "id": "MI24",
+    "title": "Premiar al equipo o retirar fondos",
+    "options": [
+      {
+        "label": "Dar un bono",
+        "immediate": [
+          -5,
+          1,
+          8,
+          2
+        ],
+        "delay": 0,
+        "future": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "label": "Retirar fondos",
+        "immediate": [
+          -7,
+          0,
+          -3,
+          0
+        ],
+        "delay": 0,
+        "future": [
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    ],
+    "condition": null,
+    "source_line": 1257
+  },
+  "MI25": {
+    "id": "MI25",
+    "title": "Reservar o repartir resultados",
+    "options": [
+      {
+        "label": "Conservar la reserva",
+        "immediate": [
+          5,
+          0,
+          0,
+          -1
+        ],
+        "delay": 0,
+        "future": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "label": "Mejorar el servicio",
+        "immediate": [
+          -6,
+          5,
+          2,
+          5
+        ],
+        "delay": 0,
+        "future": [
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    ],
+    "condition": null,
+    "source_line": 1273
+  }
+}

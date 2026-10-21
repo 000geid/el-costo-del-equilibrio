@@ -1,0 +1,940 @@
+{
+  "dev": {
+    "random": {
+      "min_rate": 16.0,
+      "max_rate": 40.0,
+      "avg_rate": 27.6,
+      "by_scenario": {
+        "Argentina": {
+          "win_rate": 19.0,
+          "wilson95": [
+            12.51,
+            27.78
+          ],
+          "mean_turns": 16.15
+        },
+        "Estados Unidos": {
+          "win_rate": 16.0,
+          "wilson95": [
+            10.1,
+            24.42
+          ],
+          "mean_turns": 16.06
+        },
+        "Brasil": {
+          "win_rate": 30.0,
+          "wilson95": [
+            21.89,
+            39.58
+          ],
+          "mean_turns": 16.76
+        },
+        "Rusia": {
+          "win_rate": 40.0,
+          "wilson95": [
+            30.94,
+            49.8
+          ],
+          "mean_turns": 17.41
+        },
+        "España": {
+          "win_rate": 33.0,
+          "wilson95": [
+            24.56,
+            42.69
+          ],
+          "mean_turns": 17.19
+        }
+      },
+      "causes": {
+        "0": 9,
+        "1": 294,
+        "2": 39,
+        "3": 27
+      },
+      "stress_fails_among_winners": "6/138",
+      "median_weakest_bar": -1.0
+    },
+    "always_A": {
+      "min_rate": 0.0,
+      "max_rate": 3.0,
+      "avg_rate": 0.6,
+      "by_scenario": {
+        "Argentina": {
+          "win_rate": 0.0,
+          "wilson95": [
+            0.0,
+            3.7
+          ],
+          "mean_turns": 11.64
+        },
+        "Estados Unidos": {
+          "win_rate": 0.0,
+          "wilson95": [
+            0.0,
+            3.7
+          ],
+          "mean_turns": 11.64
+        },
+        "Brasil": {
+          "win_rate": 0.0,
+          "wilson95": [
+            0.0,
+            3.7
+          ],
+          "mean_turns": 13.09
+        },
+        "Rusia": {
+          "win_rate": 3.0,
+          "wilson95": [
+            1.03,
+            8.45
+          ],
+          "mean_turns": 14.57
+        },
+        "España": {
+          "win_rate": 0.0,
+          "wilson95": [
+            0.0,
+            3.7
+          ],
+          "mean_turns": 13.09
+        }
+      },
+      "causes": {
+        "0": 0,
+        "1": 497,
+        "2": 0,
+        "3": 0
+      },
+      "stress_fails_among_winners": "0/3",
+      "median_weakest_bar": -3.0
+    },
+    "always_B": {
+      "min_rate": 1.0,
+      "max_rate": 7.0,
+      "avg_rate": 3.0,
+      "by_scenario": {
+        "Argentina": {
+          "win_rate": 2.0,
+          "wilson95": [
+            0.55,
+            7.0
+          ],
+          "mean_turns": 11.72
+        },
+        "Estados Unidos": {
+          "win_rate": 1.0,
+          "wilson95": [
+            0.18,
+            5.45
+          ],
+          "mean_turns": 11.38
+        },
+        "Brasil": {
+          "win_rate": 4.0,
+          "wilson95": [
+            1.57,
+            9.84
+          ],
+          "mean_turns": 10.44
+        },
+        "Rusia": {
+          "win_rate": 1.0,
+          "wilson95": [
+            0.18,
+            5.45
+          ],
+          "mean_turns": 10.17
+        },
+        "España": {
+          "win_rate": 7.0,
+          "wilson95": [
+            3.43,
+            13.75
+          ],
+          "mean_turns": 13.43
+        }
+      },
+      "causes": {
+        "0": 14,
+        "1": 4,
+        "2": 410,
+        "3": 105
+      },
+      "stress_fails_among_winners": "0/15",
+      "median_weakest_bar": -2.0
+    },
+    "signs": {
+      "min_rate": 2.0,
+      "max_rate": 5.0,
+      "avg_rate": 3.2,
+      "by_scenario": {
+        "Argentina": {
+          "win_rate": 2.0,
+          "wilson95": [
+            0.55,
+            7.0
+          ],
+          "mean_turns": 14.42
+        },
+        "Estados Unidos": {
+          "win_rate": 3.0,
+          "wilson95": [
+            1.03,
+            8.45
+          ],
+          "mean_turns": 14.88
+        },
+        "Brasil": {
+          "win_rate": 4.0,
+          "wilson95": [
+            1.57,
+            9.84
+          ],
+          "mean_turns": 15.39
+        },
+        "Rusia": {
+          "win_rate": 5.0,
+          "wilson95": [
+            2.15,
+            11.18
+          ],
+          "mean_turns": 15.26
+        },
+        "España": {
+          "win_rate": 2.0,
+          "wilson95": [
+            0.55,
+            7.0
+          ],
+          "mean_turns": 14.88
+        }
+      },
+      "causes": {
+        "0": 0,
+        "1": 484,
+        "2": 0,
+        "3": 0
+      },
+      "stress_fails_among_winners": "11/16",
+      "median_weakest_bar": -3.0
+    },
+    "myopic": {
+      "min_rate": 23.0,
+      "max_rate": 32.0,
+      "avg_rate": 28.6,
+      "by_scenario": {
+        "Argentina": {
+          "win_rate": 25.0,
+          "wilson95": [
+            17.55,
+            34.3
+          ],
+          "mean_turns": 17.23
+        },
+        "Estados Unidos": {
+          "win_rate": 23.0,
+          "wilson95": [
+            15.84,
+            32.15
+          ],
+          "mean_turns": 17.35
+        },
+        "Brasil": {
+          "win_rate": 32.0,
+          "wilson95": [
+            23.67,
+            41.66
+          ],
+          "mean_turns": 18.12
+        },
+        "Rusia": {
+          "win_rate": 31.0,
+          "wilson95": [
+            22.78,
+            40.63
+          ],
+          "mean_turns": 17.86
+        },
+        "España": {
+          "win_rate": 32.0,
+          "wilson95": [
+            23.67,
+            41.66
+          ],
+          "mean_turns": 17.95
+        }
+      },
+      "causes": {
+        "0": 0,
+        "1": 357,
+        "2": 0,
+        "3": 0
+      },
+      "stress_fails_among_winners": "44/143",
+      "median_weakest_bar": -1.0
+    },
+    "conservative": {
+      "min_rate": 54.0,
+      "max_rate": 68.0,
+      "avg_rate": 58.2,
+      "by_scenario": {
+        "Argentina": {
+          "win_rate": 54.0,
+          "wilson95": [
+            44.26,
+            63.44
+          ],
+          "mean_turns": 18.92
+        },
+        "Estados Unidos": {
+          "win_rate": 54.0,
+          "wilson95": [
+            44.26,
+            63.44
+          ],
+          "mean_turns": 19.07
+        },
+        "Brasil": {
+          "win_rate": 68.0,
+          "wilson95": [
+            58.34,
+            76.33
+          ],
+          "mean_turns": 19.32
+        },
+        "Rusia": {
+          "win_rate": 61.0,
+          "wilson95": [
+            51.2,
+            69.98
+          ],
+          "mean_turns": 19.1
+        },
+        "España": {
+          "win_rate": 54.0,
+          "wilson95": [
+            44.26,
+            63.44
+          ],
+          "mean_turns": 19.21
+        }
+      },
+      "causes": {
+        "0": 0,
+        "1": 200,
+        "2": 0,
+        "3": 9
+      },
+      "stress_fails_among_winners": "38/291",
+      "median_weakest_bar": 3.0
+    },
+    "commitments": {
+      "min_rate": 52.0,
+      "max_rate": 76.0,
+      "avg_rate": 66.4,
+      "by_scenario": {
+        "Argentina": {
+          "win_rate": 52.0,
+          "wilson95": [
+            42.32,
+            61.54
+          ],
+          "mean_turns": 18.74
+        },
+        "Estados Unidos": {
+          "win_rate": 65.0,
+          "wilson95": [
+            55.25,
+            73.64
+          ],
+          "mean_turns": 19.13
+        },
+        "Brasil": {
+          "win_rate": 76.0,
+          "wilson95": [
+            66.77,
+            83.31
+          ],
+          "mean_turns": 19.46
+        },
+        "Rusia": {
+          "win_rate": 71.0,
+          "wilson95": [
+            61.46,
+            78.99
+          ],
+          "mean_turns": 19.32
+        },
+        "España": {
+          "win_rate": 68.0,
+          "wilson95": [
+            58.34,
+            76.33
+          ],
+          "mean_turns": 19.19
+        }
+      },
+      "causes": {
+        "0": 0,
+        "1": 168,
+        "2": 0,
+        "3": 0
+      },
+      "stress_fails_among_winners": "29/332",
+      "median_weakest_bar": 4.0
+    },
+    "planner": {
+      "min_rate": 96.0,
+      "max_rate": 100.0,
+      "avg_rate": 99.0,
+      "by_scenario": {
+        "Argentina": {
+          "win_rate": 96.0,
+          "wilson95": [
+            90.16,
+            98.43
+          ],
+          "mean_turns": 19.78
+        },
+        "Estados Unidos": {
+          "win_rate": 99.0,
+          "wilson95": [
+            94.55,
+            99.82
+          ],
+          "mean_turns": 19.95
+        },
+        "Brasil": {
+          "win_rate": 100.0,
+          "wilson95": [
+            96.3,
+            100
+          ],
+          "mean_turns": 20
+        },
+        "Rusia": {
+          "win_rate": 100.0,
+          "wilson95": [
+            96.3,
+            100
+          ],
+          "mean_turns": 20
+        },
+        "España": {
+          "win_rate": 100.0,
+          "wilson95": [
+            96.3,
+            100
+          ],
+          "mean_turns": 20
+        }
+      },
+      "causes": {
+        "0": 0,
+        "1": 5,
+        "2": 0,
+        "3": 0
+      },
+      "stress_fails_among_winners": "4/495",
+      "median_weakest_bar": 17.0
+    },
+    "planner_choice_share_A": {
+      "MA01": 67.3,
+      "MA02": 30.4,
+      "MA03": 97.0,
+      "MA04": 65.0,
+      "MA05": 85.5,
+      "MA06": 95.4,
+      "MA07": 42.4,
+      "MA08": 95.5,
+      "MA09": 90.0,
+      "MA10": 98.0,
+      "MA11": 46.7,
+      "MA12": 17.6,
+      "MA13": 97.3,
+      "MA14": 92.9,
+      "MA15": 1.4,
+      "MA16": 19.2,
+      "MA17": 99.5,
+      "MA18": 63.5,
+      "MA19": 0.5,
+      "MA20": 43.4,
+      "MA21": 88.4,
+      "MA22": 90.3,
+      "MA23": 24.9,
+      "MA24": 79.9,
+      "MA25": 97.2
+    }
+  },
+  "holdout": {
+    "random": {
+      "min_rate": 24.0,
+      "max_rate": 43.0,
+      "avg_rate": 33.6,
+      "by_scenario": {
+        "Argentina": {
+          "win_rate": 26.0,
+          "wilson95": [
+            18.4,
+            35.37
+          ],
+          "mean_turns": 16.21
+        },
+        "Estados Unidos": {
+          "win_rate": 24.0,
+          "wilson95": [
+            16.69,
+            33.23
+          ],
+          "mean_turns": 16.1
+        },
+        "Brasil": {
+          "win_rate": 34.0,
+          "wilson95": [
+            25.46,
+            43.72
+          ],
+          "mean_turns": 16.76
+        },
+        "Rusia": {
+          "win_rate": 43.0,
+          "wilson95": [
+            33.73,
+            52.78
+          ],
+          "mean_turns": 17.35
+        },
+        "España": {
+          "win_rate": 41.0,
+          "wilson95": [
+            31.87,
+            50.8
+          ],
+          "mean_turns": 17.28
+        }
+      },
+      "causes": {
+        "0": 5,
+        "1": 268,
+        "2": 40,
+        "3": 22
+      },
+      "stress_fails_among_winners": "7/168",
+      "median_weakest_bar": -1.0
+    },
+    "always_A": {
+      "min_rate": 0.0,
+      "max_rate": 4.0,
+      "avg_rate": 1.6,
+      "by_scenario": {
+        "Argentina": {
+          "win_rate": 0.0,
+          "wilson95": [
+            0.0,
+            3.7
+          ],
+          "mean_turns": 11.52
+        },
+        "Estados Unidos": {
+          "win_rate": 0.0,
+          "wilson95": [
+            0.0,
+            3.7
+          ],
+          "mean_turns": 11.51
+        },
+        "Brasil": {
+          "win_rate": 2.0,
+          "wilson95": [
+            0.55,
+            7.0
+          ],
+          "mean_turns": 13.08
+        },
+        "Rusia": {
+          "win_rate": 4.0,
+          "wilson95": [
+            1.57,
+            9.84
+          ],
+          "mean_turns": 14.5
+        },
+        "España": {
+          "win_rate": 2.0,
+          "wilson95": [
+            0.55,
+            7.0
+          ],
+          "mean_turns": 13.08
+        }
+      },
+      "causes": {
+        "0": 0,
+        "1": 492,
+        "2": 0,
+        "3": 0
+      },
+      "stress_fails_among_winners": "0/8",
+      "median_weakest_bar": -3.0
+    },
+    "always_B": {
+      "min_rate": 0.0,
+      "max_rate": 6.0,
+      "avg_rate": 2.8,
+      "by_scenario": {
+        "Argentina": {
+          "win_rate": 4.0,
+          "wilson95": [
+            1.57,
+            9.84
+          ],
+          "mean_turns": 11.95
+        },
+        "Estados Unidos": {
+          "win_rate": 3.0,
+          "wilson95": [
+            1.03,
+            8.45
+          ],
+          "mean_turns": 11.66
+        },
+        "Brasil": {
+          "win_rate": 1.0,
+          "wilson95": [
+            0.18,
+            5.45
+          ],
+          "mean_turns": 10.09
+        },
+        "Rusia": {
+          "win_rate": 0.0,
+          "wilson95": [
+            0.0,
+            3.7
+          ],
+          "mean_turns": 9.99
+        },
+        "España": {
+          "win_rate": 6.0,
+          "wilson95": [
+            2.78,
+            12.48
+          ],
+          "mean_turns": 13.53
+        }
+      },
+      "causes": {
+        "0": 17,
+        "1": 1,
+        "2": 420,
+        "3": 102
+      },
+      "stress_fails_among_winners": "0/14",
+      "median_weakest_bar": -2.0
+    },
+    "signs": {
+      "min_rate": 0.0,
+      "max_rate": 6.0,
+      "avg_rate": 2.8,
+      "by_scenario": {
+        "Argentina": {
+          "win_rate": 0.0,
+          "wilson95": [
+            0.0,
+            3.7
+          ],
+          "mean_turns": 14.42
+        },
+        "Estados Unidos": {
+          "win_rate": 2.0,
+          "wilson95": [
+            0.55,
+            7.0
+          ],
+          "mean_turns": 14.7
+        },
+        "Brasil": {
+          "win_rate": 3.0,
+          "wilson95": [
+            1.03,
+            8.45
+          ],
+          "mean_turns": 15.62
+        },
+        "Rusia": {
+          "win_rate": 6.0,
+          "wilson95": [
+            2.78,
+            12.48
+          ],
+          "mean_turns": 15.47
+        },
+        "España": {
+          "win_rate": 3.0,
+          "wilson95": [
+            1.03,
+            8.45
+          ],
+          "mean_turns": 15.2
+        }
+      },
+      "causes": {
+        "0": 0,
+        "1": 486,
+        "2": 0,
+        "3": 0
+      },
+      "stress_fails_among_winners": "7/14",
+      "median_weakest_bar": -2.0
+    },
+    "myopic": {
+      "min_rate": 19.0,
+      "max_rate": 37.0,
+      "avg_rate": 28.2,
+      "by_scenario": {
+        "Argentina": {
+          "win_rate": 20.0,
+          "wilson95": [
+            13.34,
+            28.88
+          ],
+          "mean_turns": 16.97
+        },
+        "Estados Unidos": {
+          "win_rate": 19.0,
+          "wilson95": [
+            12.51,
+            27.78
+          ],
+          "mean_turns": 17.17
+        },
+        "Brasil": {
+          "win_rate": 34.0,
+          "wilson95": [
+            25.46,
+            43.72
+          ],
+          "mean_turns": 17.87
+        },
+        "Rusia": {
+          "win_rate": 37.0,
+          "wilson95": [
+            28.18,
+            46.78
+          ],
+          "mean_turns": 17.91
+        },
+        "España": {
+          "win_rate": 31.0,
+          "wilson95": [
+            22.78,
+            40.63
+          ],
+          "mean_turns": 17.65
+        }
+      },
+      "causes": {
+        "0": 0,
+        "1": 358,
+        "2": 0,
+        "3": 1
+      },
+      "stress_fails_among_winners": "41/141",
+      "median_weakest_bar": -1.0
+    },
+    "conservative": {
+      "min_rate": 53.0,
+      "max_rate": 67.0,
+      "avg_rate": 63.2,
+      "by_scenario": {
+        "Argentina": {
+          "win_rate": 53.0,
+          "wilson95": [
+            43.29,
+            62.49
+          ],
+          "mean_turns": 18.95
+        },
+        "Estados Unidos": {
+          "win_rate": 67.0,
+          "wilson95": [
+            57.31,
+            75.44
+          ],
+          "mean_turns": 19.35
+        },
+        "Brasil": {
+          "win_rate": 63.0,
+          "wilson95": [
+            53.22,
+            71.82
+          ],
+          "mean_turns": 19.38
+        },
+        "Rusia": {
+          "win_rate": 67.0,
+          "wilson95": [
+            57.31,
+            75.44
+          ],
+          "mean_turns": 19.37
+        },
+        "España": {
+          "win_rate": 66.0,
+          "wilson95": [
+            56.28,
+            74.54
+          ],
+          "mean_turns": 19.13
+        }
+      },
+      "causes": {
+        "0": 0,
+        "1": 178,
+        "2": 0,
+        "3": 7
+      },
+      "stress_fails_among_winners": "31/316",
+      "median_weakest_bar": 4.0
+    },
+    "commitments": {
+      "min_rate": 62.0,
+      "max_rate": 82.0,
+      "avg_rate": 71.6,
+      "by_scenario": {
+        "Argentina": {
+          "win_rate": 62.0,
+          "wilson95": [
+            52.21,
+            70.9
+          ],
+          "mean_turns": 18.89
+        },
+        "Estados Unidos": {
+          "win_rate": 69.0,
+          "wilson95": [
+            59.37,
+            77.22
+          ],
+          "mean_turns": 19.29
+        },
+        "Brasil": {
+          "win_rate": 77.0,
+          "wilson95": [
+            67.85,
+            84.16
+          ],
+          "mean_turns": 19.5
+        },
+        "Rusia": {
+          "win_rate": 82.0,
+          "wilson95": [
+            73.33,
+            88.3
+          ],
+          "mean_turns": 19.6
+        },
+        "España": {
+          "win_rate": 68.0,
+          "wilson95": [
+            58.34,
+            76.33
+          ],
+          "mean_turns": 19.22
+        }
+      },
+      "causes": {
+        "0": 1,
+        "1": 142,
+        "2": 0,
+        "3": 0
+      },
+      "stress_fails_among_winners": "17/358",
+      "median_weakest_bar": 6.0
+    },
+    "planner": {
+      "min_rate": 98.0,
+      "max_rate": 100.0,
+      "avg_rate": 98.6,
+      "by_scenario": {
+        "Argentina": {
+          "win_rate": 98.0,
+          "wilson95": [
+            93.0,
+            99.45
+          ],
+          "mean_turns": 19.94
+        },
+        "Estados Unidos": {
+          "win_rate": 98.0,
+          "wilson95": [
+            93.0,
+            99.45
+          ],
+          "mean_turns": 19.9
+        },
+        "Brasil": {
+          "win_rate": 98.0,
+          "wilson95": [
+            93.0,
+            99.45
+          ],
+          "mean_turns": 19.88
+        },
+        "Rusia": {
+          "win_rate": 99.0,
+          "wilson95": [
+            94.55,
+            99.82
+          ],
+          "mean_turns": 19.94
+        },
+        "España": {
+          "win_rate": 100.0,
+          "wilson95": [
+            96.3,
+            100
+          ],
+          "mean_turns": 20
+        }
+      },
+      "causes": {
+        "0": 0,
+        "1": 7,
+        "2": 0,
+        "3": 0
+      },
+      "stress_fails_among_winners": "0/493",
+      "median_weakest_bar": 18.0
+    },
+    "planner_choice_share_A": {
+      "MA01": 56.4,
+      "MA02": 29.9,
+      "MA03": 95.6,
+      "MA04": 61.9,
+      "MA05": 91.7,
+      "MA06": 96.5,
+      "MA07": 57.7,
+      "MA08": 92.9,
+      "MA09": 82.8,
+      "MA10": 99.2,
+      "MA11": 49.7,
+      "MA12": 18.5,
+      "MA13": 97.2,
+      "MA14": 91.4,
+      "MA15": 2.3,
+      "MA16": 16.2,
+      "MA17": 99.7,
+      "MA18": 55.8,
+      "MA19": 0.4,
+      "MA20": 50.8,
+      "MA21": 88.2,
+      "MA22": 78.4,
+      "MA23": 25.9,
+      "MA24": 76.2,
+      "MA25": 93.7
+    }
+  }
+}

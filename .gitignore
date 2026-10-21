@@ -1,4 +1,8 @@
 node_modules/
 dist/
+.wrangler/
 *.log
 .DS_Store
+tmp/
+__pycache__/
+*.pyc

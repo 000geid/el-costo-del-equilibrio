@@ -4,7 +4,8 @@ import type { GameState } from './types';
 const KEY = 'el-costo-del-equilibrio:v1';
 
 export interface Settings {
-  reduceMotion: boolean;
+  motionPreference: 'system' | 'reduced' | 'full';
+  musicEnabled: boolean;
 }
 
 export interface SaveData {
@@ -15,7 +16,17 @@ export interface SaveData {
   settings: Settings;
 }
 
-const defaults = (): SaveData => ({ playerName: '', settings: { reduceMotion: false } });
+const defaults = (): SaveData => ({ playerName: '', settings: { motionPreference: 'system', musicEnabled: false } });
+
+export function normalizeSettings(settings: Partial<Settings> & { reduceMotion?: boolean } | undefined): Settings {
+  const motionPreference = settings?.motionPreference;
+  return {
+    motionPreference: motionPreference === 'system' || motionPreference === 'reduced' || motionPreference === 'full'
+      ? motionPreference
+      : settings?.reduceMotion ? 'reduced' : 'system',
+    musicEnabled: typeof settings?.musicEnabled === 'boolean' ? settings.musicEnabled : false,
+  };
+}
 
 /** Guardado local (solo en este navegador y dispositivo). Toda lectura/escritura tolera errores. */
 export function load(): SaveData {
@@ -28,7 +39,7 @@ export function load(): SaveData {
       ...data,
       game: isValidState(data.game) ? data.game : undefined,
       lastFinished: isValidState(data.lastFinished) ? data.lastFinished : undefined,
-      settings: { ...defaults().settings, ...(data.settings ?? {}) },
+      settings: normalizeSettings(data.settings),
     };
   } catch {
     return defaults();
