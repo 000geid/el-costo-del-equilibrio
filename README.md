@@ -64,6 +64,7 @@ Las partidas se guardan por navegador y dirección del sitio: una partida en loc
 | `npm run build` | Chequea tipos y compila a `dist/` |
 | `npm start` | Compila y sirve `dist/` con Node en el puerto 3000 |
 | `npm run serve` | Sirve `dist/` sin recompilar |
+| `npm run deploy` | Compila y publica el juego en Cloudflare Workers |
 | `npm test` | Corre las pruebas del motor (Vitest) |
 | `npm run typecheck` | Solo chequeo de tipos |
 | `npm run simulate` | Simula miles de partidas por escenario y reporta tasas de victoria (balance) |
