@@ -52,7 +52,7 @@ export default function App() {
   useEffect(() => {
     if (screen.name !== 'play' || !game || game.phase === 'scenario') return;
     const onKey = (event: KeyboardEvent) => {
-      if (event.key === 'Escape' && !detail) setPaused((current) => !current);
+      if (event.key === 'Escape' && !detail && !document.querySelector('dialog[open]')) setPaused((current) => !current);
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
@@ -237,7 +237,7 @@ export default function App() {
           />
         );
       case 'practice':
-        return <PracticeCardScreen mode={screen.mode} onBack={back} />;
+        return <PracticeCardScreen key={screen.mode} mode={screen.mode} reduceMotion={reduceMotion} onBack={back} />;
       case 'archive': {
         const origin = stack[stack.length - 2]?.name;
         const backLabel = origin === 'learn' ? 'Volver a Aprender'
@@ -302,7 +302,7 @@ export default function App() {
   })();
 
   return (
-    <div className="app-shell" data-playing={screen.name === 'play' && game?.phase !== 'scenario' ? 'true' : 'false'} data-reduce-motion={reduceMotion ? 'true' : 'false'}>
+    <div className="app-shell" data-playing={screen.name === 'practice' || (screen.name === 'play' && game?.phase !== 'scenario') ? 'true' : 'false'} data-reduce-motion={reduceMotion ? 'true' : 'false'}>
       <MusicController
         ref={musicControl}
         enabled={data.settings.musicEnabled}

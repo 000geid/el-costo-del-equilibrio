@@ -28,6 +28,7 @@
 .encounter-game .stat-value { font-variant-numeric: tabular-nums; }
 .encounter-game .game-body { grid-template-columns: minmax(0, 1fr); gap: var(--encounter-space); }
 .encounter-game .encounter {
+  animation: encounter-in 240ms cubic-bezier(0.16, 1, 0.3, 1) both;
   grid-template-columns: minmax(180px, 0.75fr) minmax(0, 1.25fr);
   align-content: start;
   gap: 24px 32px;
@@ -80,6 +81,29 @@
 .encounter-game .choice:focus-visible { outline: 3px solid #762e25; outline-offset: 3px; }
 .encounter-game .choice:active { background: #542119; }
 .encounter-game .hint { margin: 4px 0 0; text-align: left; font-size: 0.9rem; }
+.encounter-game .choices > .hint { display: flex; align-items: center; min-height: 44px; }
+.encounter-game .consequence-reopen { min-height: 44px; padding: 0; border: 0; background: none; color: #762e25; font: inherit; text-align: left; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+.encounter-game .consequence-reopen:focus-visible { outline: 3px solid #762e25; outline-offset: 3px; }
+.encounter-game .choice:disabled { cursor: default; transform: none; box-shadow: none; }
+.encounter-game .choice:disabled:not(.is-selected) { background: #e7d7b3; color: #654b31; opacity: 0.65; }
+.encounter-game .choice:disabled:not(.is-selected) .choice-direction { color: #654b31; }
+.encounter-game .choice.is-selected { background: #762e25; color: #fff3d6; }
+.encounter-game .choice.is-selected .choice-direction { color: #f0dcb9; }
+.encounter-game .choice-direction { display: grid; }
+.encounter-game .choice-direction > span { grid-area: 1 / 1; }
+.encounter-game .choice.is-selected .choice-instruction { visibility: hidden; }
+.encounter-game .choice.is-selected .choice-arrow { border-color: #c9a77b; }
+.encounter-game .swipe { transition: transform 180ms cubic-bezier(0.16, 1, 0.3, 1); }
+.encounter-game .swipe.is-dragging { transition: none; }
+.encounter-game .card-face .portrait-svg { transition: filter 180ms ease-out; }
+@keyframes encounter-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.encounter-game .encounter[data-reduce-motion='true'] { animation: none; }
+@media (prefers-reduced-motion: reduce) {
+  .encounter-game .encounter { animation: none; }
+}
 .encounter-game .side { display: flex; flex-direction: column; gap: 32px; padding-top: 20px; }
 .encounter-game .ledger-title { font: 600 0.95rem/1.4 var(--font-title); color: #654b31; margin: 0 0 16px; }
 .encounter-game .timeline, .encounter-game .commitments { padding: 0; border: 0; background: none; box-shadow: none; }
@@ -129,7 +153,7 @@
   .encounter-game .stat-delta { font-size: 0.7rem; margin-left: 2px; }
   .encounter-game .stat-track { height: 4px; }
   .encounter-game .stat.is-alert .stat-name::after { content: ' !'; }
-  .encounter-game .encounter { grid-template-columns: 72px minmax(0, 1fr); padding: 16px; gap: 12px; border-radius: 16px; }
+  .encounter-game .encounter { --portrait-size: clamp(112px, 34vw, 152px); grid-template-columns: var(--portrait-size) minmax(0, 1fr); padding: 16px; gap: 12px; border-radius: 16px; }
   .encounter-game .situation { display: contents; }
   .encounter-game .encounter-heading { grid-column: 2; grid-row: 1; align-self: center; min-width: 0; }
   .encounter-game .card-title { font-size: 1.2rem; line-height: 1.25; margin: 0 0 6px; }
@@ -138,7 +162,7 @@
   .encounter-game .situation-copy > p { font-size: 1rem; line-height: 1.45; }
   .encounter-game .condition { margin-top: 12px; padding-block: 8px; font-size: 0.95rem; line-height: 1.4; }
   .encounter-game .condition-state { font-size: 0.9rem; line-height: 1.35; }
-  .encounter-game .swipe { grid-column: 1; grid-row: 1; max-width: 72px; align-self: center; }
+  .encounter-game .swipe { grid-column: 1; grid-row: 1; max-width: var(--portrait-size); align-self: center; }
   .encounter-game .card-face { padding: 3px; border-radius: 10px; box-shadow: none; }
   .encounter-game .card-face .portrait-svg { border-radius: 7px; }
   .encounter-game .card-ribbon { display: none; }
@@ -172,14 +196,12 @@
 
 @media (max-width: 540px) and (max-height: 650px) {
   .encounter-game .stats { padding-block: 6px; }
-  .encounter-game .encounter { grid-template-columns: 56px minmax(0, 1fr); padding: 12px; gap: 8px; }
-  .encounter-game .swipe { max-width: 56px; }
+  .encounter-game .encounter { --portrait-size: 104px; padding: 12px; gap: 8px; }
   .encounter-game .condition { margin-top: 8px; padding-block: 6px; }
 }
 
 @media (min-width: 541px) and (max-width: 1000px) and (max-height: 500px) {
-  .encounter-game .encounter { grid-template-columns: 52px minmax(0, 1fr); padding: 12px; gap: 8px; }
-  .encounter-game .swipe { max-width: 52px; }
+  .encounter-game .encounter { --portrait-size: 112px; padding: 12px; gap: 8px; }
   .encounter-game .choices { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .encounter-game .hint { grid-column: 1 / -1; }
 }
@@ -210,18 +232,23 @@
 /* Native dialogs keep the background game inert and focus contained. */
 .game-dialog { width: min(540px, calc(100% - 24px)); max-height: calc(100dvh - 32px); margin: auto; padding: 24px; overflow: auto; overscroll-behavior: contain; color: var(--ink); background: #f5eacf; border: 0; border-radius: 16px; box-shadow: 0 20px 64px #170e0752; font-family: var(--font-body); scrollbar-color: #96764b #e7d7b3; scrollbar-width: thin; }
 .game-dialog::backdrop { background: #170e07b8; }
-.game-dialog[open] { transform-origin: 50% 70%; animation: game-dialog-in 340ms cubic-bezier(0.16, 1, 0.3, 1) both; }
-.game-dialog[open]::backdrop { animation: game-dialog-dim-in 260ms ease-out both; }
-.game-dialog[open][data-closing='true'] { pointer-events: none; animation: game-dialog-out 180ms cubic-bezier(0.4, 0, 1, 1) both; }
-.game-dialog[open][data-closing='true']::backdrop { animation: game-dialog-dim-out 180ms ease-in both; }
+.game-dialog[open] { transform-origin: 50% 70%; animation: game-dialog-in 260ms cubic-bezier(0.16, 1, 0.3, 1) both; }
+.game-dialog[open]::backdrop { animation: game-dialog-dim-in 220ms ease-out both; }
+.game-dialog[open][data-closing] { pointer-events: none; }
+.game-dialog[open][data-closing='all'] { animation: game-dialog-out 180ms ease-in both; }
+.game-dialog[open][data-closing='all']::backdrop { animation: game-dialog-dim-out 180ms ease-in both; }
+.game-dialog[open][data-closing='panel'] { animation: game-dialog-out 140ms ease-in both; }
+.game-dialog[open][data-closing='panel']::backdrop { animation: none; opacity: 1; }
+.game-dialog[open][data-closing='backdrop'] { animation: none; opacity: 0; }
+.game-dialog[open][data-closing='backdrop']::backdrop { animation: game-dialog-dim-out 160ms ease-out both; }
 .game-dialog[open][data-reduce-motion='true'], .game-dialog[open][data-reduce-motion='true']::backdrop { animation: none; }
 @keyframes game-dialog-in {
-  from { opacity: 0; transform: translateY(32px) scale(0.96); }
+  from { opacity: 0; transform: translateY(16px) scale(0.98); }
   to { opacity: 1; transform: translateY(0) scale(1); }
 }
 @keyframes game-dialog-out {
   from { opacity: 1; transform: translateY(0) scale(1); }
-  to { opacity: 0; transform: translateY(16px) scale(0.98); }
+  to { opacity: 0; transform: translateY(8px) scale(0.99); }
 }
 @keyframes game-dialog-dim-in { from { opacity: 0; } to { opacity: 1; } }
 @keyframes game-dialog-dim-out { from { opacity: 1; } to { opacity: 0; } }

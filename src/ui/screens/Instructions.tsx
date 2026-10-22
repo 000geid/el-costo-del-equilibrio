@@ -1,9 +1,13 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { TUTORIAL } from '../../data/tutorial';
 import { effectiveOption } from '../../engine/engine';
 import type { Mode, OptionKey, Vec } from '../../engine/types';
-import { Portrait } from '../components/Portrait';
+import { Encounter, SituationCopy } from '../components/Encounter';
+import { DecisionConsequence } from '../components/DecisionConsequence';
+import { GameDialog } from '../components/GameDialog';
+import type { SceneSpec } from '../components/Portrait';
 import { StatsBar, VecText } from '../components/Stats';
+import { useConsequenceDialog } from '../useConsequenceDialog';
 
 export const INSTRUCTIONS_STEPS = [
   'Leé la situación.',
@@ -39,57 +43,83 @@ export function InstructionsScreen({ canStart, onPractice, onStart, onBack }: {
 
 const PRACTICE_STATS: Vec = [50, 50, 50, 50];
 
-export function PracticeCardScreen({ mode, onBack }: { mode: Mode; onBack: () => void }) {
+const PRACTICE_SCENES: Record<Mode, SceneSpec> = {
+  macro: { mode: 'macro', colors: ['#3f6e8c', '#efe2c2', '#d9b45a'], emblem: 'sun' },
+  micro: { mode: 'micro', colors: ['#2f6b6b', '#efe2c2', '#d98c2a'], emblem: 'gear' },
+};
+
+export function PracticeCardScreen({ mode, reduceMotion, onBack }: {
+  mode: Mode; reduceMotion: boolean; onBack: () => void;
+}) {
   const card = TUTORIAL[mode];
   const [choice, setChoice] = useState<OptionKey | null>(null);
+  const [attempt, setAttempt] = useState(0);
+  const gameRef = useRef<HTMLDivElement>(null);
+  const feedback = useConsequenceDialog(choice, reduceMotion);
   const eff = choice ? effectiveOption(card, choice, PRACTICE_STATS) : null;
   const after = eff ? (PRACTICE_STATS.map((x, i) => x + eff.immediate[i]) as Vec) : PRACTICE_STATS;
+  const shownEffect = feedback.snapshot ? effectiveOption(card, feedback.snapshot, PRACTICE_STATS) : null;
+  const shownAfter = shownEffect ? (PRACTICE_STATS.map((x, i) => x + shownEffect.immediate[i]) as Vec) : PRACTICE_STATS;
+
+  const onChoose = (key: OptionKey) => {
+    if (choice !== null) return;
+    setChoice(key);
+  };
+
+  const repeat = () => {
+    setChoice(null);
+    setAttempt((current) => current + 1);
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+  };
+
   return (
-    <div className={`game game-${mode} practice`}>
+    <div ref={gameRef} className={`game game-${mode} encounter-game practice`} data-phase={choice ? 'consequence' : 'card'}>
       <header className="game-head">
         <div className="game-head-info"><span className="who">Carta de práctica</span><span className="where">No altera tu partida</span></div>
         <div className="game-head-turn">Práctica</div>
         <div className="game-head-actions"><button className="btn btn-small btn-ghost" onClick={onBack}>Volver</button></div>
       </header>
-      <StatsBar mode={mode} stats={after} delta={eff ? eff.immediate : null} />
-      <div className="game-body single">
-        <section className="table">
-          <div className="situation parchment">
-            <h2 className="card-title">{card.title}</h2>
-            <p>{card.text}</p>
-          </div>
-          <div className="swipe"><div className="card-face anim-deal">
-            <Portrait spec={card.portrait} scene={{ mode, colors: mode === 'macro' ? ['#3f6e8c', '#efe2c2', '#d9b45a'] : ['#2f6b6b', '#efe2c2', '#d98c2a'], emblem: mode === 'macro' ? 'sun' : 'gear' }} title={card.imageHint} />
-            <div className="card-ribbon"><span className="card-character">{card.character}</span></div>
-          </div></div>
-          {!choice ? (
-            <div className="choices">
-              {(['A', 'B'] as OptionKey[]).map((k) => {
-                const o = card.options[k];
-                return (
-                  <button key={k} className="choice" onClick={() => setChoice(k)}>
-                  <span className="choice-side" aria-hidden="true">{k === 'A' ? '◀' : '▶'}</span>
-                  <span className="choice-label">{o.label}</span>
-                  </button>
-                );
-              })}
-            </div>
-          ) : (
-            <div className="consequence parchment">
-              <div className="consequence-head"><span className="label">Elegiste</span><strong>«{eff!.label}»</strong></div>
-              <dl className="consequence-list">
-                <dt>Efecto inmediato</dt><dd><VecText mode={mode} vec={eff!.immediate} /></dd>
-                {eff!.deferred && (<><dt>Nuevo compromiso</dt><dd>Dentro de {eff!.deferred.delay} turnos: <VecText mode={mode} vec={eff!.deferred.vec} /></dd></>)}
-              </dl>
-              <p className="explanation">{card.explanation}</p>
-              <div className="row">
-                <button className="btn" onClick={() => setChoice(null)}>Probar la otra opción</button>
-                <button className="btn btn-primary" onClick={onBack} autoFocus>Volver</button>
-              </div>
-            </div>
-          )}
-        </section>
+      <StatsBar mode={mode} stats={after} delta={eff ? eff.immediate : null} iconLabels reduceMotion={reduceMotion} />
+      <div className="game-body">
+        <Encounter
+          key={attempt}
+          card={card}
+          scene={PRACTICE_SCENES[mode]}
+          stats={PRACTICE_STATS}
+          selectedOption={choice ?? undefined}
+          reduceMotion={reduceMotion}
+          onChoose={onChoose}
+          onShowConsequence={feedback.open}
+        />
       </div>
+      {shownEffect && (
+        <GameDialog title="Consecuencias de tu elección" onClose={feedback.close} reduceMotion={reduceMotion}
+          returnFocus={() => gameRef.current?.querySelector<HTMLElement>(choice ? '.consequence-reopen' : '.card-title')}>
+          {(dismiss) => (
+            <DecisionConsequence
+              mode={mode}
+              optionLabel={shownEffect.label}
+              before={PRACTICE_STATS}
+              after={shownAfter}
+              immediate={shownEffect.immediate}
+              review={<>
+                <p className="explanation">{card.explanation}</p>
+                <SituationCopy card={card} stats={PRACTICE_STATS} />
+              </>}
+              notice={<p>Esto es una práctica: no altera tu partida. Podés volver a elegir para comparar las dos opciones.</p>}
+              actions={<>
+                <button className="btn btn-primary" type="button" onClick={() => dismiss(feedback.close, repeat)}>Volver a elegir</button>
+                <button className="btn" type="button" onClick={() => dismiss(onBack)}>Volver</button>
+              </>}
+            >
+              {shownEffect.deferred && (<>
+                <dt>Nuevo compromiso</dt>
+                <dd>Dentro de {shownEffect.deferred.delay} turnos: <VecText mode={mode} vec={shownEffect.deferred.vec} /></dd>
+              </>)}
+            </DecisionConsequence>
+          )}
+        </GameDialog>
+      )}
     </div>
   );
 }

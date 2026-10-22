@@ -2,6 +2,12 @@
 
 Status: in progress. Menu navigation and preferences are implemented; the title layout and first encounter-layout pass are implemented. Scenic art and the full redesign remain pending.
 
+## Progress — 2026-10-21
+
+- Practice and play now share the encounter and consequence components, including swipe interaction, indicator help, before/after feedback, and reduced-motion preferences.
+- Practice keeps its own local choice and starts each attempt at four values of 50. “Volver a elegir” resets the attempt; returning never changes the saved game. Deferred effects remain explanatory in this single-card practice.
+- Build and all 24 existing tests pass. Visual verification is assigned to the user.
+
 ## Progress — 2026-10-19
 
 - Title: bounded scales logo, readable title, visible entry action, desktop and phone layout.

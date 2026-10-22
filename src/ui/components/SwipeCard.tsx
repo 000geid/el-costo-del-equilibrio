@@ -22,10 +22,16 @@ export function SwipeCard({ children, labels, disabled, reduceMotion, onChoose }
   const side: OptionKey | null = dx < -30 ? 'A' : dx > 30 ? 'B' : null;
 
   const end = (commit: boolean) => {
-    if (commit && side && Math.abs(dx) > THRESHOLD) onChoose(side);
+    if (!start.current) return;
+    const accepted = commit && !disabled && side && Math.abs(dx) > THRESHOLD;
     start.current = null;
     setDragging(false);
-    setDx(0);
+    if (accepted) {
+      // Keep a small directional pose to distinguish accepting from cancelling.
+      const gentle = reduceMotion || window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      setDx(gentle ? 0 : side === 'A' ? -24 : 24);
+      onChoose(side);
+    } else setDx(0);
   };
 
   return (
@@ -48,6 +54,7 @@ export function SwipeCard({ children, labels, disabled, reduceMotion, onChoose }
       }}
       onPointerUp={() => end(true)}
       onPointerCancel={() => end(false)}
+      onLostPointerCapture={() => end(false)}
     >
       {children}
       {side && !disabled && (

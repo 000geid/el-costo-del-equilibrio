@@ -1,12 +1,12 @@
-import { useEffect, useId, useMemo, useState } from 'react';
-import { adaptText, capitalize, cardById, STATS } from '../../data';
-import { isConditionActive, TOTAL_TURNS } from '../../engine/engine';
-import type { Card, GameState, Mode, OptionKey, PendingEffect, Scenario, Vec } from '../../engine/types';
-import { Portrait } from '../components/Portrait';
+import { useEffect, useId, useMemo, useRef, useState } from 'react';
+import { cardById, STATS } from '../../data';
+import { TOTAL_TURNS } from '../../engine/engine';
+import type { GameState, Mode, OptionKey, PendingEffect, Scenario, Vec } from '../../engine/types';
+import { Encounter, SituationCopy } from '../components/Encounter';
+import { DecisionConsequence } from '../components/DecisionConsequence';
 import { GameDialog } from '../components/GameDialog';
-import { StatGlyph } from '../components/Icons';
 import { StatsBar, VecText } from '../components/Stats';
-import { SwipeCard } from '../components/SwipeCard';
+import { useConsequenceDialog } from '../useConsequenceDialog';
 
 interface Props {
   game: GameState;
@@ -22,9 +22,11 @@ export const sceneOf = (s: Scenario) => ({ mode: s.mode, colors: s.colors, emble
 
 export function GameScreen({ game, scenario, reduceMotion, onDecide, onNext, onPause, onStudy }: Props) {
   const [ledgerOpen, setLedgerOpen] = useState(false);
-  const [consequenceOpen, setConsequenceOpen] = useState(game.phase === 'consequence');
+  const gameRef = useRef<HTMLDivElement>(null);
   const ledgerId = useId();
   const inConsequence = game.phase === 'consequence';
+  const feedback = useConsequenceDialog(inConsequence ? game : null, reduceMotion);
+  const consequenceGame = feedback.snapshot;
   const last = inConsequence ? game.history[game.history.length - 1] : undefined;
   const card = cardById(inConsequence && last ? last.cardId : game.deck[game.turn]);
   const before = inConsequence && last ? last.before : game.stats;
@@ -34,13 +36,15 @@ export function GameScreen({ game, scenario, reduceMotion, onDecide, onNext, onP
     earliest === undefined ? commitment.dueTurn : Math.min(earliest, commitment.dueTurn), undefined);
 
   useEffect(() => {
-    window.scrollTo(0, 0);
-    setLedgerOpen(false);
-    setConsequenceOpen(game.phase === 'consequence');
-  }, [game.turn, game.phase]);
+    // Choosing keeps the reading position; only a fresh card starts at the top.
+    if (game.phase === 'card') {
+      setLedgerOpen(false);
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    }
+  }, [game.id, game.turn, game.phase]);
 
   return (
-    <div className={`game game-${game.mode} encounter-game`} data-phase={game.phase}>
+    <div ref={gameRef} className={`game game-${game.mode} encounter-game`} data-phase={game.phase}>
       <header className="game-head">
         <div className="game-head-info">
           <span className="who">{game.playerName}</span>
@@ -58,53 +62,17 @@ export function GameScreen({ game, scenario, reduceMotion, onDecide, onNext, onP
       <StatsBar mode={game.mode} stats={game.stats} delta={delta} iconLabels reduceMotion={reduceMotion} />
 
       <div className="game-body">
-        <section className="table encounter" aria-label="Carta actual">
-          <div className="situation">
-            <div className="encounter-heading">
-              <h2 className="card-title">{card.title}</h2>
-              <p className="mobile-character">{card.character}</p>
-            </div>
-            <div className="situation-copy">
-              <SituationCopy card={card} scenario={scenario} stats={before} />
-            </div>
-          </div>
-
-          <SwipeCard
-            key={card.id}
-            labels={{ A: card.options.A.label, B: card.options.B.label }}
-            disabled={inConsequence}
-            reduceMotion={reduceMotion}
-            onChoose={onDecide}
-          >
-            <div className={`card-face ${inConsequence ? 'is-resolved' : ''} ${reduceMotion ? '' : 'anim-deal'}`}>
-              <Portrait spec={card.portrait} scene={sceneOf(scenario)} title={card.imageHint} />
-              <div className="card-ribbon">
-                <span className="card-character">{card.character}</span>
-              </div>
-            </div>
-          </SwipeCard>
-
-          {!inConsequence ? (
-            <div className="choices" role="group" aria-label="Elegí tu decisión">
-              {(['A', 'B'] as OptionKey[]).map((k) => (
-                <ChoiceButton
-                  key={k}
-                  k={k}
-                  card={card}
-                  onChoose={onDecide}
-                />
-              ))}
-              <p className="hint">Elegí una respuesta o deslizá la carta.</p>
-            </div>
-          ) : (
-            last && (
-              <div className="choices consequence-reopen">
-                <p className="hint">Elegiste: «{last.optionLabel}»</p>
-                <button className="btn btn-primary" type="button" onClick={() => setConsequenceOpen(true)}>Ver consecuencias</button>
-              </div>
-            )
-          )}
-        </section>
+        <Encounter
+          key={`${game.id}:${cardNo}`}
+          card={card}
+          scene={sceneOf(scenario)}
+          vocab={scenario.vocab}
+          stats={before}
+          selectedOption={last?.choice}
+          reduceMotion={reduceMotion}
+          onChoose={onDecide}
+          onShowConsequence={feedback.open}
+        />
 
         <aside className={`game-ledger ${ledgerOpen ? 'is-open' : ''}`} aria-label="Registro de la gestión">
           <button className="ledger-toggle" type="button" aria-expanded={ledgerOpen} aria-controls={ledgerId} onClick={() => setLedgerOpen((open) => !open)}>
@@ -122,133 +90,80 @@ export function GameScreen({ game, scenario, reduceMotion, onDecide, onNext, onP
           </div>
         </aside>
       </div>
-      {inConsequence && last && consequenceOpen && (
-        <GameDialog title="Consecuencias de tu elección" onClose={() => setConsequenceOpen(false)} reduceMotion={reduceMotion}>
-          {(dismiss) => <Consequence game={game} card={card} scenario={scenario} before={before} onNext={() => dismiss(onNext)} />}
+      {consequenceGame && (
+        <GameDialog title="Consecuencias de tu elección" onClose={feedback.close} reduceMotion={reduceMotion}
+          returnFocus={() => gameRef.current?.querySelector<HTMLElement>(game.phase === 'card' ? '.card-title' : '.consequence-reopen')}>
+          {(dismiss) => <Consequence game={consequenceGame} scenario={scenario} onNext={() => {
+            if (consequenceGame.status === 'active') dismiss(feedback.close, onNext);
+            else dismiss(() => { feedback.close(); onNext(); });
+          }} />}
         </GameDialog>
       )}
     </div>
   );
 }
 
-function SituationCopy({ card, scenario, stats }: { card: Card; scenario: Scenario; stats: Vec }) {
-  return <>
-    <p>{capitalize(adaptText(card.text, scenario.vocab))}</p>
-    {card.condition && <ConditionBox card={card} mode={scenario.mode} stats={stats} />}
-  </>;
-}
-
-function ChoiceButton({ k, card, onChoose }: {
-  k: OptionKey; card: Card; onChoose: (k: OptionKey) => void;
-}) {
-  return (
-    <button
-      className="choice"
-      type="button"
-      onClick={() => onChoose(k)}
-    >
-      <span className="choice-copy">
-        <span className="choice-label">{card.options[k].label}</span>
-        <span className="choice-direction">Deslizar a la {k === 'A' ? 'izquierda' : 'derecha'}</span>
-      </span>
-      <span className="choice-arrow" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-          <path d={k === 'A' ? 'M19 12H5m6-6-6 6 6 6' : 'M5 12h14m-6-6 6 6-6 6'} />
-        </svg>
-      </span>
-    </button>
-  );
-}
-
-function ConditionBox({ card, mode, stats }: { card: Card; mode: Mode; stats: Vec }) {
-  const c = card.condition!;
-  const active = isConditionActive(card, stats);
-  const name = STATS[mode][c.stat].name;
-  return (
-    <div className={`condition ${active ? 'is-active' : ''}`} role="note">
-      <strong>Condición visible.</strong> {c.notice}{' '}
-      <span className="condition-state">
-        Tu {name} es {stats[c.stat]}: {active ? 'la condición se aplica.' : 'la condición no se aplica.'}
-      </span>
-    </div>
-  );
-}
-
-function Consequence({ game, card, scenario, before, onNext }: {
-  game: GameState; card: Card; scenario: Scenario; before: Vec; onNext: () => void;
+function Consequence({ game, scenario, onNext }: {
+  game: GameState; scenario: Scenario; onNext: () => void;
 }) {
   const last = game.history[game.history.length - 1];
+  const card = cardById(last.cardId);
+  const before = last.before;
   const ended = game.status !== 'active';
   return (
-    <div className="consequence">
-      <div className="consequence-head">
-        <span className="label">Elegiste</span>
-        <strong>«{last.optionLabel}»</strong>
-      </div>
-      <p className="consequence-caption">Balance de esta carta · antes y después</p>
-      <ul className="consequence-stats" aria-label="Cambios en los indicadores">
-        {STATS[game.mode].map((meta, i) => {
-          const change = last.after[i] - last.before[i];
-          return (
-            <li key={meta.key}>
-              <span className="consequence-stat-name"><svg viewBox="0 0 60 60" fill="currentColor" aria-hidden="true"><StatGlyph icon={meta.icon} /></svg>{meta.name}</span>
-              <span className="consequence-stat-values"><span>{last.before[i]}</span><span aria-label="a">→</span><strong>{last.after[i]}</strong></span>
-              <span className={`consequence-stat-delta ${change > 0 ? 'up' : change < 0 ? 'down' : 'muted'}`}>{change > 0 ? `+${change}` : change < 0 ? `−${Math.abs(change)}` : 'Sin cambios'}</span>
-            </li>
-          );
-        })}
-      </ul>
-      <dl className="consequence-list">
-        <dt>Efecto inmediato</dt>
-        <dd><VecText mode={game.mode} vec={last.immediate} /></dd>
-        {last.conditionActive && (
-          <>
-            <dt>Condición</dt>
-            <dd>Se aplicó con {STATS[game.mode][card.condition!.stat].name} en {before[card.condition!.stat]} antes de decidir.</dd>
-          </>
-        )}
-        {last.dueApplied.length > 0 && (
-          <>
-            <dt>Compromisos que vencieron</dt>
-            <dd>
-              {last.dueApplied.map((d) => (
-                <div key={d.id}>
-                  «{d.optionLabel}»: <VecText mode={game.mode} vec={d.vec} />
-                </div>
-              ))}
-            </dd>
-          </>
-        )}
-        {last.created && (
-          <>
-            <dt>Nuevo compromiso</dt>
-            <dd>
-              Vence tras la carta {last.created.dueTurn}
-              {last.created.dueTurn > TOTAL_TURNS ? ' (después del cierre)' : ''}: <VecText mode={game.mode} vec={last.created.vec} />
-            </dd>
-          </>
-        )}
-        {last.dueApplied.length === 0 && game.status === 'lost' && game.pending.some((p) => p.dueTurn === last.turn) && (
-          <>
-            <dt>Pendiente</dt>
-            <dd>La gestión terminó antes de aplicar los compromisos de este turno; quedan registrados como pendientes.</dd>
-          </>
-        )}
-      </dl>
-      <details className="situation-review">
-        <summary>Explicación y situación</summary>
+    <DecisionConsequence
+      mode={game.mode}
+      optionLabel={last.optionLabel}
+      before={last.before}
+      after={last.after}
+      immediate={last.immediate}
+      review={<>
         <p className="explanation">{card.explanation}</p>
-        <SituationCopy card={card} scenario={scenario} stats={before} />
-      </details>
-      {game.status === 'lost' && (
+        <SituationCopy card={card} vocab={scenario.vocab} stats={before} />
+      </>}
+      notice={game.status === 'lost' && (
         <p className="defeat-note">⚠ Una barra llegó a cero. La gestión termina en esta carta.</p>
       )}
-      <div className="row">
+      actions={
         <button className="btn btn-primary" onClick={onNext}>
           {ended ? 'Ver resultado' : 'Siguiente carta'}
         </button>
-      </div>
-    </div>
+      }
+    >
+      {last.conditionActive && (
+        <>
+          <dt>Condición</dt>
+          <dd>Se aplicó con {STATS[game.mode][card.condition!.stat].name} en {before[card.condition!.stat]} antes de decidir.</dd>
+        </>
+      )}
+      {last.dueApplied.length > 0 && (
+        <>
+          <dt>Compromisos que vencieron</dt>
+          <dd>
+            {last.dueApplied.map((d) => (
+              <div key={d.id}>
+                «{d.optionLabel}»: <VecText mode={game.mode} vec={d.vec} />
+              </div>
+            ))}
+          </dd>
+        </>
+      )}
+      {last.created && (
+        <>
+          <dt>Nuevo compromiso</dt>
+          <dd>
+            Vence tras la carta {last.created.dueTurn}
+            {last.created.dueTurn > TOTAL_TURNS ? ' (después del cierre)' : ''}: <VecText mode={game.mode} vec={last.created.vec} />
+          </dd>
+        </>
+      )}
+      {last.dueApplied.length === 0 && game.status === 'lost' && game.pending.some((p) => p.dueTurn === last.turn) && (
+        <>
+          <dt>Pendiente</dt>
+          <dd>La gestión terminó antes de aplicar los compromisos de este turno; quedan registrados como pendientes.</dd>
+        </>
+      )}
+    </DecisionConsequence>
   );
 }
 

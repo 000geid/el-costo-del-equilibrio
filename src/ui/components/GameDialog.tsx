@@ -1,29 +1,37 @@
 import { useEffect, useId, useRef, useState, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 
-type Dismiss = (afterClose?: () => void) => void;
+// beforeReveal changes the background after the panel exits, while it is still dimmed.
+type Dismiss = (afterClose?: () => void, beforeReveal?: () => void) => void;
+type Closing = 'all' | 'panel' | 'backdrop' | null;
 
 /** Native modal: keeps focus inside and makes the game behind it inert. */
-export function GameDialog({ title, onClose, children, reduceMotion = false }: {
+export function GameDialog({ title, onClose, children, reduceMotion = false, returnFocus }: {
   title: string; onClose: () => void; children: ReactNode | ((dismiss: Dismiss) => ReactNode); reduceMotion?: boolean;
+  returnFocus?: () => HTMLElement | null | undefined;
 }) {
   const ref = useRef<HTMLDialogElement>(null);
   const titleId = useId();
-  const [closing, setClosing] = useState(false);
+  const [closing, setClosing] = useState<Closing>(null);
   const exitAction = useRef<(() => void) | null>(null);
+  const coveredAction = useRef<(() => void) | null>(null);
   const closeCallback = useRef(onClose);
+  const focusCallback = useRef(returnFocus);
   closeCallback.current = onClose;
+  focusCallback.current = returnFocus;
 
-  const dismiss: Dismiss = (afterClose) => {
+  const dismiss: Dismiss = (afterClose, beforeReveal) => {
     if (exitAction.current) return;
     const finish = afterClose ?? (() => closeCallback.current());
     // Keep feedback immediate when either the app or the device requests less motion.
     if (reduceMotion || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      beforeReveal?.();
       finish();
       return;
     }
     exitAction.current = finish;
-    setClosing(true);
+    coveredAction.current = beforeReveal ?? null;
+    setClosing(beforeReveal ? 'panel' : 'all');
   };
 
   const finishExit = () => {
@@ -32,14 +40,21 @@ export function GameDialog({ title, onClose, children, reduceMotion = false }: {
     action?.();
   };
 
+  const finishPanel = () => {
+    const action = coveredAction.current;
+    if (!action) return;
+    coveredAction.current = null;
+    setClosing('backdrop');
+    action();
+  };
+
   useEffect(() => {
     if (!closing) return;
     // A fallback also covers animation cancellation or a motion preference change.
     const timeout = window.setTimeout(() => {
-      const action = exitAction.current;
-      exitAction.current = null;
-      action?.();
-    }, 240);
+      if (closing === 'panel') finishPanel();
+      else finishExit();
+    }, closing === 'panel' ? 180 : 240);
     return () => window.clearTimeout(timeout);
   }, [closing]);
 
@@ -52,14 +67,19 @@ export function GameDialog({ title, onClose, children, reduceMotion = false }: {
     return () => {
       dialog.close();
       document.body.style.overflow = overflow;
-      if (previous?.isConnected) previous.focus({ preventScroll: true });
+      const target = focusCallback.current?.() ?? previous;
+      if (target?.isConnected) target.focus({ preventScroll: true });
     };
   }, []);
 
   return createPortal(
     <dialog ref={ref} className="game-dialog" aria-labelledby={titleId} data-reduce-motion={reduceMotion} data-closing={closing}
       onAnimationEnd={(event) => {
-        if (event.target === event.currentTarget && event.animationName === 'game-dialog-out') finishExit();
+        if (event.target !== event.currentTarget) return;
+        if (event.animationName === 'game-dialog-out') {
+          if (closing === 'panel') finishPanel();
+          else if (closing === 'all') finishExit();
+        } else if (closing === 'backdrop' && event.animationName === 'game-dialog-dim-out') finishExit();
       }}
       onCancel={(event) => { event.preventDefault(); dismiss(); }}
       onClick={(event) => { if (event.target === event.currentTarget) {
