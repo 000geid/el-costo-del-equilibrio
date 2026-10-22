@@ -28,6 +28,10 @@ Abrí **http://localhost:5173**. El servidor de desarrollo también queda expues
 
 La ambientación instrumental se sintetiza localmente con Web Audio a partir de una secuencia original; no usa grabaciones ni recursos externos y no requiere atribución. Comienza silenciada y se activa únicamente desde el control de música.
 
+### Mapa de fondo
+
+`public/map-lines.svg` usa los contornos de tierra de [Natural Earth a escala 1:110 millones, versión 5.1.2](https://github.com/nvkelso/natural-earth-vector/blob/v5.1.2/geojson/ne_110m_land.geojson), en [dominio público](https://www.naturalearthdata.com/about/terms-of-use/). Se generó con la proyección Natural Earth I de D3 Geo 3.1.1, meridianos y paralelos cada 30°, dentro de un área de `(70, 48)` a `(1130, 572)` en un SVG de `1200 × 620`. El SVG conserva todos los polígonos del conjunto y redondea las coordenadas a un decimal; se sirve localmente y no agrega dependencias al juego.
+
 ### Versión compilada (como se publicaría)
 
 ```bash
