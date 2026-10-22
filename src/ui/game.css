@@ -20,6 +20,8 @@
 .encounter-game .game-head-turn strong { color: #76271e; font-size: 1.7rem; }
 .encounter-game .game-head .btn-ghost { color: #57371e; border: 0; box-shadow: none; min-height: 44px; }
 .encounter-game .game-head .btn-ghost:hover { background: #f6ecd3; }
+.encounter-game .game-head .game-head-actions .game-pause { flex: 0 0 44px; width: 44px; height: 44px; padding: 0; border-radius: 50%; }
+.encounter-game .game-pause svg { display: block; flex: none; }
 .encounter-game .stats { padding: 16px; gap: 16px; border: 0; border-radius: 16px; box-shadow: none; }
 .encounter-game .stat-icon { box-shadow: none; border: 1px solid var(--bronze); }
 .encounter-game .stat.is-alert .stat-icon { border-color: #ff9c8a; }

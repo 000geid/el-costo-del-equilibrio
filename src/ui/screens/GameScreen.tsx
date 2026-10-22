@@ -51,7 +51,12 @@ export function GameScreen({ game, scenario, reduceMotion, onDecide, onNext, onP
         </div>
         <div className="game-head-actions">
           <button className="btn btn-small btn-ghost game-study" onClick={onStudy}>Estudiar</button>
-          <button className="btn btn-small btn-ghost" onClick={onPause}>Pausar</button>
+          <button className="btn btn-small btn-ghost game-pause" type="button" onClick={onPause} aria-label="Pausar partida" title="Pausar partida">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+              <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="1.5" />
+              <path d="M9 8v8M15 8v8" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
+            </svg>
+          </button>
         </div>
       </header>
 
