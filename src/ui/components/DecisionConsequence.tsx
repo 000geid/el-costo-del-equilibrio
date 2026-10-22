@@ -24,7 +24,6 @@ export function DecisionConsequence({ mode, optionLabel, before, after, immediat
         <span className="label">Elegiste</span>
         <strong>«{optionLabel}»</strong>
       </div>
-      <p className="consequence-caption">Balance de esta carta · antes y después</p>
       <ul className="consequence-stats" aria-label="Cambios en los indicadores">
         {STATS[mode].map((meta, i) => {
           const change = after[i] - before[i];

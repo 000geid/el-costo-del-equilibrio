@@ -1,13 +1,13 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { cardById, MODE_LABEL, STATS, TAG_SHORT } from '../../data';
 import {
   financingSummary, indicatorSummaries, learnedConcepts, managementProfile, solidDecisions, topDecisions,
 } from '../../engine/analysis';
 import { TOTAL_TURNS } from '../../engine/engine';
-import type { DefeatCause, GameState, Scenario, Vec } from '../../engine/types';
+import type { DefeatCause, GameState, Scenario } from '../../engine/types';
 import { TrajectoryChart, TrajectoryTable } from '../components/Chart';
-import { Emblem, ScaleLogo } from '../components/Icons';
-import { StatsBar, VecText } from '../components/Stats';
+import { Emblem, ScaleLogo, StatGlyph } from '../components/Icons';
+import { VecText } from '../components/Stats';
 
 function causeText(game: GameState, c: DefeatCause) {
   const meta = STATS[game.mode][c.stat];
@@ -29,16 +29,24 @@ export function EndScreen({ game, scenario, onAnalysis, onNew, onStudy, onMenu }
     : game.mode === 'macro' ? 'La gestión terminó' : 'El negocio cerró';
   const causes = game.defeat ?? [];
   const causalStudy = causes.length ? cardById(causes[0].cardId).studyIds[0] : undefined;
+  const titleRef = useRef<HTMLHeadingElement>(null);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    titleRef.current?.focus({ preventScroll: true });
+  }, [game.id]);
+
   return (
     <div className={`end ${won ? 'is-win' : 'is-loss'}`}>
       <div className="end-card parchment">
-        <ScaleLogo className="end-logo" tilt={won ? 0 : 18} />
-        <span className="label">{MODE_LABEL[game.mode]} · {scenario.name}</span>
-        <h1>{title}</h1>
-        <div className="end-stats"><StatsBar mode={game.mode} stats={game.stats} delta={game.stats.map((x, i) => x - game.initial[i]) as Vec} /></div>
-        <p className="small muted">Valores finales y variación desde el inicio del escenario.</p>
+        <header className="end-header">
+          <ScaleLogo className="end-logo" tilt={won ? 0 : 18} />
+          <h1 ref={titleRef} tabIndex={-1}>{title}</h1>
+          <p className="end-scenario">{MODE_LABEL[game.mode]} · {scenario.name}</p>
+        </header>
+        <div className="end-outcome">
         {won ? (
-          <p className="lead">Resolviste las {TOTAL_TURNS} decisiones sin que ningún indicador llegara a cero. Superaste el horizonte del juego; el análisis muestra qué compromisos siguen abiertos.</p>
+          <p className="lead">Resolviste las {TOTAL_TURNS} decisiones sin que ningún indicador llegara a cero.</p>
         ) : (
           <>
             {causes.map((c, i) => (
@@ -47,11 +55,40 @@ export function EndScreen({ game, scenario, onAnalysis, onNew, onStudy, onMenu }
                 <p>{causeText(game, c)}</p>
               </div>
             ))}
-            <p className="muted">Decisiones completadas: {game.turn} de {TOTAL_TURNS}.</p>
+            <p className="end-progress">Decisiones completadas: <strong>{game.turn} de {TOTAL_TURNS}</strong>.</p>
           </>
         )}
-        <div className="row center">
-          <button className="btn btn-primary" onClick={onAnalysis} autoFocus>Ver análisis</button>
+        </div>
+        <section className="end-balance" aria-label="Balance final">
+          <h2>Balance final</h2>
+          <p className="end-balance-caption">Valores finales y variación desde el inicio del escenario.</p>
+          <dl className="end-indicators">
+            {STATS[game.mode].map((meta, i) => {
+              const value = game.stats[i];
+              const change = value - game.initial[i];
+              const critical = value <= 20;
+              return (
+                <div className={`end-indicator${critical ? ' is-critical' : ''}`} key={meta.key}>
+                  <dt className="end-indicator-name">
+                    <svg viewBox="0 0 60 60" fill="currentColor" aria-hidden="true"><StatGlyph icon={meta.icon} /></svg>
+                    <span>{meta.name}{critical && <span className="end-indicator-status">{value === 0 ? 'En cero' : 'Nivel crítico'}</span>}</span>
+                  </dt>
+                  <dd className="end-indicator-value"><span className="sr-only">Valor final: </span>{value}<span className="end-indicator-scale">de 100</span></dd>
+                  <dd className="end-indicator-change">
+                    <span>Inicio: {game.initial[i]}</span>
+                    <span className={change > 0 ? 'up' : change < 0 ? 'down' : ''}>
+                      {change === 0 ? 'Sin cambios' : `${change > 0 ? '+' : '−'}${Math.abs(change)} ${Math.abs(change) === 1 ? 'punto' : 'puntos'}`}
+                      {change !== 0 && <span className="sr-only"> desde el inicio</span>}
+                    </span>
+                  </dd>
+                </div>
+              );
+            })}
+          </dl>
+        </section>
+        {won && <p className="end-note">Superaste el horizonte del juego; el análisis muestra qué compromisos siguen abiertos.</p>}
+        <div className="end-actions">
+          <button className="btn btn-primary" onClick={onAnalysis}>Ver análisis</button>
           {won
             ? <button className="btn" onClick={onNew}>Nueva partida</button>
             : causalStudy && <button className="btn" onClick={() => onStudy(causalStudy)}>Estudiar este tema</button>}
@@ -62,7 +99,7 @@ export function EndScreen({ game, scenario, onAnalysis, onNew, onStudy, onMenu }
   );
 }
 
-type Tab = 'res' | 'dec';
+type Tab = 'res' | 'dec' | 'profile';
 
 export function AnalysisScreen({ game, scenario, onCard, onConcept, onNew, onMenu }: {
   game: GameState; scenario: Scenario; onCard: (turn: number) => void; onConcept: (id: string) => void; onNew: () => void; onMenu: () => void;
@@ -81,7 +118,7 @@ export function AnalysisScreen({ game, scenario, onCard, onConcept, onNew, onMen
       </header>
 
       <div className="tabs" role="tablist">
-        {([['res', 'Resultados'], ['dec', 'Decisiones y aprendizaje']] as [Tab, string][]).map(([k, label]) => (
+        {([['res', 'Resultados'], ['dec', 'Decisiones'], ['profile', 'Perfil de gestión']] as [Tab, string][]).map(([k, label]) => (
           <button key={k} role="tab" aria-selected={tab === k} className={`tab ${tab === k ? 'is-active' : ''}`} onClick={() => setTab(k)}>{label}</button>
         ))}
       </div>
@@ -127,9 +164,11 @@ export function AnalysisScreen({ game, scenario, onCard, onConcept, onNew, onMen
       {tab === 'dec' && (
         <>
           <DecisionsTab game={game} onCard={onCard} />
-          <LearnTab game={game} onConcept={onConcept} onCard={onCard} />
+          <LearnTab game={game} onConcept={onConcept} />
         </>
       )}
+
+      {tab === 'profile' && <ProfileTab game={game} />}
 
       <div className="row center">
         <button className="btn btn-primary" onClick={onNew}>Nueva partida</button>
@@ -204,11 +243,8 @@ function DecisionsTab({ game, onCard }: { game: GameState; onCard: (turn: number
   );
 }
 
-function LearnTab({ game, onConcept, onCard }: { game: GameState; onConcept: (id: string) => void; onCard: (turn: number) => void }) {
-  const concepts = learnedConcepts(game);
+function ProfileTab({ game }: { game: GameState }) {
   const profile = managementProfile(game);
-  const won = game.status === 'won';
-  const solid = solidDecisions(game);
   return (
     <section className="parchment page-card">
       <h2 className="h-small">Perfil de gestión</h2>
@@ -220,23 +256,31 @@ function LearnTab({ game, onConcept, onCard }: { game: GameState; onConcept: (id
       <p className="small muted">
         Frecuencia de orientaciones: {profile.counts.map((c) => `${TAG_SHORT[c.tag]} ${c.count}`).join(' · ')}. El perfil describe elecciones registradas, no rasgos personales.
       </p>
+    </section>
+  );
+}
 
+function LearnTab({ game, onConcept }: { game: GameState; onConcept: (id: string) => void }) {
+  const concepts = learnedConcepts(game, 3);
+  const won = game.status === 'won';
+  const solid = solidDecisions(game);
+  return (
+    <section className="parchment page-card">
       <h2 className="h-small">Conceptos para repasar</h2>
-      <div className="concepts">
+      <ul className="concepts">
         {concepts.map((c) => (
-          <article key={c.study.id} className={`concept ${c.causal ? 'is-causal' : ''}`}>
-            {c.causal && <span className="tag tag-alert">Relacionado con la causa del cierre</span>}
-            <h3>{c.study.title}</h3>
-            <p>{c.study.definition}</p>
-            <p><span className="muted">En tu intento:</span> {c.example}</p>
-            <p><span className="muted">Recomendación:</span> {c.recommendation}</p>
-            <div className="row">
-              <button className="btn btn-small" onClick={() => onConcept(c.study.id)}>Abrir concepto</button>
-              {c.entry && <button className="btn btn-small btn-ghost" onClick={() => onCard(c.entry!.turn)}>Ver carta</button>}
-            </div>
-          </article>
+          <li key={c.study.id} className="concept">
+            <h3>
+              <button className="concept-open" type="button" onClick={() => onConcept(c.study.id)} aria-label={`Abrir concepto: ${c.study.title}`}>
+                <span>{c.study.title}</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" /></svg>
+              </button>
+            </h3>
+            <p>{c.recommendation}</p>
+            {c.causal && <span className="concept-cause">Relacionado con el cierre</span>}
+          </li>
         ))}
-      </div>
+      </ul>
 
       {won && (
         <>

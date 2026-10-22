@@ -1,0 +1,3803 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Informe Cuantitativo y de Teoría de Juegos — El costo del equilibrio (v2)</title>
+  <style>
+    :root {
+      --bg: #f6f2e9;
+      --paper: #fffdf8;
+      --ink: #1e1b18;
+      --muted: #655c4e;
+      --border: #dcd3c0;
+      --accent-macro: #24527a;
+      --accent-micro: #26634b;
+      --gold: #b8892e;
+      --danger: #9e2a2b;
+      --success: #26634b;
+      --code-bg: #f0eadc;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Charter", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.58;
+      font-size: 16px;
+    }
+    .container {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem 4rem;
+    }
+    header.hero {
+      background: linear-gradient(135deg, #1d2630 0%, #2b3948 100%);
+      color: #f9f5eb;
+      padding: 2.75rem 2.25rem;
+      border-radius: 12px;
+      border-bottom: 4px solid var(--gold);
+      margin-bottom: 2rem;
+      box-shadow: 0 10px 28px rgba(0,0,0,0.12);
+    }
+    header.hero .eyebrow {
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-size: 0.78rem;
+      color: #e4c580;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-weight: 700;
+    }
+    header.hero h1 {
+      margin: 0.4rem 0 0.75rem;
+      font-size: 2.2rem;
+      line-height: 1.2;
+    }
+    header.hero p.subtitle {
+      margin: 0;
+      color: #d8d0c1;
+      max-width: 900px;
+      font-size: 1.05rem;
+    }
+    .meta-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.2rem;
+      margin-top: 1.35rem;
+      padding-top: 1rem;
+      border-top: 1px solid rgba(255,255,255,0.15);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-size: 0.84rem;
+      color: #cfc6b4;
+    }
+    nav.toc {
+      background: var(--paper);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1rem 1.4rem;
+      margin-bottom: 2rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-size: 0.9rem;
+    }
+    nav.toc strong {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: var(--ink);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-size: 0.78rem;
+    }
+    nav.toc ol {
+      margin: 0;
+      padding-left: 1.2rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 0.35rem 1.5rem;
+    }
+    nav.toc a {
+      color: var(--accent-macro);
+      text-decoration: none;
+    }
+    nav.toc a:hover { text-decoration: underline; }
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .kpi-card {
+      background: var(--paper);
+      border: 1px solid var(--border);
+      border-top: 4px solid var(--accent-macro);
+      border-radius: 10px;
+      padding: 1.15rem 1.25rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+    }
+    .kpi-card.micro { border-top-color: var(--accent-micro); }
+    .kpi-card.gold { border-top-color: var(--gold); }
+    .kpi-card .kpi-label {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      font-weight: 700;
+    }
+    .kpi-card .kpi-value {
+      font-size: 1.75rem;
+      font-weight: 700;
+      margin: 0.25rem 0;
+      color: var(--ink);
+    }
+    .kpi-card .kpi-desc {
+      font-size: 0.88rem;
+      color: var(--muted);
+      margin: 0;
+    }
+    section.panel {
+      background: var(--paper);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.75rem 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.03);
+    }
+    h2 {
+      margin-top: 0;
+      font-size: 1.5rem;
+      border-bottom: 2px solid var(--border);
+      padding-bottom: 0.5rem;
+      color: #1a2530;
+    }
+    h3 {
+      margin-top: 1.5rem;
+      margin-bottom: 0.5rem;
+      font-size: 1.18rem;
+      color: #243444;
+    }
+    .math-box {
+      background: #f8f4ea;
+      border: 1px solid #dfd5c0;
+      border-left: 5px solid var(--accent-macro);
+      border-radius: 8px;
+      padding: 1.15rem 1.4rem;
+      margin: 1.15rem 0;
+      overflow-x: auto;
+    }
+    .math-box .eq-title {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-size: 0.76rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent-macro);
+      font-weight: 700;
+      margin-bottom: 0.65rem;
+    }
+    .math-box math {
+      font-size: 1.14rem;
+      color: #152230;
+      margin: 0.45rem 0;
+    }
+    .math-box .eq-divider {
+      border-top: 1px dashed #d8ceb8;
+      margin: 0.75rem 0;
+    }
+    .eq-legend {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 0.5rem 1rem;
+      margin-top: 0.75rem;
+      padding-top: 0.65rem;
+      border-top: 1px solid #e5dcc8;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-size: 0.82rem;
+      color: #494136;
+    }
+    .eq-legend div strong {
+      color: #1a2530;
+    }
+    .callout {
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      margin: 1rem 0;
+      border: 1px solid var(--border);
+      background: #fbf8f1;
+    }
+    .callout.warn {
+      border-left: 4px solid var(--danger);
+      background: #fdf6f5;
+    }
+    .callout.good {
+      border-left: 4px solid var(--success);
+      background: #f4faf7;
+    }
+    code {
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+      font-size: 0.86em;
+      background: var(--code-bg);
+      padding: 0.12em 0.38em;
+      border-radius: 4px;
+    }
+    .table-wrap {
+      overflow-x: auto;
+      margin: 1rem 0;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-size: 0.85rem;
+      background: var(--paper);
+    }
+    th, td {
+      padding: 0.52rem 0.68rem;
+      border-bottom: 1px solid #eae3d2;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      background: #efe9da;
+      font-weight: 700;
+      color: #2c261e;
+      position: sticky;
+      top: 0;
+      z-index: 1;
+    }
+    td.num, th.num {
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
+    tr.scen-start td { border-top: 2px solid #cbbd9f; }
+    td.scen-cell {
+      background: #f9f6ee;
+      border-right: 1px solid #dfd6c3;
+      min-width: 165px;
+    }
+    .scen-init, .scen-solv {
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-top: 0.25rem;
+    }
+    tr.row-highlight { background: #eef6f1; }
+    tr.sub-policy { background: #faf7f0; color: #4a4338; font-size: 0.82rem; }
+    tr.row-lopsided { background: #fff8eb; }
+    .pos-strong { color: var(--success); font-weight: 700; }
+    .neg-strong { color: var(--danger); font-weight: 700; }
+    .muted { color: var(--muted); }
+    .small { font-size: 0.78rem; }
+    .badge {
+      display: inline-block;
+      padding: 0.1rem 0.4rem;
+      font-size: 0.7rem;
+      border-radius: 4px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+    .badge-cond { background: #e3ecf5; color: #1f4e78; }
+    .opt-tag {
+      display: inline-block;
+      width: 1.25rem;
+      text-align: center;
+      font-weight: 700;
+      border-radius: 3px;
+      font-size: 0.74rem;
+      margin-right: 0.25rem;
+    }
+    .opt-a { background: #dce8f5; color: #1b4975; }
+    .opt-b { background: #e4efe9; color: #1f5c43; }
+    .card-vecs {
+      margin-top: 0.25rem;
+      font-size: 0.79rem;
+      color: #4c453b;
+      display: grid;
+      gap: 0.15rem;
+    }
+    .chart-svg {
+      width: 100%;
+      max-width: 780px;
+      height: auto;
+      display: block;
+      margin: 1rem auto;
+      background: #fffdf9;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.5rem;
+    }
+    .filter-bar {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 0.75rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+    .filter-btn {
+      border: 1px solid var(--border);
+      background: #f5efe2;
+      color: var(--ink);
+      padding: 0.4rem 0.85rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.84rem;
+      font-weight: 600;
+    }
+    .filter-btn.active {
+      background: var(--accent-macro);
+      color: #fff;
+      border-color: var(--accent-macro);
+    }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+      gap: 1.25rem;
+    }
+    @media print {
+      body { background: #fff; font-size: 11pt; }
+      .container { max-width: 100%; padding: 0; }
+      section.panel { box-shadow: none; break-inside: avoid-page; }
+      .filter-bar { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="hero">
+      <div class="eyebrow">Análisis Cuantitativo · Balance v2 y Modelado en Teoría de Juegos</div>
+      <h1>El costo del equilibrio — Estado Técnico del Sistema</h1>
+      <p class="subtitle">
+        Evaluación integral sobre el motor de producción TypeScript (<code>src/engine/engine.ts</code>) y los catálogos rebalanceados (<code>cardsMacro.ts</code> y <code>cardsMicro.ts</code>, commit <code>ab22377</code>): comparación pareada <code>v1 → v2</code> en 360.000 partidas, certificación exacta de solvencia por DFS, ecuaciones de decisión dinámica / teoría de juegos y atribución contrafactual de las 50 cartas.
+      </p>
+      <div class="meta-strip">
+        <span><strong>Fecha:</strong> 22 de octubre de 2026</span>
+        <span><strong>Motor:</strong> <code>src/engine/engine.ts</code> + <code>mulberry32</code></span>
+        <span><strong>Muestra principal:</strong> N = 2.000 semillas/celda (2026101600–2026103599)</span>
+        <span><strong>Reserva (Holdout) y Oráculo DFS:</strong> N = 500 semillas/escenario (2026600000–2026600499)</span>
+      </div>
+    </header>
+
+    <nav class="toc" aria-label="Índice del informe">
+      <strong>Contenido del reporte</strong>
+      <ol>
+        <li><a href="#sec-ejecutivo">Síntesis ejecutiva y cambio estructural v1 → v2</a></li>
+        <li><a href="#sec-gametheory">Modelado con Ecuaciones de Teoría de Juegos y Control Estocástico</a></li>
+        <li><a href="#sec-deriva">Geometría del espacio de estados, deriva vectorial y auditoría de código</a></li>
+        <li><a href="#sec-macro">Resultados Monte Carlo: Modo Macroeconomía (v1 vs v2)</a></li>
+        <li><a href="#sec-micro">Resultados Monte Carlo: Modo Microeconomía (v1 vs v2)</a></li>
+        <li><a href="#sec-fragilidad">Fragilidad, fases de derrota, sesgo de supervivencia y cierre post-20</a></li>
+        <li><a href="#sec-cartas">Mapa contrafactual ΔQ y diversidad de decisiones en las 50 cartas</a></li>
+        <li><a href="#sec-sensibilidad">Análisis de sensibilidad y protocolo de reproducción</a></li>
+      </ol>
+    </nav>
+
+    <section id="sec-ejecutivo">
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-label">Receta «Siempre B» en Macro</div>
+          <div class="kpi-value">83,8–97,3 % → 1,0–6,0 %</div>
+          <p class="kpi-desc">Caída pareada de <strong>−80,9 a −96,4 pp</strong>. La austeridad mecánica ahora colapsa por Bienestar (78 %) y Confianza (19 %).</p>
+        </div>
+        <div class="kpi-card micro">
+          <div class="kpi-label">Azar y Recetas Fijas en Micro</div>
+          <div class="kpi-value">98–100 % → 6,5–30,3 %</div>
+          <p class="kpi-desc">En v1 Micro se ganaba sin mirar. En v2, azar gana 24,3–30,3 %, Siempre A 6,5–19,2 % y Siempre B 16,2–19,4 %.</p>
+        </div>
+        <div class="kpi-card gold">
+          <div class="kpi-label">Premio a Planificar (Macro)</div>
+          <div class="kpi-value">+67,2 a +80,3 pp</div>
+          <p class="kpi-desc">Ventaja pareada de <code>planner</code> (97,9–99,7 %) frente a <code>myopic</code> (17,6–31,9 %). El 66,7 % de las muertes miopes son por deuda vencida.</p>
+        </div>
+        <div class="kpi-card micro">
+          <div class="kpi-label">Solvencia Exacta (Oráculo DFS)</div>
+          <div class="kpi-value">100 % (5.000 / 5.000)</div>
+          <p class="kpi-desc">Búsqueda exhaustiva con memoización en 500 semillas nuevas por escenario: todos los mazos admiten victoria oficial y sostenible post-20.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="sec-gametheory" class="panel">
+      <h2>1. Modelado del Sistema con Ecuaciones de Teoría de Juegos y Decisión Dinámica</h2>
+      <p>
+        Aunque la partida individual tiene un único tomador de decisiones frente al mazo, la estructura matemática de <code>El costo del equilibrio</code> se modela rigurosamente mediante <strong>cuatro ecuaciones canónicas</strong> de teoría de juegos contra la naturaleza, juegos intrapersonales y teoría de información imperfecta.
+      </p>
+
+      <h3>1.1 Juego secuencial contra la Naturaleza: Ecuación de Bellman-Hurwicz (Control Robusto / Maximin de Wald)</h3>
+      <p>
+        Sea el <strong>estado aumentado</strong> en el turno <i>t</i> ∈ {1, …, 20} la tupla <i>x<sub>t</sub></i> = (<i>s<sub>t</sub></i>, <i>P<sub>t</sub></i>, <i>U<sub>t</sub></i>), donde <i>s<sub>t</sub></i> ∈ {0, …, 100}<sup>4</sup> es el vector de barras, <i>P<sub>t</sub></i> la cola de compromisos pendientes (<code>PendingEffect[]</code>) y <i>U<sub>t</sub></i> ⊂ Pool<sub>etapa(<i>t</i>)</sub> el subconjunto de cartas aún no sorteadas del bloque actual (<code>inicio</code> 1–6, <code>desarrollo</code> 7–13, <code>cierre</code> 14–20). Como las barras no son intercambiables y tocar ≤ 0 en la fase inmediata o de vencimientos es absorbente, un jugador con aversión a la ambigüedad <i>λ</i> ∈ [0, 1] juega contra la Naturaleza según la ecuación recursiva de <strong>Bellman-Hurwicz</strong>:
+      </p>
+      <div class="math-box">
+        <div class="eq-title">Ecuación 1 · Recurrencia de Bellman-Hurwicz con Barrera Absorbente</div>
+        <math display="block">
+          <mrow>
+            <msub><mi>Q</mi><mi>t</mi></msub>
+            <mo>(</mo><msub><mi>x</mi><mi>t</mi></msub><mo>,</mo><msub><mi>c</mi><mi>t</mi></msub><mo>,</mo><mi>a</mi><mo>)</mo>
+            <mo>=</mo>
+            <mrow>
+              <mo stretchy="true">{</mo>
+              <mtable columnalign="left">
+                <mtr>
+                  <mtd><mo>−</mo><mi>∞</mi></mtd>
+                  <mtd><mtext>si&nbsp;</mtext><munder><mo>mín</mo><mi>i</mi></munder><msubsup><mi>s</mi><mrow><mi>t</mi><mo>,</mo><mi>i</mi></mrow><mtext>imm</mtext></msubsup><mo>(</mo><mi>a</mi><mo>)</mo><mo>≤</mo><mn>0</mn><mtext>&nbsp;&nbsp;ó&nbsp;&nbsp;</mtext><munder><mo>mín</mo><mi>i</mi></munder><msubsup><mi>s</mi><mrow><mi>t</mi><mo>,</mo><mi>i</mi></mrow><mtext>raw</mtext></msubsup><mo>(</mo><mi>a</mi><mo>)</mo><mo>≤</mo><mn>0</mn><mtext>&nbsp;(derrota absorbente)</mtext></mtd>
+                </mtr>
+                <mtr>
+                  <mtd><mi>U</mi><mo>(</mo><msub><mi>s</mi><mn>20</mn></msub><mo>(</mo><mi>a</mi><mo>)</mo><mo>)</mo></mtd>
+                  <mtd><mtext>si&nbsp;</mtext><mi>t</mi><mo>=</mo><mn>20</mn><mtext>&nbsp;y sobrevive al turno final</mtext></mtd>
+                </mtr>
+                <mtr>
+                  <mtd>
+                    <mo>(</mo><mn>1</mn><mo>−</mo><mi>λ</mi><mo>)</mo><mo>·</mo>
+                    <msub><mi>𝔼</mi><mrow><msub><mi>c</mi><mrow><mi>t</mi><mo>+</mo><mn>1</mn></mrow></msub><mo>∈</mo><msub><mi>U</mi><mrow><mi>t</mi><mo>+</mo><mn>1</mn></mrow></msub></mrow></msub>
+                    <mo>[</mo><msub><mi>V</mi><mrow><mi>t</mi><mo>+</mo><mn>1</mn></mrow></msub><mo>(</mo><msub><mi>x</mi><mrow><mi>t</mi><mo>+</mo><mn>1</mn></mrow></msub><mo>,</mo><msub><mi>c</mi><mrow><mi>t</mi><mo>+</mo><mn>1</mn></mrow></msub><mo>)</mo><mo>]</mo>
+                    <mo>+</mo><mi>λ</mi><mo>·</mo>
+                    <munder><mo>mín</mo><mrow><msub><mi>c</mi><mrow><mi>t</mi><mo>+</mo><mn>1</mn></mrow></msub><mo>∈</mo><msub><mi>U</mi><mrow><mi>t</mi><mo>+</mo><mn>1</mn></mrow></msub></mrow></munder>
+                    <msub><mi>V</mi><mrow><mi>t</mi><mo>+</mo><mn>1</mn></mrow></msub><mo>(</mo><msub><mi>x</mi><mrow><mi>t</mi><mo>+</mo><mn>1</mn></mrow></msub><mo>,</mo><msub><mi>c</mi><mrow><mi>t</mi><mo>+</mo><mn>1</mn></mrow></msub><mo>)</mo>
+                  </mtd>
+                  <mtd><mtext>si&nbsp;</mtext><mi>t</mi><mo>&lt;</mo><mn>20</mn></mtd>
+                </mtr>
+              </mtable>
+            </mrow>
+          </mrow>
+        </math>
+        <div class="eq-divider"></div>
+        <math display="block">
+          <mrow>
+            <msub><mi>V</mi><mi>t</mi></msub><mo>(</mo><msub><mi>x</mi><mi>t</mi></msub><mo>,</mo><msub><mi>c</mi><mi>t</mi></msub><mo>)</mo>
+            <mo>=</mo>
+            <munder><mo>máx</mo><mrow><mi>a</mi><mo>∈</mo><mo>{</mo><mtext>A</mtext><mo>,</mo><mtext>B</mtext><mo>}</mo></mrow></munder>
+            <msub><mi>Q</mi><mi>t</mi></msub><mo>(</mo><msub><mi>x</mi><mi>t</mi></msub><mo>,</mo><msub><mi>c</mi><mi>t</mi></msub><mo>,</mo><mi>a</mi><mo>)</mo>
+            <mspace width="2em"></mspace>
+            <mtext>con utilidad:&nbsp;</mtext>
+            <mi>U</mi><mo>(</mo><mi>s</mi><mo>)</mo><mo>=</mo>
+            <munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>0</mn></mrow><mn>3</mn></munderover>
+            <mi>ln</mi><mo>(</mo><msub><mi>s</mi><mi>i</mi></msub><mo>)</mo>
+            <mo>+</mo><mi>γ</mi><mo>·</mo><munder><mo>mín</mo><mi>i</mi></munder><mo>(</mo><msub><mi>s</mi><mi>i</mi></msub><mo>)</mo>
+          </mrow>
+        </math>
+        <div class="eq-legend">
+          <div><strong><i>s<sub>t</sub></i><sup>imm</sup>(<i>a</i>):</strong> barras tras el efecto inmediato (tope superior 100, sin piso 0 antes de evaluar derrota).</div>
+          <div><strong><i>s<sub>t</sub></i><sup>raw</sup>(<i>a</i>):</strong> barras tras liquidar los compromisos que vencen en el turno <i>t</i>.</div>
+          <div><strong><i>λ</i> ∈ [0, 1]:</strong> aversión a la ambigüedad (<i>λ</i>=0 valor esperado; <i>λ</i>=1 juego suma cero Maximin).</div>
+          <div><strong>∂<i>U</i>/∂<i>s<sub>i</sub></i> = 1/<i>s<sub>i</sub></i>:</strong> precio sombra marginal de la barra <i>i</i> (crece hiperbólicamente cerca de 0).</div>
+        </div>
+      </div>
+      <ul>
+        <li><strong>Caso <i>λ</i> = 0 (Neutral al riesgo de mazo):</strong> Programación dinámica estocástica estándar; maximiza la utilidad/supervivencia esperada bajo muestreo sin reemplazo.</li>
+        <li><strong>Caso <i>λ</i> = 1 (Juego de suma cero Jugador máx<sub><i>a</i></sub> vs. Mazo Adversario mín<sub><i>c</i><sub><i>t</i>+1</sub></sub>):</strong> Criterio <em>Maximin de Wald</em>. Protege la barra más vulnerable asumiendo que la próxima carta del bloque será el peor choque posible.</li>
+        <li><strong>Diagnóstico de <code>forecastScore</code> en <code>scripts/simulate.ts</code>:</strong> La función actual <code>worst = Math.min(worst, utility(cur))</code> aplica el operador <code>mín</code> sobre el <strong>tiempo</strong> <i>u</i> ∈ [<i>t</i>, <i>t</i>+3] en vez de aplicarlo sobre las <strong>cartas adversas</strong> <i>c</i><sub><i>t</i>+1</sub>. Como una inversión productiva (ej. <code>MA10 A</code> o <code>MA13 A</code>) reduce <code>Tesoro</code> en <i>t</i> y paga en <i>t</i>+2, su mínimo temporal ocurre en <i>t</i>, haciendo que <code>mín<sub>u ∈ [t, t+3]</sub> U(ŝ<sub>u</sub>) = U(ŝ<sub>t</sub>)</code> ignore por completo el retorno de todas las inversiones.</li>
+      </ul>
+
+      <h3>1.2 Juego Intrapersonal de «Múltiples Yo»: Descuento Cuasi-Hiperbólico <i>β</i>-<i>δ</i> (Strotz / Laibson)</h3>
+      <p>
+        El dilema pedagógico central del juego (tomar deuda cara hoy en <code>MA09 A</code>, <code>MA18 A</code>, <code>MI12 A</code> o <code>MI15 B</code> frente a hacer sacrificios presentes para cosechar en <i>t</i>+2) es un <strong>juego dinámico intrapersonal entre el «Yo del turno <i>t</i>» y el «Yo del turno <i>t+k</i>»</strong>. Se modela con la ecuación de descuento cuasi-hiperbólico (<i>β</i>, <i>δ</i>):
+      </p>
+      <div class="math-box">
+        <div class="eq-title">Ecuación 2 · Juego Intrapersonal con Descuento Cuasi-Hiperbólico (β, δ)</div>
+        <math display="block">
+          <mrow>
+            <msub><mi>W</mi><mi>t</mi></msub><mo>(</mo><msub><mi>x</mi><mi>t</mi></msub><mo>,</mo><msub><mi>c</mi><mi>t</mi></msub><mo>,</mo><mi>a</mi><mo>;</mo><mi>β</mi><mo>)</mo>
+            <mo>=</mo>
+            <mo>(</mo><mn>1</mn><mo>−</mo><mi>β</mi><mo>)</mo><mo>·</mo>
+            <mi>U</mi><mo>(</mo><msubsup><mi>s</mi><mi>t</mi><mtext>imm</mtext></msubsup><mo>(</mo><mi>a</mi><mo>)</mo><mo>)</mo>
+            <mo>+</mo>
+            <mi>β</mi><mo>·</mo>
+            <mrow>
+              <mo stretchy="true">[</mo>
+              <mn>0,7</mn><mo>·</mo>
+              <mi>U</mi><mo>(</mo><msub><mover><mi>s</mi><mo>^</mo></mover><mrow><mo>mín</mo><mo>(</mo><mn>20</mn><mo>,</mo><mi>t</mi><mo>+</mo><mn>3</mn><mo>)</mo></mrow></msub><mo>(</mo><mi>a</mi><mo>)</mo><mo>)</mo>
+              <mo>+</mo>
+              <mn>0,3</mn><mo>·</mo>
+              <munder><mo>mín</mo><mrow><mn>0</mn><mo>≤</mo><mi>k</mi><mo>≤</mo><mn>3</mn></mrow></munder>
+              <mi>U</mi><mo>(</mo><msub><mover><mi>s</mi><mo>^</mo></mover><mrow><mi>t</mi><mo>+</mo><mi>k</mi></mrow></msub><mo>(</mo><mi>a</mi><mo>)</mo><mo>)</mo>
+              <mo stretchy="true">]</mo>
+            </mrow>
+          </mrow>
+        </math>
+        <div class="eq-legend">
+          <div><strong>(1 − <i>β</i>) · <i>U</i>(<i>s<sub>t</sub></i><sup>imm</sup>):</strong> impulso de alivio inmediato del «Yo del turno <i>t</i>».</div>
+          <div><strong>0,7 · <i>U</i>(<i>ŝ</i><sub><i>t</i>+3</sub>):</strong> posición patrimonial neta tras madurar inversiones y deudas.</div>
+          <div><strong>0,3 · mín<sub><i>k</i></sub> <i>U</i>(<i>ŝ</i><sub><i>t+k</i></sub>):</strong> penalización por baches de liquidez en el camino.</div>
+        </div>
+      </div>
+      <p>
+        Cuando <strong><i>β</i> = 0</strong>, el jugador tiene sesgo de presente total (política <code>myopic</code>): el «Yo del turno <i>t</i>» disfruta el alivio inmediato de liquidez y le transfiere el pasivo (<code>pending</code>) al «Yo del turno <i>t</i> + delay». Cuando <strong><i>β</i> = 1</strong>, el agente es temporalmente consistente (política <code>netCommitment</code>), ponderando tanto sobrevivir el bache intermedio como la posición patrimonial al final del horizonte de 3 turnos.
+      </p>
+
+      <svg viewBox="0 0 780 320" class="chart-svg" role="img" aria-label="Curva de victoria según factor de descuento cuasi-hiperbólico beta">
+    <line x1="55" y1="275.0" x2="750" y2="275.0" stroke="#e2dccb" stroke-dasharray="" /><text x="45" y="279" text-anchor="end" font-size="11" fill="#5c5346">0 %</text><line x1="55" y1="225.0" x2="750" y2="225.0" stroke="#e2dccb" stroke-dasharray="4 4" /><text x="45" y="229" text-anchor="end" font-size="11" fill="#5c5346">20 %</text><line x1="55" y1="175.0" x2="750" y2="175.0" stroke="#e2dccb" stroke-dasharray="4 4" /><text x="45" y="179" text-anchor="end" font-size="11" fill="#5c5346">40 %</text><line x1="55" y1="125.0" x2="750" y2="125.0" stroke="#e2dccb" stroke-dasharray="4 4" /><text x="45" y="129" text-anchor="end" font-size="11" fill="#5c5346">60 %</text><line x1="55" y1="75.0" x2="750" y2="75.0" stroke="#e2dccb" stroke-dasharray="4 4" /><text x="45" y="79" text-anchor="end" font-size="11" fill="#5c5346">80 %</text><line x1="55" y1="25.0" x2="750" y2="25.0" stroke="#e2dccb" stroke-dasharray="" /><text x="45" y="29" text-anchor="end" font-size="11" fill="#5c5346">100 %</text><line x1="55.0" y1="25" x2="55.0" y2="275" stroke="#ece6d8" /><text x="55.0" y="293" text-anchor="middle" font-size="11" fill="#5c5346">β=0,00</text><line x1="228.8" y1="25" x2="228.8" y2="275" stroke="#ece6d8" /><text x="228.8" y="293" text-anchor="middle" font-size="11" fill="#5c5346">β=0,25</text><line x1="402.5" y1="25" x2="402.5" y2="275" stroke="#ece6d8" /><text x="402.5" y="293" text-anchor="middle" font-size="11" fill="#5c5346">β=0,50</text><line x1="576.3" y1="25" x2="576.3" y2="275" stroke="#ece6d8" /><text x="576.3" y="293" text-anchor="middle" font-size="11" fill="#5c5346">β=0,75</text><line x1="680.5" y1="25" x2="680.5" y2="275" stroke="#ece6d8" /><text x="680.5" y="293" text-anchor="middle" font-size="11" fill="#5c5346">β=0,90</text><line x1="750.0" y1="25" x2="750.0" y2="275" stroke="#ece6d8" /><text x="750.0" y="293" text-anchor="middle" font-size="11" fill="#5c5346">β=1,00</text>
+    <polygon points="55.0,188.0 228.8,141.5 402.5,84.0 576.3,36.5 680.5,28.0 750.0,27.0 750.0,33.5 680.5,37.5 576.3,47.5 402.5,118.5 228.8,185.0 55.0,223.5" fill="#2b5c8f" fill-opacity="0.12" />
+    <path d="M55.0,207.0 L228.8,164.0 L402.5,95.1 L576.3,40.7 L680.5,30.9 L750.0,29.5" fill="none" stroke="#2b5c8f" stroke-width="3" />
+    <path d="M55.0,44.2 L228.8,29.5 L402.5,26.9 L576.3,26.0 L680.5,25.5 L750.0,25.4" fill="none" stroke="#2e6f56" stroke-width="3" stroke-dasharray="6 3" />
+    <circle cx="55.0" cy="207.0" r="4.5" fill="#2b5c8f" stroke="#fff" stroke-width="1.5" />
+         <text x="55.0" y="197.0" text-anchor="middle" font-size="11" font-weight="600" fill="#1d4268">27,2 %</text><circle cx="228.8" cy="164.0" r="4.5" fill="#2b5c8f" stroke="#fff" stroke-width="1.5" />
+         <text x="228.8" y="154.0" text-anchor="middle" font-size="11" font-weight="600" fill="#1d4268">44,4 %</text><circle cx="402.5" cy="95.1" r="4.5" fill="#2b5c8f" stroke="#fff" stroke-width="1.5" />
+         <text x="402.5" y="85.1" text-anchor="middle" font-size="11" font-weight="600" fill="#1d4268">72,0 %</text><circle cx="576.3" cy="40.7" r="4.5" fill="#2b5c8f" stroke="#fff" stroke-width="1.5" />
+         <text x="576.3" y="30.7" text-anchor="middle" font-size="11" font-weight="600" fill="#1d4268">93,7 %</text><circle cx="680.5" cy="30.9" r="4.5" fill="#2b5c8f" stroke="#fff" stroke-width="1.5" />
+         <text x="680.5" y="20.9" text-anchor="middle" font-size="11" font-weight="600" fill="#1d4268">97,6 %</text><circle cx="750.0" cy="29.5" r="4.5" fill="#2b5c8f" stroke="#fff" stroke-width="1.5" />
+         <text x="750.0" y="19.5" text-anchor="middle" font-size="11" font-weight="600" fill="#1d4268">98,2 %</text>
+    <circle cx="55.0" cy="44.2" r="4.5" fill="#2e6f56" stroke="#fff" stroke-width="1.5" />
+         <text x="55.0" y="60.2" text-anchor="middle" font-size="11" font-weight="600" fill="#1e4e3a">92,3 %</text><circle cx="228.8" cy="29.5" r="4.5" fill="#2e6f56" stroke="#fff" stroke-width="1.5" />
+         <text x="228.8" y="45.5" text-anchor="middle" font-size="11" font-weight="600" fill="#1e4e3a">98,2 %</text><circle cx="402.5" cy="26.9" r="4.5" fill="#2e6f56" stroke="#fff" stroke-width="1.5" />
+         <text x="402.5" y="42.9" text-anchor="middle" font-size="11" font-weight="600" fill="#1e4e3a">99,2 %</text><circle cx="576.3" cy="26.0" r="4.5" fill="#2e6f56" stroke="#fff" stroke-width="1.5" />
+         <text x="576.3" y="42.0" text-anchor="middle" font-size="11" font-weight="600" fill="#1e4e3a">99,6 %</text><circle cx="680.5" cy="25.5" r="4.5" fill="#2e6f56" stroke="#fff" stroke-width="1.5" />
+         <text x="680.5" y="41.5" text-anchor="middle" font-size="11" font-weight="600" fill="#1e4e3a">99,8 %</text><circle cx="750.0" cy="25.4" r="4.5" fill="#2e6f56" stroke="#fff" stroke-width="1.5" />
+         <text x="750.0" y="41.4" text-anchor="middle" font-size="11" font-weight="600" fill="#1e4e3a">99,8 %</text>
+    <text x="67" y="43" font-size="12" font-weight="700" fill="#2e6f56">— Micro v2 (media 5 negocios)</text>
+    <text x="67" y="61" font-size="12" font-weight="700" fill="#2b5c8f">— Macro v2 (media y banda mín/máx 5 países)</text>
+  </svg>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Parámetro de consistencia intertemporal <i>β</i></th>
+              <th class="num">Macro · Arg</th>
+              <th class="num">Macro · USA</th>
+              <th class="num">Macro · Bra</th>
+              <th class="num">Macro · Rus</th>
+              <th class="num">Macro · Esp</th>
+              <th class="num">Media Macro</th>
+              <th class="num">Media Micro (5 negocios)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+                  <td><strong>β = 0,00 (Miope)</strong></td>
+                  <td class="num">20,6 %</td><td class="num">23,0 %</td><td class="num">34,8 %</td><td class="num">29,0 %</td><td class="num">28,6 %</td>
+                  <td class="num"><strong>27,2 %</strong></td>
+                  <td class="num"><strong>92,3 %</strong></td>
+                </tr><tr>
+                  <td><strong>β = 0,25 (Impaciente)</strong></td>
+                  <td class="num">36,0 %</td><td class="num">41,2 %</td><td class="num">53,4 %</td><td class="num">46,0 %</td><td class="num">45,4 %</td>
+                  <td class="num"><strong>44,4 %</strong></td>
+                  <td class="num"><strong>98,2 %</strong></td>
+                </tr><tr>
+                  <td><strong>β = 0,50 (Intermedio)</strong></td>
+                  <td class="num">62,6 %</td><td class="num">72,2 %</td><td class="num">76,4 %</td><td class="num">75,6 %</td><td class="num">73,0 %</td>
+                  <td class="num"><strong>72,0 %</strong></td>
+                  <td class="num"><strong>99,2 %</strong></td>
+                </tr><tr>
+                  <td><strong>β = 0,75 (Previsor)</strong></td>
+                  <td class="num">91,0 %</td><td class="num">93,6 %</td><td class="num">95,4 %</td><td class="num">95,2 %</td><td class="num">93,4 %</td>
+                  <td class="num"><strong>93,7 %</strong></td>
+                  <td class="num"><strong>99,6 %</strong></td>
+                </tr><tr>
+                  <td><strong>β = 0,90 (Consistente)</strong></td>
+                  <td class="num">95,0 %</td><td class="num">98,4 %</td><td class="num">98,8 %</td><td class="num">98,0 %</td><td class="num">98,0 %</td>
+                  <td class="num"><strong>97,6 %</strong></td>
+                  <td class="num"><strong>99,8 %</strong></td>
+                </tr><tr>
+                  <td><strong>β = 1,00 (Planificador neto)</strong></td>
+                  <td class="num">96,6 %</td><td class="num">98,6 %</td><td class="num">98,6 %</td><td class="num">99,2 %</td><td class="num">98,0 %</td>
+                  <td class="num"><strong>98,2 %</strong></td>
+                  <td class="num"><strong>99,8 %</strong></td>
+                </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>1.3 Arrepentimiento Minimax (<em>Savage Regret</em>) y Dominancia Condicional en Equilibrio (Δ<i>Q</i>)</h3>
+      <p>
+        Para evaluar la calidad estratégica de cada carta <i>c</i> y de cada decisión del jugador en <code>src/engine/analysis.ts</code>, definimos la <strong>Ventaja Contrafactual</strong> Δ<i>Q</i>(<i>x<sub>t</sub></i>, <i>c<sub>t</sub></i>) y el <strong>Arrepentimiento (<em>Regret</em>)</strong> de elegir <i>a<sub>t</sub></i> ∈ {A, B} desde el estado <i>x<sub>t</sub></i>:
+      </p>
+      <div class="math-box">
+        <div class="eq-title">Ecuación 3 · Ventaja Contrafactual (ΔQ) y Arrepentimiento de Savage (Regret)</div>
+        <math display="block">
+          <mrow>
+            <mi>Δ</mi><mi>Q</mi><mo>(</mo><msub><mi>x</mi><mi>t</mi></msub><mo>,</mo><msub><mi>c</mi><mi>t</mi></msub><mo>)</mo>
+            <mo>=</mo>
+            <msub><mi>Q</mi><mi>t</mi></msub><mo>(</mo><msub><mi>x</mi><mi>t</mi></msub><mo>,</mo><msub><mi>c</mi><mi>t</mi></msub><mo>,</mo><mtext>A</mtext><mo>)</mo>
+            <mo>−</mo>
+            <msub><mi>Q</mi><mi>t</mi></msub><mo>(</mo><msub><mi>x</mi><mi>t</mi></msub><mo>,</mo><msub><mi>c</mi><mi>t</mi></msub><mo>,</mo><mtext>B</mtext><mo>)</mo>
+            <mspace width="2.2em"></mspace>
+            <mtext>Regret</mtext><mo>(</mo><msub><mi>x</mi><mi>t</mi></msub><mo>,</mo><msub><mi>c</mi><mi>t</mi></msub><mo>,</mo><msub><mi>a</mi><mi>t</mi></msub><mo>)</mo>
+            <mo>=</mo>
+            <munder><mo>máx</mo><mrow><msup><mi>a</mi><mo>′</mo></msup><mo>∈</mo><mo>{</mo><mtext>A</mtext><mo>,</mo><mtext>B</mtext><mo>}</mo></mrow></munder>
+            <msub><mi>Q</mi><mi>t</mi></msub><mo>(</mo><msub><mi>x</mi><mi>t</mi></msub><mo>,</mo><msub><mi>c</mi><mi>t</mi></msub><mo>,</mo><msup><mi>a</mi><mo>′</mo></msup><mo>)</mo>
+            <mo>−</mo>
+            <msub><mi>Q</mi><mi>t</mi></msub><mo>(</mo><msub><mi>x</mi><mi>t</mi></msub><mo>,</mo><msub><mi>c</mi><mi>t</mi></msub><mo>,</mo><msub><mi>a</mi><mi>t</mi></msub><mo>)</mo>
+            <mo>=</mo>
+            <mo>|</mo><mi>Δ</mi><mi>Q</mi><mo>(</mo><msub><mi>x</mi><mi>t</mi></msub><mo>,</mo><msub><mi>c</mi><mi>t</mi></msub><mo>)</mo><mo>|</mo><mo>·</mo><mi>𝕀</mi><mo>(</mo><msub><mi>a</mi><mi>t</mi></msub><mo>≠</mo><msubsup><mi>a</mi><mi>t</mi><mo>*</mo></msubsup><mo>)</mo>
+          </mrow>
+        </math>
+        <div class="eq-legend">
+          <div><strong>Δ<i>Q</i> &gt; 0:</strong> la opción A supera contrafactualmente a B desde el mismo estado y semilla.</div>
+          <div><strong>Regret = 0:</strong> el jugador tomó la acción óptima <i>a<sub>t</sub><sup>*</sup></i> en ese estado.</div>
+          <div><strong>Regret &gt; 0:</strong> magnitud exacta del costo de oportunidad incurrido por el error en el turno <i>t</i>.</div>
+        </div>
+      </div>
+      <ul>
+        <li><strong>Dominancia condicional en la variedad de estados alcanzables <i>X<sub>c</sub></i>:</strong> Una opción A domina estratégicamente a B si <b>P</b><sub><i>x</i> ∈ <i>X<sub>c</sub></i></sub>(Δ<i>Q</i>(<i>x</i>, <i>c</i>) &gt; 0) ≈ 1. Esto ocurre incluso cuando Δ<sup>imm</sup><sub>A</sub> ≱ Δ<sup>imm</sup><sub>B</sub>, porque los precios sombra (∂<i>V</i>/∂<i>s<sub>i</sub></i> ≈ 1/<i>s<sub>i</sub></i>) son mucho más altos en la barra escasa (<code>Tesoro</code> o <code>Caja</code>) que en barras abundantes (<code>Actividad</code>).</li>
+        <li><strong>Aplicación directa en <code>analysis.ts</code>:</strong> En lugar de elegir <code>topDecisions</code> por suma lineal de valores absolutos ∑|Δ<sub><i>i</i></sub>|, ordenar por Regret(<i>x<sub>t</sub></i>, <i>c<sub>t</sub></i>, <i>a<sub>t</sub></i>) identifica con precisión matemática el <strong>error crítico (<em>blunder</em>)</strong> que causó una derrota o la decisión contrafactual que sostuvo la partida.</li>
+      </ul>
+
+      <h3>1.4 Juego con Información Imperfecta y Valor de la Información (VoI)</h3>
+      <p>
+        Dado que antes de decidir en <code>Encounter.tsx</code> el jugador observa el estado <i>s<sub>t</sub></i>, la condición activa y la cola <i>P<sub>t</sub></i>, pero solo recibe una señal cualitativa <i>σ</i>(<i>c<sub>t</sub></i>) de los vectores de la carta actual a través del texto narrativo, el <strong>Valor de la Información Exacta (VoI)</strong> es:
+      </p>
+      <div class="math-box">
+        <div class="eq-title">Ecuación 4 · Valor de la Información Exacta (VoI) bajo Información Imperfecta</div>
+        <math display="block">
+          <mrow>
+            <mtext>VoI</mtext>
+            <mo>=</mo>
+            <mi>ℙ</mi><mo>(</mo><mtext>victoria</mtext><mo>∣</mo><msub><mi>π</mi><mtext>exacta</mtext></msub><mo>)</mo>
+            <mo>−</mo>
+            <mi>ℙ</mi><mo>(</mo><mtext>victoria</mtext><mo>∣</mo><msub><mi>π</mi><mtext>cualitativa</mtext></msub><mo>)</mo>
+          </mrow>
+        </math>
+        <div class="eq-legend">
+          <div><strong><i>π</i><sub>exacta</sub>:</strong> política con acceso a las magnitudes exactas del catálogo (97,8 % Macro · 99,6 % Micro).</div>
+          <div><strong><i>π</i><sub>cualitativa</sub>:</strong> política que solo conoce signos (±1), plazo y calendario (79,7 % Macro · 92,8 % Micro).</div>
+          <div><strong>VoI medio en v2:</strong> +18,1 pp en Macro y +6,8 pp en Micro.</div>
+        </div>
+      </div>
+      <p>
+        En el catálogo <code>v2</code>, VoI promedia <strong>+18,1 pp en Macro</strong> (97,8 % con vectores exactos vs. 79,7 % usando solo signos inmediatos/diferidos y calendario) y <strong>+6,8 pp en Micro</strong> (99,6 % vs. 92,8 %). Esto muestra que conocer la dirección económica de la medida y revisar el calendario de vencimientos captura la mayor parte del beneficio estratégico sin exigir memorizar los números exactos.
+      </p>
+    </section>
+
+    <section id="sec-deriva" class="panel">
+      <h2>2. Geometría del Catálogo v2, Deriva Vectorial y Auditoría de Código</h2>
+      <div class="grid-2">
+        <div>
+          <h3>2.1 Suma vectorial de las 25 cartas por modo</h3>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Modo · Opción</th>
+                  <th>Inmediato ∑Δ<sup>imm</sup></th>
+                  <th>Diferido ∑Δ<sup>def</sup></th>
+                  <th>Total ∑Δ<sup>tot</sup></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Macro · A</strong> <span class="muted">[A, T, B, C]</span></td>
+                  <td><code>[-3, -93, +67, +25]</code></td>
+                  <td><code>[+51, +1, +9, +9]</code></td>
+                  <td><strong><code>[+48, -92, +76, +34]</code></strong></td>
+                </tr>
+                <tr>
+                  <td><strong>Macro · B</strong> <span class="muted">[A, T, B, C]</span></td>
+                  <td><code>[-68, -28, -78, -70]</code></td>
+                  <td><code>[+19, +1, +7, +5]</code></td>
+                  <td><strong><code>[-49, -27, -71, -65]</code></strong></td>
+                </tr>
+                <tr>
+                  <td><strong>Micro · A</strong> <span class="muted">[K, D, E, Q]</span></td>
+                  <td><code>[-80, +9, -31, -10]</code></td>
+                  <td><code>[+21, +31, +14, +17]</code></td>
+                  <td><strong><code>[-59, +40, -17, +7]</code></strong></td>
+                </tr>
+                <tr>
+                  <td><strong>Micro · B</strong> <span class="muted">[K, D, E, Q]</span></td>
+                  <td><code>[-14, -55, -68, -38]</code></td>
+                  <td><code>[+7, +12, +6, +1]</code></td>
+                  <td><strong><code>[-7, -43, -62, -37]</code></strong></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="small muted">
+            En una partida de 20 turnos se sortea el 80 % de las cartas. Por eso <code>Siempre A</code> colapsa por <code>Tesoro</code> (0,8 × (−92) = −73,6) o <code>Caja</code> (0,8 × (−80) = −64,0), mientras <code>Siempre B</code> colapsa por <code>Bienestar/Confianza</code> en Macro y por <code>Equipo/Demanda</code> en Micro.
+          </p>
+        </div>
+        <div>
+          <h3>2.2 Hallazgos de auditoría técnica en el repositorio</h3>
+          <div class="callout warn">
+            <strong>1. Discrepancia texto vs. plazo en <code>MI20</code> (<code>src/data/cardsMicro.ts:320-325</code>):</strong><br/>
+            El texto dice <em>«conceder dos turnos adicionales»</em>, pero en <code>v2</code> la opción B pasó de <code>later(2, ...)</code> a <code>later(1, v(10, 2, 0, 0))</code>.
+          </div>
+          <div class="callout warn">
+            <strong>2. Defecto en <code>lookahead</code> de <code>scripts/simulate.ts:14-21</code>:</strong><br/>
+            Suma los compromisos que vencen en el turno a <code>stats + eff.immediate</code> sin comprobar si <code>stats + eff.immediate &lt;= 0</code> ya causó derrota inmediata no rescatable según <code>decide()</code> en <code>src/engine/engine.ts:138-147</code>.
+          </div>
+          <div class="callout">
+            <strong>3. Visibilidad previa en <code>Encounter.tsx</code> vs. documento de alcance:</strong><br/>
+            <code>previewSigns</code> sigue exportada en <code>engine.ts</code> pero ya no se muestra en los botones de decisión antes de elegir. Además, <code>El_costo_del_equilibrio_Alcance.docx.md</code> conserva aún las tablas de <code>v1</code>.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="sec-macro" class="panel">
+      <h2>3. Resultados Monte Carlo — Modo Macroeconomía (v1 vs v2)</h2>
+      <p>
+        Comparación sobre las mismas N = 2.000 semillas por escenario (<code>2026101600</code>–<code>2026103599</code>) y validación en N = 500 semillas independientes de reserva (<code>2026600000</code>–<code>2026600499</code>).
+      </p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Escenario</th>
+              <th>Política</th>
+              <th class="num">v1 (%)</th>
+              <th class="num">v2 Principal (%)</th>
+              <th class="num">IC 95 % Wilson</th>
+              <th class="num">Δ Pareado (v2 − v1)</th>
+              <th class="num">v2 Holdout (%)</th>
+              <th class="num">Turnos med.</th>
+              <th class="num">Mín. barra med. (p05)</th>
+              <th class="num">Fallo post-20 (ganadoras)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="scen-start "><td rowspan="10" class="scen-cell">
+          <strong>Argentina</strong>
+          <div class="scen-init">Inicial: <code>[50, 45, 50, 50]</code></div>
+          <div class="scen-solv">Solvencia DFS: <strong>100 %</strong> (500/500)</div>
+        </td>
+        <td>Siempre A</td>
+        <td class="num">0,05 %</td>
+        <td class="num"><strong>0,00 %</strong></td>
+        <td class="num muted">[0,00, 0,19]</td>
+        <td class="num neutral">-0,05 pp</td>
+        <td class="num">0,00 %</td>
+        <td class="num">11,64</td>
+        <td class="num">-3,0 <span class="muted">(-9,0)</span></td>
+        <td class="num">—</td>
+      </tr><tr class=" ">
+        <td>Siempre B</td>
+        <td class="num">83,80 %</td>
+        <td class="num"><strong>2,90 %</strong></td>
+        <td class="num muted">[2,25, 3,73]</td>
+        <td class="num neg-strong">-80,90 pp</td>
+        <td class="num">2,80 %</td>
+        <td class="num">11,21</td>
+        <td class="num">-2,0 <span class="muted">(-8,0)</span></td>
+        <td class="num">1,72 % <span class="muted">(1/58)</span></td>
+      </tr><tr class=" ">
+        <td>Aleatoria (50/50)</td>
+        <td class="num">26,50 %</td>
+        <td class="num"><strong>22,85 %</strong></td>
+        <td class="num muted">[21,06, 24,74]</td>
+        <td class="num neutral">-3,65 pp</td>
+        <td class="num">25,20 %</td>
+        <td class="num">16,13</td>
+        <td class="num">-1,0 <span class="muted">(-8,0)</span></td>
+        <td class="num">3,72 % <span class="muted">(17/457)</span></td>
+      </tr><tr class=" ">
+        <td>Solo signos inmediatos</td>
+        <td class="num">8,30 %</td>
+        <td class="num"><strong>1,80 %</strong></td>
+        <td class="num muted">[1,30, 2,48]</td>
+        <td class="num neutral">-6,50 pp</td>
+        <td class="num">2,40 %</td>
+        <td class="num">14,70</td>
+        <td class="num">-3,0 <span class="muted">(-11,0)</span></td>
+        <td class="num">52,78 % <span class="muted">(19/36)</span></td>
+      </tr><tr class=" ">
+        <td>Cortoplacista (myopic)</td>
+        <td class="num">78,35 %</td>
+        <td class="num"><strong>17,55 %</strong></td>
+        <td class="num muted">[15,95, 19,28]</td>
+        <td class="num neg-strong">-60,80 pp</td>
+        <td class="num">20,60 %</td>
+        <td class="num">17,37</td>
+        <td class="num">-2,0 <span class="muted">(-10,0)</span></td>
+        <td class="num">30,48 % <span class="muted">(107/351)</span></td>
+      </tr><tr class=" ">
+        <td>Conservadora (1 turno)</td>
+        <td class="num">94,70 %</td>
+        <td class="num"><strong>51,65 %</strong></td>
+        <td class="num muted">[49,46, 53,83]</td>
+        <td class="num neg-strong">-43,05 pp</td>
+        <td class="num">50,40 %</td>
+        <td class="num">19,07</td>
+        <td class="num">1,0 <span class="muted">(-7,0)</span></td>
+        <td class="num">13,17 % <span class="muted">(136/1033)</span></td>
+      </tr><tr class=" ">
+        <td>Compromisos (mín H=3)</td>
+        <td class="num">95,55 %</td>
+        <td class="num"><strong>61,80 %</strong></td>
+        <td class="num muted">[59,65, 63,90]</td>
+        <td class="num neg-strong">-33,75 pp</td>
+        <td class="num">63,00 %</td>
+        <td class="num">19,03</td>
+        <td class="num">3,0 <span class="muted">(-4,0)</span></td>
+        <td class="num">11,65 % <span class="muted">(144/1236)</span></td>
+      </tr><tr class="sub-policy">
+          <td>↳ <em>Planificadora cualitativa (solo signos + calendario)</em></td>
+          <td class="num muted">—</td>
+          <td class="num"><strong>71,65 %</strong></td>
+          <td class="num muted">sin vectores exactos</td>
+          <td class="num muted">—</td>
+          <td class="num muted">—</td>
+          <td class="num muted">—</td>
+          <td class="num muted">—</td>
+          <td class="num muted">—</td>
+        </tr>
+        <tr class="sub-policy">
+          <td>↳ <em>Compromisos netos (H=3, β=1 sin rollouts)</em></td>
+          <td class="num muted">—</td>
+          <td class="num"><strong>95,60 %</strong></td>
+          <td class="num muted">0,7·U(t+3) + 0,3·mín</td>
+          <td class="num muted">—</td>
+          <td class="num muted">—</td>
+          <td class="num muted">—</td>
+          <td class="num muted">—</td>
+          <td class="num muted">—</td>
+        </tr><tr class=" row-highlight">
+        <td>Planificadora (búsqueda H=3)</td>
+        <td class="num">99,85 %</td>
+        <td class="num"><strong>97,85 %</strong></td>
+        <td class="num muted">[97,12, 98,40]</td>
+        <td class="num neutral">-2,00 pp</td>
+        <td class="num">98,80 %</td>
+        <td class="num">19,91</td>
+        <td class="num">15,0 <span class="muted">(3,0)</span></td>
+        <td class="num">0,41 % <span class="muted">(8/1957)</span></td>
+      </tr><tr class="scen-start "><td rowspan="10" class="scen-cell">
+          <strong>Estados Unidos</strong>
+          <div class="scen-init">Inicial: <code>[60, 45, 50, 45]</code></div>
+          <div class="scen-solv">Solvencia DFS: <strong>100 %</strong> (500/500)</div>
+        </td>
+        <td>Siempre A</td>
+        <td class="num">0,05 %</td>
+        <td class="num"><strong>0,00 %</strong></td>
+        <td class="num muted">[0,00, 0,19]</td>
+        <td class="num neutral">-0,05 pp</td>
+        <td class="num">0,00 %</td>
+        <td class="num">11,64</td>
+        <td class="num">-3,0 <span class="muted">(-9,0)</span></td>
+        <td class="num">—</td>
+      </tr><tr class=" ">
+        <td>Siempre B</td>
+        <td class="num">83,80 %</td>
+        <td class="num"><strong>2,10 %</strong></td>
+        <td class="num muted">[1,56, 2,83]</td>
+        <td class="num neg-strong">-81,70 pp</td>
+        <td class="num">2,40 %</td>
+        <td class="num">10,96</td>
+        <td class="num">-2,0 <span class="muted">(-8,0)</span></td>
+        <td class="num">2,38 % <span class="muted">(1/42)</span></td>
+      </tr><tr class=" ">
+        <td>Aleatoria (50/50)</td>
+        <td class="num">26,30 %</td>
+        <td class="num"><strong>23,50 %</strong></td>
+        <td class="num muted">[21,69, 25,41]</td>
+        <td class="num neutral">-2,80 pp</td>
+        <td class="num">25,00 %</td>
+        <td class="num">16,18</td>
+        <td class="num">-1,0 <span class="muted">(-8,0)</span></td>
+        <td class="num">3,83 % <span class="muted">(18/470)</span></td>
+      </tr><tr class=" ">
+        <td>Solo signos inmediatos</td>
+        <td class="num">6,40 %</td>
+        <td class="num"><strong>2,25 %</strong></td>
+        <td class="num muted">[1,69, 3,00]</td>
+        <td class="num neutral">-4,15 pp</td>
+        <td class="num">2,60 %</td>
+        <td class="num">14,90</td>
+        <td class="num">-3,0 <span class="muted">(-11,0)</span></td>
+        <td class="num">48,89 % <span class="muted">(22/45)</span></td>
+      </tr><tr class=" ">
+        <td>Cortoplacista (myopic)</td>
+        <td class="num">83,50 %</td>
+        <td class="num"><strong>22,05 %</strong></td>
+        <td class="num muted">[20,29, 23,92]</td>
+        <td class="num neg-strong">-61,45 pp</td>
+        <td class="num">23,00 %</td>
+        <td class="num">17,77</td>
+        <td class="num">-2,0 <span class="muted">(-10,0)</span></td>
+        <td class="num">27,21 % <span class="muted">(120/441)</span></td>
+      </tr><tr class=" ">
+        <td>Conservadora (1 turno)</td>
+        <td class="num">95,10 %</td>
+        <td class="num"><strong>59,35 %</strong></td>
+        <td class="num muted">[57,18, 61,48]</td>
+        <td class="num neg-strong">-35,75 pp</td>
+        <td class="num">57,20 %</td>
+        <td class="num">19,31</td>
+        <td class="num">2,0 <span class="muted">(-6,0)</span></td>
+        <td class="num">12,97 % <span class="muted">(154/1187)</span></td>
+      </tr><tr class=" ">
+        <td>Compromisos (mín H=3)</td>
+        <td class="num">96,90 %</td>
+        <td class="num"><strong>72,35 %</strong></td>
+        <td class="num muted">[70,35, 74,27]</td>
+        <td class="num neg-strong">-24,55 pp</td>
+        <td class="num">71,80 %</td>
+        <td class="num">19,38</td>
+        <td class="num">4,0 <span class="muted">(-3,0)</span></td>
+        <td class="num">9,05 % <span class="muted">(131/1447)</span></td>
+      </tr><tr class="sub-policy">
+          <td>↳ <em>Planificadora cualitativa (solo signos + calendario)</em></td>
+          <td class="num muted">—</td>
+          <td class="num"><strong>78,45 %</strong></td>
+          <td class="num muted">sin vectores exactos</td>
+          <td class="num muted">—</td>
+          <td class="num muted">—</td>
+          <td class="num muted">—</td>
+          <td class="num muted">—</td>
+          <td class="num muted">—</td>
+        </tr>
+        <tr class="sub-policy">
+          <td>↳ <em>Compromisos netos (H=3, β=1 sin rollouts)</em></td>
+          <td class="num muted">—</td>
+          <td class="num"><strong>97,10 %</strong></td>
+          <td class="num muted">0,7·U(t+3) + 0,3·mín</td>
+          <td class="num muted">—</td>
+          <td class="num muted">—</td>
+          <td class="num muted">—</td>
+          <td class="num muted">—</td>
+          <td class="num muted">—</td>
+        </tr><tr class=" row-highlight">
+        <td>Planificadora (búsqueda H=3)</td>
+        <td class="num">99,75 %</td>
+        <td class="num"><strong>98,70 %</strong></td>
+        <td class="num muted">[98,10, 99,11]</td>
+        <td class="num neutral">-1,05 pp</td>
+        <td class="num">98,20 %</td>
+        <td class="num">19,96</td>
+        <td class="num">17,0 <span class="muted">(5,0)</span></td>
+        <td class="num">0,25 % <span class="muted">(5/1974)</span></td>
+      </tr><tr class="scen-start "><td rowspan="10" class="scen-cell">
+          <strong>Brasil</strong>
+          <div class="scen-init">Inicial: <code>[55, 50, 45, 50]</code></div>
+          <div class="scen-solv">Solvencia DFS: <strong>100 %</strong> (500/500)</div>
+        </td>
+        <td>Siempre A</td>
+        <td class="num">0,10 %</td>
+        <td class="num"><strong>0,20 %</strong></td>
+        <td class="num muted">[0,08, 0,51]</td>
+        <td class="num neutral">+0,10 pp</td>
+        <td class="num">0,20 %</td>
+        <td class="num">13,03</td>
+        <td class="num">-3,0 <span class="muted">(-8,0)</span></td>
+        <td class="num">25,00 % <span class="muted">(1/4)</span></td>
+      </tr><tr class=" ">
+        <td>Siempre B</td>
+        <td class="num">92,90 %</td>
+        <td class="num"><strong>1,20 %</strong></td>
+        <td class="num muted">[0,81, 1,78]</td>
+        <td class="num neg-strong">-91,70 pp</td>
+        <td class="num">1,40 %</td>
+        <td class="num">9,56</td>
+        <td class="num">-2,0 <span class="muted">(-8,0)</span></td>
+        <td class="num">0,00 % <span class="muted">(0/24)</span></td>
+      </tr><tr class=" ">
+        <td>Aleatoria (50/50)</td>
+        <td class="num">34,95 %</td>
+        <td class="num"><strong>31,80 %</strong></td>
+        <td class="num muted">[29,80, 33,87]</td>
+        <td class="num neutral">-3,15 pp</td>
+        <td class="num">36,60 %</td>
+        <td class="num">16,94</td>
+        <td class="num">-1,0 <span class="muted">(-7,0)</span></td>
+        <td class="num">3,62 % <span class="muted">(23/636)</span></td>
+      </tr><tr class=" ">
+        <td>Solo signos inmediatos</td>
+        <td class="num">11,95 %</td>
+        <td class="num"><strong>4,05 %</strong></td>
+        <td class="num muted">[3,27, 5,01]</td>
+        <td class="num neutral">-7,90 pp</td>
+        <td class="num">4,60 %</td>
+        <td class="num">15,40</td>
+        <td class="num">-3,0 <span class="muted">(-11,0)</span></td>
+        <td class="num">49,38 % <span class="muted">(40/81)</span></td>
+      </tr><tr class=" ">
+        <td>Cortoplacista (myopic)</td>
+        <td class="num">87,10 %</td>
+        <td class="num"><strong>31,90 %</strong></td>
+        <td class="num muted">[29,89, 33,98]</td>
+        <td class="num neg-strong">-55,20 pp</td>
+        <td class="num">34,80 %</td>
+        <td class="num">18,26</td>
+        <td class="num">-1,0 <span class="muted">(-9,0)</span></td>
+        <td class="num">20,53 % <span class="muted">(131/638)</span></td>
+      </tr><tr class=" ">
+        <td>Conservadora (1 turno)</td>
+        <td class="num">98,10 %</td>
+        <td class="num"><strong>68,50 %</strong></td>
+        <td class="num muted">[66,43, 70,50]</td>
+        <td class="num neg-strong">-29,60 pp</td>
+        <td class="num">67,80 %</td>
+        <td class="num">19,48</td>
+        <td class="num">5,0 <span class="muted">(-5,0)</span></td>
+        <td class="num">9,20 % <span class="muted">(126/1370)</span></td>
+      </tr><tr class=" ">
+        <td>Compromisos (mín H=3)</td>
+        <td class="num">97,40 %</td>
+        <td class="num"><strong>81,60 %</strong></td>
+        <td class="num muted">[79,84, 83,24]</td>
+        <td class="num neg-strong">-15,80 pp</td>
+        <td class="num">82,20 %</td>
+        <td class="num">19,60</td>
+        <td class="num">7,0 <span class="muted">(-2,0)</span></td>
+        <td class="num">6,74 % <span class="muted">(110/1632)</span></td>
+      </tr><tr class="sub-policy">
+          <td>↳ <em>Planificadora cualitativa (solo signos + calendario)</em></td>
+          <td class="num muted">—</td>
+          <td class="num"><strong>84,75 %</strong></td>
+          <td class="num muted">sin vectores exactos</td>
+          <td class="num muted">—</td>
+          <td class="num muted">—</td>
+          <td class="num muted">—</td>
+          <td class="num muted">—</td>
+          <td class="num muted">—</td>
+        </tr>
+        <tr class="sub-policy">
+          <td>↳ <em>Compromisos netos (H=3, β=1 sin rollouts)</em></td>
+          <td class="num muted">—</td>
+          <td class="num"><strong>98,50 %</strong></td>
+          <td class="num muted">0,7·U(t+3) + 0,3·mín</td>
+          <td class="num muted">—</td>
+          <td class="num muted">—</td>
+          <td class="num muted">—</td>
+          <td class="num muted">—</td>
+          <td class="num muted">—</td>
+        </tr><tr class=" row-highlight">
+        <td>Planificadora (búsqueda H=3)</td>
+        <td class="num">100,00 %</td>
+        <td class="num"><strong>99,10 %</strong></td>
+        <td class="num muted">[98,58, 99,43]</td>
+        <td class="num neutral">-0,90 pp</td>
+        <td class="num">99,20 %</td>
+        <td class="num">19,96</td>
+        <td class="num">19,0 <span class="muted">(6,0)</span></td>
+        <td class="num">0,10 % <span class="muted">(2/1982)</span></td>
+      </tr><tr class="scen-start "><td rowspan="10" class="scen-cell">
+          <strong>Rusia</strong>
+          <div class="scen-init">Inicial: <code>[50, 55, 45, 45]</code></div>
+          <div class="scen-solv">Solvencia DFS: <strong>100 %</strong> (500/500)</div>
+        </td>
+        <td>Siempre A</td>
+        <td class="num">1,45 %</td>
+        <td class="num"><strong>1,80 %</strong></td>
+        <td class="num muted">[1,30, 2,48]</td>
+        <td class="num neutral">+0,35 pp</td>
+        <td class="num">1,40 %</td>
+        <td class="num">14,41</td>
+        <td class="num">-2,0 <span class="muted">(-8,0)</span></td>
+        <td class="num">0,00 % <span class="muted">(0/36)</span></td>
+      </tr><tr class=" ">
+        <td>Siempre B</td>
+        <td class="num">97,30 %</td>
+        <td class="num"><strong>0,95 %</strong></td>
+        <td class="num muted">[0,61, 1,48]</td>
+        <td class="num neg-strong">-96,35 pp</td>
+        <td class="num">1,00 %</td>
+        <td class="num">9,46</td>
+        <td class="num">-2,0 <span class="muted">(-8,0)</span></td>
+        <td class="num">0,00 % <span class="muted">(0/19)</span></td>
+      </tr><tr class=" ">
+        <td>Aleatoria (50/50)</td>
+        <td class="num">43,95 %</td>
+        <td class="num"><strong>38,95 %</strong></td>
+        <td class="num muted">[36,84, 41,11]</td>
+        <td class="num neutral">-5,00 pp</td>
+        <td class="num">40,60 %</td>
+        <td class="num">17,41</td>
+        <td class="num">0,0 <span class="muted">(-7,0)</span></td>
+        <td class="num">3,59 % <span class="muted">(28/779)</span></td>
+      </tr><tr class=" ">
+        <td>Solo signos inmediatos</td>
+        <td class="num">12,50 %</td>
+        <td class="num"><strong>3,70 %</strong></td>
+        <td class="num muted">[2,96, 4,62]</td>
+        <td class="num neutral">-8,80 pp</td>
+        <td class="num">4,60 %</td>
+        <td class="num">15,37</td>
+        <td class="num">-3,0 <span class="muted">(-11,0)</span></td>
+        <td class="num">43,24 % <span class="muted">(32/74)</span></td>
+      </tr><tr class=" ">
+        <td>Cortoplacista (myopic)</td>
+        <td class="num">83,85 %</td>
+        <td class="num"><strong>27,40 %</strong></td>
+        <td class="num muted">[25,49, 29,40]</td>
+        <td class="num neg-strong">-56,45 pp</td>
+        <td class="num">29,00 %</td>
+        <td class="num">18,06</td>
+        <td class="num">-1,0 <span class="muted">(-10,0)</span></td>
+        <td class="num">23,18 % <span class="muted">(127/548)</span></td>
+      </tr><tr class=" ">
+        <td>Conservadora (1 turno)</td>
+        <td class="num">95,95 %</td>
+        <td class="num"><strong>62,50 %</strong></td>
+        <td class="num muted">[60,36, 64,60]</td>
+        <td class="num neg-strong">-33,45 pp</td>
+        <td class="num">62,80 %</td>
+        <td class="num">19,38</td>
+        <td class="num">3,0 <span class="muted">(-5,0)</span></td>
+        <td class="num">10,40 % <span class="muted">(130/1250)</span></td>
+      </tr><tr class=" ">
+        <td>Compromisos (mín H=3)</td>
+        <td class="num">96,85 %</td>
+        <td class="num"><strong>78,75 %</strong></td>
+        <td class="num muted">[76,90, 80,49]</td>
+        <td class="num neg-strong">-18,10 pp</td>
+        <td class="num">78,00 %</td>
+        <td class="num">19,52</td>
+        <td class="num">6,0 <span class="muted">(-3,0)</span></td>
+        <td class="num">7,24 % <span class="muted">(114/1575)</span></td>
+      </tr><tr class="sub-policy">
+          <td>↳ <em>Planificadora cualitativa (solo signos + calendario)</em></td>
+          <td class="num muted">—</td>
+          <td class="num"><strong>83,45 %</strong></td>
+          <td class="num muted">sin vectores exactos</td>
+          <td class="num muted">—</td>
+          <td class="num muted">—</td>
+          <td class="num muted">—</td>
+          <td class="num muted">—</td>
+          <td class="num muted">—</td>
+        </tr>
+        <tr class="sub-policy">
+          <td>↳ <em>Compromisos netos (H=3, β=1 sin rollouts)</em></td>
+          <td class="num muted">—</td>
+          <td class="num"><strong>98,40 %</strong></td>
+          <td class="num muted">0,7·U(t+3) + 0,3·mín</td>
+          <td class="num muted">—</td>
+          <td class="num muted">—</td>
+          <td class="num muted">—</td>
+          <td class="num muted">—</td>
+          <td class="num muted">—</td>
+        </tr><tr class=" row-highlight">
+        <td>Planificadora (búsqueda H=3)</td>
+        <td class="num">99,95 %</td>
+        <td class="num"><strong>99,70 %</strong></td>
+        <td class="num muted">[99,35, 99,86]</td>
+        <td class="num neutral">-0,25 pp</td>
+        <td class="num">99,20 %</td>
+        <td class="num">19,99</td>
+        <td class="num">20,0 <span class="muted">(7,0)</span></td>
+        <td class="num">0,15 % <span class="muted">(3/1994)</span></td>
+      </tr><tr class="scen-start "><td rowspan="10" class="scen-cell">
+          <strong>España</strong>
+          <div class="scen-init">Inicial: <code>[50, 50, 55, 50]</code></div>
+          <div class="scen-solv">Solvencia DFS: <strong>100 %</strong> (500/500)</div>
+        </td>
+        <td>Siempre A</td>
+        <td class="num">0,10 %</td>
+        <td class="num"><strong>0,20 %</strong></td>
+        <td class="num muted">[0,08, 0,51]</td>
+        <td class="num neutral">+0,10 pp</td>
+        <td class="num">0,20 %</td>
+        <td class="num">13,03</td>
+        <td class="num">-3,0 <span class="muted">(-8,0)</span></td>
+        <td class="num">25,00 % <span class="muted">(1/4)</span></td>
+      </tr><tr class=" ">
+        <td>Siempre B</td>
+        <td class="num">93,25 %</td>
+        <td class="num"><strong>5,95 %</strong></td>
+        <td class="num muted">[5,00, 7,07]</td>
+        <td class="num neg-strong">-87,30 pp</td>
+        <td class="num">5,60 %</td>
+        <td class="num">12,81</td>
+        <td class="num">-2,0 <span class="muted">(-7,0)</span></td>
+        <td class="num">0,00 % <span class="muted">(0/119)</span></td>
+      </tr><tr class=" ">
+        <td>Aleatoria (50/50)</td>
+        <td class="num">34,95 %</td>
+        <td class="num"><strong>34,05 %</strong></td>
+        <td class="num muted">[32,01, 36,16]</td>
+        <td class="num neutral">-0,90 pp</td>
+        <td class="num">38,40 %</td>
+        <td class="num">17,29</td>
+        <td class="num">0,0 <span class="muted">(-7,0)</span></td>
+        <td class="num">3,52 % <span class="muted">(24/681)</span></td>
+      </tr><tr class=" ">
+        <td>Solo signos inmediatos</td>
+        <td class="num">11,50 %</td>
+        <td class="num"><strong>3,20 %</strong></td>
+        <td class="num muted">[2,51, 4,07]</td>
+        <td class="num neutral">-8,30 pp</td>
+        <td class="num">3,00 %</td>
+        <td class="num">15,10</td>
+        <td class="num">-3,0 <span class="muted">(-11,0)</span></td>
+        <td class="num">43,75 % <span class="muted">(28/64)</span></td>
+      </tr><tr class=" ">
+        <td>Cortoplacista (myopic)</td>
+        <td class="num">83,85 %</td>
+        <td class="num"><strong>25,75 %</strong></td>
+        <td class="num muted">[23,88, 27,71]</td>
+        <td class="num neg-strong">-58,10 pp</td>
+        <td class="num">28,60 %</td>
+        <td class="num">17,92</td>
+        <td class="num">-1,0 <span class="muted">(-10,0)</span></td>
+        <td class="num">22,52 % <span class="muted">(116/515)</span></td>
+      </tr><tr class=" ">
+        <td>Conservadora (1 turno)</td>
+        <td class="num">95,95 %</td>
+        <td class="num"><strong>59,90 %</strong></td>
+        <td class="num muted">[57,74, 62,03]</td>
+        <td class="num neg-strong">-36,05 pp</td>
+        <td class="num">61,20 %</td>
+        <td class="num">19,34</td>
+        <td class="num">3,0 <span class="muted">(-6,0)</span></td>
+        <td class="num">10,10 % <span class="muted">(121/1198)</span></td>
+      </tr><tr class=" ">
+        <td>Compromisos (mín H=3)</td>
+        <td class="num">96,95 %</td>
+        <td class="num"><strong>75,95 %</strong></td>
+        <td class="num muted">[74,03, 77,77]</td>
+        <td class="num neg-strong">-21,00 pp</td>
+        <td class="num">76,20 %</td>
+        <td class="num">19,47</td>
+        <td class="num">6,0 <span class="muted">(-3,0)</span></td>
+        <td class="num">7,50 % <span class="muted">(114/1519)</span></td>
+      </tr><tr class="sub-policy">
+          <td>↳ <em>Planificadora cualitativa (solo signos + calendario)</em></td>
+          <td class="num muted">—</td>
+          <td class="num"><strong>80,35 %</strong></td>
+          <td class="num muted">sin vectores exactos</td>
+          <td class="num muted">—</td>
+          <td class="num muted">—</td>
+          <td class="num muted">—</td>
+          <td class="num muted">—</td>
+          <td class="num muted">—</td>
+        </tr>
+        <tr class="sub-policy">
+          <td>↳ <em>Compromisos netos (H=3, β=1 sin rollouts)</em></td>
+          <td class="num muted">—</td>
+          <td class="num"><strong>99,20 %</strong></td>
+          <td class="num muted">0,7·U(t+3) + 0,3·mín</td>
+          <td class="num muted">—</td>
+          <td class="num muted">—</td>
+          <td class="num muted">—</td>
+          <td class="num muted">—</td>
+          <td class="num muted">—</td>
+        </tr><tr class=" row-highlight">
+        <td>Planificadora (búsqueda H=3)</td>
+        <td class="num">100,00 %</td>
+        <td class="num"><strong>99,35 %</strong></td>
+        <td class="num muted">[98,89, 99,62]</td>
+        <td class="num neutral">-0,65 pp</td>
+        <td class="num">98,60 %</td>
+        <td class="num">19,97</td>
+        <td class="num">19,0 <span class="muted">(6,0)</span></td>
+        <td class="num">0,10 % <span class="muted">(2/1987)</span></td>
+      </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="sec-micro" class="panel">
+      <h2>4. Resultados Monte Carlo — Modo Microeconomía (v1 vs v2)</h2>
+      <p>
+        En Micro <code>v2</code> se eliminó la victoria automática al azar o con recetas fijas, manteniendo un 100 % de mazos resolubles. La política <code>myopic</code> alcanza 89,8–94,3 % porque 19 de las 25 cartas ofrecen válvulas de escape inmediatas de <code>+4 a +10 Caja</code> que permiten recomponer liquidez tras pagar deudas, pero planificar compromisos reduce las derrotas entre 5 y 15 veces (llevando la victoria a 99,1–99,9 %).
+      </p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Escenario</th>
+              <th>Política</th>
+              <th class="num">v1 (%)</th>
+              <th class="num">v2 Principal (%)</th>
+              <th class="num">IC 95 % Wilson</th>
+              <th class="num">Δ Pareado (v2 − v1)</th>
+              <th class="num">v2 Holdout (%)</th>
+              <th class="num">Turnos med.</th>
+              <th class="num">Mín. barra med. (p05)</th>
+              <th class="num">Fallo post-20 (ganadoras)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="scen-start "><td rowspan="10" class="scen-cell">
+          <strong>Panadería</strong>
+          <div class="scen-init">Inicial: <code>[50, 55, 50, 50]</code></div>
+          <div class="scen-solv">Solvencia DFS: <strong>100 %</strong> (500/500)</div>
+        </td>
+        <td>Siempre A</td>
+        <td class="num">99,35 %</td>
+        <td class="num"><strong>15,80 %</strong></td>
+        <td class="num muted">[14,27, 17,46]</td>
+        <td class="num neg-strong">-83,55 pp</td>
+        <td class="num">13,80 %</td>
+        <td class="num">13,63</td>
+        <td class="num">-2,0 <span class="muted">(-8,0)</span></td>
+        <td class="num">0,00 % <span class="muted">(0/316)</span></td>
+      </tr><tr class=" ">
+        <td>Siempre B</td>
+        <td class="num">100,00 %</td>
+        <td class="num"><strong>18,00 %</strong></td>
+        <td class="num muted">[16,38, 19,74]</td>
+        <td class="num neg-strong">-82,00 pp</td>
+        <td class="num">21,20 %</td>
+        <td class="num">15,95</td>
+        <td class="num">-1,0 <span class="muted">(-7,0)</span></td>
+        <td class="num">0,28 % <span class="muted">(1/360)</span></td>
+      </tr><tr class=" ">
+        <td>Aleatoria (50/50)</td>
+        <td class="num">98,30 %</td>
+        <td class="num"><strong>24,45 %</strong></td>
+        <td class="num muted">[22,62, 26,38]</td>
+        <td class="num neg-strong">-73,85 pp</td>
+        <td class="num">23,80 %</td>
+        <td class="num">15,44</td>
+        <td class="num">-1,0 <span class="muted">(-7,0)</span></td>
+        <td class="num">0,00 % <span class="muted">(0/489)</span></td>
+      </tr><tr class=" ">
+        <td>Solo signos inmediatos</td>
+        <td class="num">100,00 %</td>
+        <td class="num"><strong>54,55 %</strong></td>
+        <td class="num muted">[52,36, 56,72]</td>
+        <td class="num neg-strong">-45,45 pp</td>
+        <td class="num">52,40 %</td>
+        <td class="num">16,30</td>
+        <td class="num">1,0 <span class="muted">(-8,0)</span></td>
+        <td class="num">0,00 % <span class="muted">(0/1091)</span></td>
+      </tr><tr class=" ">
+        <td>Cortoplacista (myopic)</td>
+        <td class="num">100,00 %</td>
+        <td class="num"><strong>92,05 %</strong></td>
+        <td class="num muted">[90,78, 93,16]</td>
+        <td class="num neutral">-7,95 pp</td>
+        <td class="num">92,80 %</td>
+        <td class="num">19,42</td>
+        <td class="num">10,0 <span class="muted">(-1,0)</span></td>
+        <td class="num">0,00 % <span class="muted">(0/1841)</span></td>
+      </tr><tr class=" ">
+        <td>Conservadora (1 turno)</td>
+        <td class="num">100,00 %</td>
+        <td class="num"><strong>95,15 %</strong></td>
+        <td class="num muted">[94,12, 96,01]</td>
+        <td class="num neutral">-4,85 pp</td>
+        <td class="num">95,20 %</td>
+        <td class="num">19,86</td>
+        <td class="num">11,0 <span class="muted">(1,0)</span></td>
+        <td class="num">0,00 % <span class="muted">(0/1903)</span></td>
+      </tr><tr class=" ">
+        <td>Compromisos (mín H=3)</td>
+        <td class="num">100,00 %</td>
+        <td class="num"><strong>99,40 %</strong></td>
+        <td class="num muted">[98,95, 99,66]</td>
+        <td class="num neutral">-0,60 pp</td>
+        <td class="num">99,20 %</td>
+        <td class="num">19,99</td>
+        <td class="num">14,0 <span class="muted">(5,0)</span></td>
+        <td class="num">0,00 % <span class="muted">(0/1988)</span></td>
+      </tr><tr class="sub-policy">
+          <td>↳ <em>Planificadora cualitativa (solo signos + calendario)</em></td>
+          <td class="num muted">—</td>
+          <td class="num"><strong>92,60 %</strong></td>
+          <td class="num muted">sin vectores exactos</td>
+          <td class="num muted">—</td>
+          <td class="num muted">—</td>
+          <td class="num muted">—</td>
+          <td class="num muted">—</td>
+          <td class="num muted">—</td>
+        </tr>
+        <tr class="sub-policy">
+          <td>↳ <em>Compromisos netos (H=3, β=1 sin rollouts)</em></td>
+          <td class="num muted">—</td>
+          <td class="num"><strong>99,60 %</strong></td>
+          <td class="num muted">0,7·U(t+3) + 0,3·mín</td>
+          <td class="num muted">—</td>
+          <td class="num muted">—</td>
+          <td class="num muted">—</td>
+          <td class="num muted">—</td>
+          <td class="num muted">—</td>
+        </tr><tr class=" row-highlight">
+        <td>Planificadora (búsqueda H=3)</td>
+        <td class="num">100,00 %</td>
+        <td class="num"><strong>99,35 %</strong></td>
+        <td class="num muted">[98,89, 99,62]</td>
+        <td class="num neutral">-0,65 pp</td>
+        <td class="num">99,80 %</td>
+        <td class="num">19,96</td>
+        <td class="num">9,0 <span class="muted">(2,0)</span></td>
+        <td class="num">0,00 % <span class="muted">(0/1987)</span></td>
+      </tr><tr class="scen-start "><td rowspan="10" class="scen-cell">
+          <strong>Heladería</strong>
+          <div class="scen-init">Inicial: <code>[50, 55, 50, 55]</code></div>
+          <div class="scen-solv">Solvencia DFS: <strong>100 %</strong> (500/500)</div>
+        </td>
+        <td>Siempre A</td>
+        <td class="num">99,35 %</td>
+        <td class="num"><strong>17,00 %</strong></td>
+        <td class="num muted">[15,42, 18,71]</td>
+        <td class="num neg-strong">-82,35 pp</td>
+        <td class="num">15,20 %</td>
+        <td class="num">13,73</td>
+        <td class="num">-2,0 <span class="muted">(-8,0)</span></td>
+        <td class="num">0,00 % <span class="muted">(0/340)</span></td>
+      </tr><tr class=" ">
+        <td>Siempre B</td>
+        <td class="num">100,00 %</td>
+        <td class="num"><strong>18,45 %</strong></td>
+        <td class="num muted">[16,81, 20,21]</td>
+        <td class="num neg-strong">-81,55 pp</td>
+        <td class="num">22,00 %</td>
+        <td class="num">15,96</td>
+        <td class="num">-1,0 <span class="muted">(-7,0)</span></td>
+        <td class="num">0,27 % <span class="muted">(1/369)</span></td>
+      </tr><tr class=" ">
+        <td>Aleatoria (50/50)</td>
+        <td class="num">98,30 %</td>
+        <td class="num"><strong>25,90 %</strong></td>
+        <td class="num muted">[24,03, 27,86]</td>
+        <td class="num neg-strong">-72,40 pp</td>
+        <td class="num">26,00 %</td>
+        <td class="num">15,54</td>
+        <td class="num">-1,0 <span class="muted">(-7,0)</span></td>
+        <td class="num">0,00 % <span class="muted">(0/518)</span></td>
+      </tr><tr class=" ">
+        <td>Solo signos inmediatos</td>
+        <td class="num">100,00 %</td>
+        <td class="num"><strong>56,80 %</strong></td>
+        <td class="num muted">[54,62, 58,96]</td>
+        <td class="num neg-strong">-43,20 pp</td>
+        <td class="num">54,40 %</td>
+        <td class="num">16,47</td>
+        <td class="num">2,0 <span class="muted">(-8,0)</span></td>
+        <td class="num">0,00 % <span class="muted">(0/1136)</span></td>
+      </tr><tr class=" ">
+        <td>Cortoplacista (myopic)</td>
+        <td class="num">100,00 %</td>
+        <td class="num"><strong>92,75 %</strong></td>
+        <td class="num muted">[91,53, 93,81]</td>
+        <td class="num neutral">-7,25 pp</td>
+        <td class="num">93,20 %</td>
+        <td class="num">19,48</td>
+        <td class="num">10,5 <span class="muted">(-1,0)</span></td>
+        <td class="num">0,00 % <span class="muted">(0/1855)</span></td>
+      </tr><tr class=" ">
+        <td>Conservadora (1 turno)</td>
+        <td class="num">100,00 %</td>
+        <td class="num"><strong>96,40 %</strong></td>
+        <td class="num muted">[95,49, 97,13]</td>
+        <td class="num neutral">-3,60 pp</td>
+        <td class="num">96,80 %</td>
+        <td class="num">19,91</td>
+        <td class="num">12,0 <span class="muted">(2,0)</span></td>
+        <td class="num">0,00 % <span class="muted">(0/1928)</span></td>
+      </tr><tr class=" ">
+        <td>Compromisos (mín H=3)</td>
+        <td class="num">100,00 %</td>
+        <td class="num"><strong>99,60 %</strong></td>
+        <td class="num muted">[99,21, 99,80]</td>
+        <td class="num neutral">-0,40 pp</td>
+        <td class="num">99,80 %</td>
+        <td class="num">19,99</td>
+        <td class="num">14,0 <span class="muted">(6,0)</span></td>
+        <td class="num">0,00 % <span class="muted">(0/1992)</span></td>
+      </tr><tr class="sub-policy">
+          <td>↳ <em>Planificadora cualitativa (solo signos + calendario)</em></td>
+          <td class="num muted">—</td>
+          <td class="num"><strong>93,40 %</strong></td>
+          <td class="num muted">sin vectores exactos</td>
+          <td class="num muted">—</td>
+          <td class="num muted">—</td>
+          <td class="num muted">—</td>
+          <td class="num muted">—</td>
+          <td class="num muted">—</td>
+        </tr>
+        <tr class="sub-policy">
+          <td>↳ <em>Compromisos netos (H=3, β=1 sin rollouts)</em></td>
+          <td class="num muted">—</td>
+          <td class="num"><strong>99,70 %</strong></td>
+          <td class="num muted">0,7·U(t+3) + 0,3·mín</td>
+          <td class="num muted">—</td>
+          <td class="num muted">—</td>
+          <td class="num muted">—</td>
+          <td class="num muted">—</td>
+          <td class="num muted">—</td>
+        </tr><tr class=" row-highlight">
+        <td>Planificadora (búsqueda H=3)</td>
+        <td class="num">100,00 %</td>
+        <td class="num"><strong>99,50 %</strong></td>
+        <td class="num muted">[99,08, 99,73]</td>
+        <td class="num neutral">-0,50 pp</td>
+        <td class="num">99,80 %</td>
+        <td class="num">19,96</td>
+        <td class="num">9,0 <span class="muted">(2,0)</span></td>
+        <td class="num">0,00 % <span class="muted">(0/1990)</span></td>
+      </tr><tr class="scen-start "><td rowspan="10" class="scen-cell">
+          <strong>Agencia de traducción</strong>
+          <div class="scen-init">Inicial: <code>[55, 45, 55, 55]</code></div>
+          <div class="scen-solv">Solvencia DFS: <strong>100 %</strong> (500/500)</div>
+        </td>
+        <td>Siempre A</td>
+        <td class="num">99,20 %</td>
+        <td class="num"><strong>14,60 %</strong></td>
+        <td class="num muted">[13,12, 16,22]</td>
+        <td class="num neg-strong">-84,60 pp</td>
+        <td class="num">13,20 %</td>
+        <td class="num">14,02</td>
+        <td class="num">-2,0 <span class="muted">(-8,0)</span></td>
+        <td class="num">0,00 % <span class="muted">(0/292)</span></td>
+      </tr><tr class=" ">
+        <td>Siempre B</td>
+        <td class="num">100,00 %</td>
+        <td class="num"><strong>19,25 %</strong></td>
+        <td class="num muted">[17,58, 21,04]</td>
+        <td class="num neg-strong">-80,75 pp</td>
+        <td class="num">20,40 %</td>
+        <td class="num">15,72</td>
+        <td class="num">-1,0 <span class="muted">(-7,0)</span></td>
+        <td class="num">0,26 % <span class="muted">(1/385)</span></td>
+      </tr><tr class=" ">
+        <td>Aleatoria (50/50)</td>
+        <td class="num">99,05 %</td>
+        <td class="num"><strong>30,30 %</strong></td>
+        <td class="num muted">[28,33, 32,35]</td>
+        <td class="num neg-strong">-68,75 pp</td>
+        <td class="num">32,40 %</td>
+        <td class="num">16,00</td>
+        <td class="num">-1,0 <span class="muted">(-7,0)</span></td>
+        <td class="num">0,00 % <span class="muted">(0/606)</span></td>
+      </tr><tr class=" ">
+        <td>Solo signos inmediatos</td>
+        <td class="num">100,00 %</td>
+        <td class="num"><strong>61,65 %</strong></td>
+        <td class="num muted">[59,50, 63,76]</td>
+        <td class="num neg-strong">-38,35 pp</td>
+        <td class="num">59,40 %</td>
+        <td class="num">16,95</td>
+        <td class="num">3,0 <span class="muted">(-8,0)</span></td>
+        <td class="num">0,00 % <span class="muted">(0/1233)</span></td>
+      </tr><tr class=" ">
+        <td>Cortoplacista (myopic)</td>
+        <td class="num">100,00 %</td>
+        <td class="num"><strong>92,95 %</strong></td>
+        <td class="num muted">[91,74, 93,99]</td>
+        <td class="num neutral">-7,05 pp</td>
+        <td class="num">94,80 %</td>
+        <td class="num">19,48</td>
+        <td class="num">10,0 <span class="muted">(-1,0)</span></td>
+        <td class="num">0,00 % <span class="muted">(0/1859)</span></td>
+      </tr><tr class=" ">
+        <td>Conservadora (1 turno)</td>
+        <td class="num">100,00 %</td>
+        <td class="num"><strong>96,55 %</strong></td>
+        <td class="num muted">[95,66, 97,26]</td>
+        <td class="num neutral">-3,45 pp</td>
+        <td class="num">96,40 %</td>
+        <td class="num">19,90</td>
+        <td class="num">12,0 <span class="muted">(2,0)</span></td>
+        <td class="num">0,00 % <span class="muted">(0/1931)</span></td>
+      </tr><tr class=" ">
+        <td>Compromisos (mín H=3)</td>
+        <td class="num">100,00 %</td>
+        <td class="num"><strong>99,45 %</strong></td>
+        <td class="num muted">[99,02, 99,69]</td>
+        <td class="num neutral">-0,55 pp</td>
+        <td class="num">99,60 %</td>
+        <td class="num">19,99</td>
+        <td class="num">14,0 <span class="muted">(7,0)</span></td>
+        <td class="num">0,00 % <span class="muted">(0/1989)</span></td>
+      </tr><tr class="sub-policy">
+          <td>↳ <em>Planificadora cualitativa (solo signos + calendario)</em></td>
+          <td class="num muted">—</td>
+          <td class="num"><strong>94,55 %</strong></td>
+          <td class="num muted">sin vectores exactos</td>
+          <td class="num muted">—</td>
+          <td class="num muted">—</td>
+          <td class="num muted">—</td>
+          <td class="num muted">—</td>
+          <td class="num muted">—</td>
+        </tr>
+        <tr class="sub-policy">
+          <td>↳ <em>Compromisos netos (H=3, β=1 sin rollouts)</em></td>
+          <td class="num muted">—</td>
+          <td class="num"><strong>99,55 %</strong></td>
+          <td class="num muted">0,7·U(t+3) + 0,3·mín</td>
+          <td class="num muted">—</td>
+          <td class="num muted">—</td>
+          <td class="num muted">—</td>
+          <td class="num muted">—</td>
+          <td class="num muted">—</td>
+        </tr><tr class=" row-highlight">
+        <td>Planificadora (búsqueda H=3)</td>
+        <td class="num">100,00 %</td>
+        <td class="num"><strong>99,70 %</strong></td>
+        <td class="num muted">[99,35, 99,86]</td>
+        <td class="num neutral">-0,30 pp</td>
+        <td class="num">99,60 %</td>
+        <td class="num">19,98</td>
+        <td class="num">10,0 <span class="muted">(2,0)</span></td>
+        <td class="num">0,00 % <span class="muted">(0/1994)</span></td>
+      </tr><tr class="scen-start "><td rowspan="10" class="scen-cell">
+          <strong>Taller de cerámica</strong>
+          <div class="scen-init">Inicial: <code>[50, 45, 55, 60]</code></div>
+          <div class="scen-solv">Solvencia DFS: <strong>100 %</strong> (500/500)</div>
+        </td>
+        <td>Siempre A</td>
+        <td class="num">97,45 %</td>
+        <td class="num"><strong>6,50 %</strong></td>
+        <td class="num muted">[5,50, 7,67]</td>
+        <td class="num neg-strong">-90,95 pp</td>
+        <td class="num">6,60 %</td>
+        <td class="num">12,58</td>
+        <td class="num">-3,0 <span class="muted">(-9,0)</span></td>
+        <td class="num">0,00 % <span class="muted">(0/130)</span></td>
+      </tr><tr class=" ">
+        <td>Siempre B</td>
+        <td class="num">100,00 %</td>
+        <td class="num"><strong>19,35 %</strong></td>
+        <td class="num muted">[17,68, 21,14]</td>
+        <td class="num neg-strong">-80,65 pp</td>
+        <td class="num">21,00 %</td>
+        <td class="num">15,71</td>
+        <td class="num">-1,0 <span class="muted">(-7,0)</span></td>
+        <td class="num">0,00 % <span class="muted">(0/387)</span></td>
+      </tr><tr class=" ">
+        <td>Aleatoria (50/50)</td>
+        <td class="num">97,65 %</td>
+        <td class="num"><strong>24,30 %</strong></td>
+        <td class="num muted">[22,47, 26,23]</td>
+        <td class="num neg-strong">-73,35 pp</td>
+        <td class="num">24,60 %</td>
+        <td class="num">15,20</td>
+        <td class="num">-1,0 <span class="muted">(-7,0)</span></td>
+        <td class="num">0,00 % <span class="muted">(0/486)</span></td>
+      </tr><tr class=" ">
+        <td>Solo signos inmediatos</td>
+        <td class="num">100,00 %</td>
+        <td class="num"><strong>51,90 %</strong></td>
+        <td class="num muted">[49,71, 54,08]</td>
+        <td class="num neg-strong">-48,10 pp</td>
+        <td class="num">48,20 %</td>
+        <td class="num">16,05</td>
+        <td class="num">1,0 <span class="muted">(-9,0)</span></td>
+        <td class="num">0,00 % <span class="muted">(0/1038)</span></td>
+      </tr><tr class=" ">
+        <td>Cortoplacista (myopic)</td>
+        <td class="num">100,00 %</td>
+        <td class="num"><strong>89,75 %</strong></td>
+        <td class="num muted">[88,34, 91,00]</td>
+        <td class="num neutral">-10,25 pp</td>
+        <td class="num">86,80 %</td>
+        <td class="num">19,29</td>
+        <td class="num">9,0 <span class="muted">(-2,0)</span></td>
+        <td class="num">0,00 % <span class="muted">(0/1795)</span></td>
+      </tr><tr class=" ">
+        <td>Conservadora (1 turno)</td>
+        <td class="num">100,00 %</td>
+        <td class="num"><strong>93,80 %</strong></td>
+        <td class="num muted">[92,66, 94,78]</td>
+        <td class="num neutral">-6,20 pp</td>
+        <td class="num">95,40 %</td>
+        <td class="num">19,84</td>
+        <td class="num">10,0 <span class="muted">(0,0)</span></td>
+        <td class="num">0,00 % <span class="muted">(0/1876)</span></td>
+      </tr><tr class=" ">
+        <td>Compromisos (mín H=3)</td>
+        <td class="num">100,00 %</td>
+        <td class="num"><strong>99,10 %</strong></td>
+        <td class="num muted">[98,58, 99,43]</td>
+        <td class="num neutral">-0,90 pp</td>
+        <td class="num">99,00 %</td>
+        <td class="num">19,98</td>
+        <td class="num">12,0 <span class="muted">(4,0)</span></td>
+        <td class="num">0,00 % <span class="muted">(0/1982)</span></td>
+      </tr><tr class="sub-policy">
+          <td>↳ <em>Planificadora cualitativa (solo signos + calendario)</em></td>
+          <td class="num muted">—</td>
+          <td class="num"><strong>88,70 %</strong></td>
+          <td class="num muted">sin vectores exactos</td>
+          <td class="num muted">—</td>
+          <td class="num muted">—</td>
+          <td class="num muted">—</td>
+          <td class="num muted">—</td>
+          <td class="num muted">—</td>
+        </tr>
+        <tr class="sub-policy">
+          <td>↳ <em>Compromisos netos (H=3, β=1 sin rollouts)</em></td>
+          <td class="num muted">—</td>
+          <td class="num"><strong>99,30 %</strong></td>
+          <td class="num muted">0,7·U(t+3) + 0,3·mín</td>
+          <td class="num muted">—</td>
+          <td class="num muted">—</td>
+          <td class="num muted">—</td>
+          <td class="num muted">—</td>
+          <td class="num muted">—</td>
+        </tr><tr class=" row-highlight">
+        <td>Planificadora (búsqueda H=3)</td>
+        <td class="num">100,00 %</td>
+        <td class="num"><strong>99,60 %</strong></td>
+        <td class="num muted">[99,21, 99,80]</td>
+        <td class="num neutral">-0,40 pp</td>
+        <td class="num">99,60 %</td>
+        <td class="num">19,96</td>
+        <td class="num">8,0 <span class="muted">(1,0)</span></td>
+        <td class="num">0,00 % <span class="muted">(0/1992)</span></td>
+      </tr><tr class="scen-start "><td rowspan="10" class="scen-cell">
+          <strong>Taller de reparación</strong>
+          <div class="scen-init">Inicial: <code>[55, 50, 50, 50]</code></div>
+          <div class="scen-solv">Solvencia DFS: <strong>100 %</strong> (500/500)</div>
+        </td>
+        <td>Siempre A</td>
+        <td class="num">99,55 %</td>
+        <td class="num"><strong>19,15 %</strong></td>
+        <td class="num muted">[17,49, 20,93]</td>
+        <td class="num neg-strong">-80,40 pp</td>
+        <td class="num">15,80 %</td>
+        <td class="num">14,42</td>
+        <td class="num">-2,0 <span class="muted">(-8,0)</span></td>
+        <td class="num">0,00 % <span class="muted">(0/383)</span></td>
+      </tr><tr class=" ">
+        <td>Siempre B</td>
+        <td class="num">100,00 %</td>
+        <td class="num"><strong>16,20 %</strong></td>
+        <td class="num muted">[14,65, 17,88]</td>
+        <td class="num neg-strong">-83,80 pp</td>
+        <td class="num">19,60 %</td>
+        <td class="num">15,58</td>
+        <td class="num">-1,0 <span class="muted">(-7,0)</span></td>
+        <td class="num">0,00 % <span class="muted">(0/324)</span></td>
+      </tr><tr class=" ">
+        <td>Aleatoria (50/50)</td>
+        <td class="num">99,00 %</td>
+        <td class="num"><strong>28,60 %</strong></td>
+        <td class="num muted">[26,66, 30,62]</td>
+        <td class="num neg-strong">-70,40 pp</td>
+        <td class="num">30,40 %</td>
+        <td class="num">15,94</td>
+        <td class="num">-1,0 <span class="muted">(-7,0)</span></td>
+        <td class="num">0,17 % <span class="muted">(1/572)</span></td>
+      </tr><tr class=" ">
+        <td>Solo signos inmediatos</td>
+        <td class="num">100,00 %</td>
+        <td class="num"><strong>62,75 %</strong></td>
+        <td class="num muted">[60,61, 64,84]</td>
+        <td class="num neg-strong">-37,25 pp</td>
+        <td class="num">60,60 %</td>
+        <td class="num">17,04</td>
+        <td class="num">3,0 <span class="muted">(-7,0)</span></td>
+        <td class="num">0,00 % <span class="muted">(0/1255)</span></td>
+      </tr><tr class=" ">
+        <td>Cortoplacista (myopic)</td>
+        <td class="num">100,00 %</td>
+        <td class="num"><strong>94,30 %</strong></td>
+        <td class="num muted">[93,20, 95,23]</td>
+        <td class="num neutral">-5,70 pp</td>
+        <td class="num">94,00 %</td>
+        <td class="num">19,60</td>
+        <td class="num">10,0 <span class="muted">(0,0)</span></td>
+        <td class="num">0,00 % <span class="muted">(0/1886)</span></td>
+      </tr><tr class=" ">
+        <td>Conservadora (1 turno)</td>
+        <td class="num">100,00 %</td>
+        <td class="num"><strong>97,05 %</strong></td>
+        <td class="num muted">[96,21, 97,71]</td>
+        <td class="num neutral">-2,95 pp</td>
+        <td class="num">97,60 %</td>
+        <td class="num">19,94</td>
+        <td class="num">12,0 <span class="muted">(2,0)</span></td>
+        <td class="num">0,00 % <span class="muted">(0/1941)</span></td>
+      </tr><tr class=" ">
+        <td>Compromisos (mín H=3)</td>
+        <td class="num">100,00 %</td>
+        <td class="num"><strong>99,55 %</strong></td>
+        <td class="num muted">[99,15, 99,76]</td>
+        <td class="num neutral">-0,45 pp</td>
+        <td class="num">100,00 %</td>
+        <td class="num">19,99</td>
+        <td class="num">14,0 <span class="muted">(6,0)</span></td>
+        <td class="num">0,00 % <span class="muted">(0/1991)</span></td>
+      </tr><tr class="sub-policy">
+          <td>↳ <em>Planificadora cualitativa (solo signos + calendario)</em></td>
+          <td class="num muted">—</td>
+          <td class="num"><strong>95,00 %</strong></td>
+          <td class="num muted">sin vectores exactos</td>
+          <td class="num muted">—</td>
+          <td class="num muted">—</td>
+          <td class="num muted">—</td>
+          <td class="num muted">—</td>
+          <td class="num muted">—</td>
+        </tr>
+        <tr class="sub-policy">
+          <td>↳ <em>Compromisos netos (H=3, β=1 sin rollouts)</em></td>
+          <td class="num muted">—</td>
+          <td class="num"><strong>99,90 %</strong></td>
+          <td class="num muted">0,7·U(t+3) + 0,3·mín</td>
+          <td class="num muted">—</td>
+          <td class="num muted">—</td>
+          <td class="num muted">—</td>
+          <td class="num muted">—</td>
+          <td class="num muted">—</td>
+        </tr><tr class=" row-highlight">
+        <td>Planificadora (búsqueda H=3)</td>
+        <td class="num">100,00 %</td>
+        <td class="num"><strong>99,80 %</strong></td>
+        <td class="num muted">[99,49, 99,92]</td>
+        <td class="num neutral">-0,20 pp</td>
+        <td class="num">99,80 %</td>
+        <td class="num">19,98</td>
+        <td class="num">10,0 <span class="muted">(2,0)</span></td>
+        <td class="num">0,00 % <span class="muted">(0/1996)</span></td>
+      </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="sec-fragilidad" class="panel">
+      <h2>5. Fragilidad, Fases Causales de Derrota y Sesgo de Supervivencia</h2>
+      <p>
+        Desglose en las N = 2.000 partidas principales por escenario de las derrotas totales, la fase en que ocurren (<code>Inmediata / Vencimiento</code>), la barra causante (<code>0, 1, 2, 3</code>), el vector final medio en todas las partidas frente a solo las ganadoras y el promedio de turnos en alerta (≤ 20).
+      </p>
+      <div class="table-wrap" style="max-height: 540px; overflow-y: auto;">
+        <table>
+          <thead>
+            <tr>
+              <th>Modo · Escenario</th>
+              <th>Política</th>
+              <th class="num">Derrotas</th>
+              <th class="num">Fase (Inm. / Venc.)</th>
+              <th class="num">Barra 0 (Act/Caj)</th>
+              <th class="num">Barra 1 (Tes/Dem)</th>
+              <th class="num">Barra 2 (Bie/Equ)</th>
+              <th class="num">Barra 3 (Con/Cal)</th>
+              <th class="num">Vector Final (Todas)</th>
+              <th class="num">Vector Final (Ganadoras)</th>
+              <th class="num">Turnos en Alerta (≤20)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+        <td><strong>Macro · Argentina</strong></td>
+        <td>Siempre A</td>
+        <td class="num">2000 <span class="muted">(100,00 %)</span></td>
+        <td class="num">1417 / 583</td>
+        <td class="num" title="Actividad">0</td>
+        <td class="num" title="Tesoro">2000</td>
+        <td class="num" title="Bienestar">0</td>
+        <td class="num" title="Confianza">0</td>
+        <td class="num"><code>[59,8, -3,2, 93,8, 69,8]</code></td>
+        <td class="num"><code>—</code></td>
+        <td class="num"><code>[0,0, 4,4, 0,0, 0,0]</code></td>
+      </tr><tr>
+        <td><strong>Macro · Argentina</strong></td>
+        <td>Siempre B</td>
+        <td class="num">1942 <span class="muted">(97,10 %)</span></td>
+        <td class="num">1940 / 2</td>
+        <td class="num" title="Actividad">68</td>
+        <td class="num" title="Tesoro">22</td>
+        <td class="num" title="Bienestar">1748</td>
+        <td class="num" title="Confianza">264</td>
+        <td class="num"><code>[24,9, 42,2, -1,3, 10,2]</code></td>
+        <td class="num"><code>[12,7, 12,7, 10,3, 7,5]</code></td>
+        <td class="num"><code>[1,2, 0,4, 5,5, 3,4]</code></td>
+      </tr><tr>
+        <td><strong>Macro · Argentina</strong></td>
+        <td>Aleatoria (50/50)</td>
+        <td class="num">1543 <span class="muted">(77,15 %)</span></td>
+        <td class="num">1181 / 362</td>
+        <td class="num" title="Actividad">67</td>
+        <td class="num" title="Tesoro">1301</td>
+        <td class="num" title="Bienestar">111</td>
+        <td class="num" title="Confianza">71</td>
+        <td class="num"><code>[44,0, 6,0, 47,5, 37,0]</code></td>
+        <td class="num"><code>[37,1, 14,9, 35,5, 30,9]</code></td>
+        <td class="num"><code>[1,1, 4,1, 1,3, 1,2]</code></td>
+      </tr><tr>
+        <td><strong>Macro · Argentina</strong></td>
+        <td>Cortoplacista (myopic)</td>
+        <td class="num">1649 <span class="muted">(82,45 %)</span></td>
+        <td class="num">508 / 1141</td>
+        <td class="num" title="Actividad">0</td>
+        <td class="num" title="Tesoro">1648</td>
+        <td class="num" title="Bienestar">0</td>
+        <td class="num" title="Confianza">2</td>
+        <td class="num"><code>[34,5, -1,3, 64,5, 25,8]</code></td>
+        <td class="num"><code>[35,2, 10,7, 53,1, 21,8]</code></td>
+        <td class="num"><code>[0,5, 5,3, 0,0, 0,9]</code></td>
+      </tr><tr>
+        <td><strong>Macro · Argentina</strong></td>
+        <td>Conservadora (1 turno)</td>
+        <td class="num">967 <span class="muted">(48,35 %)</span></td>
+        <td class="num">482 / 485</td>
+        <td class="num" title="Actividad">0</td>
+        <td class="num" title="Tesoro">929</td>
+        <td class="num" title="Bienestar">0</td>
+        <td class="num" title="Confianza">50</td>
+        <td class="num"><code>[36,4, 4,8, 44,3, 16,0]</code></td>
+        <td class="num"><code>[34,2, 11,3, 39,9, 15,8]</code></td>
+        <td class="num"><code>[0,3, 4,8, 0,1, 2,4]</code></td>
+      </tr><tr>
+        <td><strong>Macro · Argentina</strong></td>
+        <td>Compromisos (mín H=3)</td>
+        <td class="num">764 <span class="muted">(38,20 %)</span></td>
+        <td class="num">731 / 33</td>
+        <td class="num" title="Actividad">5</td>
+        <td class="num" title="Tesoro">757</td>
+        <td class="num" title="Bienestar">0</td>
+        <td class="num" title="Confianza">2</td>
+        <td class="num"><code>[29,0, 6,4, 48,5, 27,0]</code></td>
+        <td class="num"><code>[29,1, 11,4, 44,1, 25,0]</code></td>
+        <td class="num"><code>[1,4, 7,0, 0,0, 1,0]</code></td>
+      </tr><tr>
+        <td><strong>Macro · Argentina</strong></td>
+        <td>Planificadora (búsqueda H=3)</td>
+        <td class="num">43 <span class="muted">(2,15 %)</span></td>
+        <td class="num">37 / 6</td>
+        <td class="num" title="Actividad">0</td>
+        <td class="num" title="Tesoro">43</td>
+        <td class="num" title="Bienestar">0</td>
+        <td class="num" title="Confianza">0</td>
+        <td class="num"><code>[52,6, 22,9, 41,2, 55,2]</code></td>
+        <td class="num"><code>[52,6, 23,5, 40,9, 55,3]</code></td>
+        <td class="num"><code>[0,1, 3,3, 0,1, 0,0]</code></td>
+      </tr><tr>
+        <td><strong>Macro · Estados Unidos</strong></td>
+        <td>Siempre A</td>
+        <td class="num">2000 <span class="muted">(100,00 %)</span></td>
+        <td class="num">1416 / 584</td>
+        <td class="num" title="Actividad">0</td>
+        <td class="num" title="Tesoro">2000</td>
+        <td class="num" title="Bienestar">0</td>
+        <td class="num" title="Confianza">0</td>
+        <td class="num"><code>[69,8, -3,2, 93,8, 64,8]</code></td>
+        <td class="num"><code>—</code></td>
+        <td class="num"><code>[0,0, 4,4, 0,0, 0,0]</code></td>
+      </tr><tr>
+        <td><strong>Macro · Estados Unidos</strong></td>
+        <td>Siempre B</td>
+        <td class="num">1958 <span class="muted">(97,90 %)</span></td>
+        <td class="num">1956 / 2</td>
+        <td class="num" title="Actividad">7</td>
+        <td class="num" title="Tesoro">15</td>
+        <td class="num" title="Bienestar">1608</td>
+        <td class="num" title="Confianza">638</td>
+        <td class="num"><code>[35,8, 43,0, -0,7, 5,6]</code></td>
+        <td class="num"><code>[19,5, 12,8, 12,0, 6,3]</code></td>
+        <td class="num"><code>[0,3, 0,3, 5,3, 4,5]</code></td>
+      </tr><tr>
+        <td><strong>Macro · Estados Unidos</strong></td>
+        <td>Aleatoria (50/50)</td>
+        <td class="num">1530 <span class="muted">(76,50 %)</span></td>
+        <td class="num">1173 / 357</td>
+        <td class="num" title="Actividad">12</td>
+        <td class="num" title="Tesoro">1301</td>
+        <td class="num" title="Bienestar">109</td>
+        <td class="num" title="Confianza">123</td>
+        <td class="num"><code>[53,7, 6,0, 47,4, 31,9]</code></td>
+        <td class="num"><code>[44,5, 15,5, 36,1, 27,1]</code></td>
+        <td class="num"><code>[0,4, 4,1, 1,2, 2,0]</code></td>
+      </tr><tr>
+        <td><strong>Macro · Estados Unidos</strong></td>
+        <td>Cortoplacista (myopic)</td>
+        <td class="num">1559 <span class="muted">(77,95 %)</span></td>
+        <td class="num">502 / 1057</td>
+        <td class="num" title="Actividad">0</td>
+        <td class="num" title="Tesoro">1557</td>
+        <td class="num" title="Bienestar">0</td>
+        <td class="num" title="Confianza">3</td>
+        <td class="num"><code>[37,8, -0,5, 64,8, 23,2]</code></td>
+        <td class="num"><code>[38,0, 10,8, 55,3, 21,2]</code></td>
+        <td class="num"><code>[0,2, 5,0, 0,0, 1,1]</code></td>
+      </tr><tr>
+        <td><strong>Macro · Estados Unidos</strong></td>
+        <td>Conservadora (1 turno)</td>
+        <td class="num">813 <span class="muted">(40,65 %)</span></td>
+        <td class="num">392 / 421</td>
+        <td class="num" title="Actividad">0</td>
+        <td class="num" title="Tesoro">766</td>
+        <td class="num" title="Bienestar">0</td>
+        <td class="num" title="Confianza">50</td>
+        <td class="num"><code>[39,6, 6,2, 43,5, 15,6]</code></td>
+        <td class="num"><code>[36,9, 11,6, 40,2, 16,0]</code></td>
+        <td class="num"><code>[0,2, 4,6, 0,1, 2,5]</code></td>
+      </tr><tr>
+        <td><strong>Macro · Estados Unidos</strong></td>
+        <td>Compromisos (mín H=3)</td>
+        <td class="num">553 <span class="muted">(27,65 %)</span></td>
+        <td class="num">538 / 15</td>
+        <td class="num" title="Actividad">0</td>
+        <td class="num" title="Tesoro">552</td>
+        <td class="num" title="Bienestar">0</td>
+        <td class="num" title="Confianza">1</td>
+        <td class="num"><code>[33,0, 8,2, 47,8, 24,8]</code></td>
+        <td class="num"><code>[32,5, 12,0, 45,0, 24,0]</code></td>
+        <td class="num"><code>[0,6, 6,7, 0,0, 1,4]</code></td>
+      </tr><tr>
+        <td><strong>Macro · Estados Unidos</strong></td>
+        <td>Planificadora (búsqueda H=3)</td>
+        <td class="num">26 <span class="muted">(1,30 %)</span></td>
+        <td class="num">24 / 2</td>
+        <td class="num" title="Actividad">0</td>
+        <td class="num" title="Tesoro">26</td>
+        <td class="num" title="Bienestar">0</td>
+        <td class="num" title="Confianza">0</td>
+        <td class="num"><code>[58,3, 24,6, 41,7, 50,9]</code></td>
+        <td class="num"><code>[58,3, 24,9, 41,5, 51,0]</code></td>
+        <td class="num"><code>[0,0, 2,7, 0,1, 0,0]</code></td>
+      </tr><tr>
+        <td><strong>Macro · Brasil</strong></td>
+        <td>Siempre A</td>
+        <td class="num">1996 <span class="muted">(99,80 %)</span></td>
+        <td class="num">1409 / 587</td>
+        <td class="num" title="Actividad">0</td>
+        <td class="num" title="Tesoro">1996</td>
+        <td class="num" title="Bienestar">0</td>
+        <td class="num" title="Confianza">0</td>
+        <td class="num"><code>[68,3, -3,2, 92,3, 71,2]</code></td>
+        <td class="num"><code>[84,8, 6,8, 82,0, 68,0]</code></td>
+        <td class="num"><code>[0,0, 4,3, 0,0, 0,0]</code></td>
+      </tr><tr>
+        <td><strong>Macro · Brasil</strong></td>
+        <td>Siempre B</td>
+        <td class="num">1976 <span class="muted">(98,80 %)</span></td>
+        <td class="num">1976 / 0</td>
+        <td class="num" title="Actividad">13</td>
+        <td class="num" title="Tesoro">2</td>
+        <td class="num" title="Bienestar">1939</td>
+        <td class="num" title="Confianza">92</td>
+        <td class="num"><code>[33,6, 49,9, -2,7, 14,6]</code></td>
+        <td class="num"><code>[17,5, 14,9, 9,9, 10,0]</code></td>
+        <td class="num"><code>[0,4, 0,1, 5,0, 2,1]</code></td>
+      </tr><tr>
+        <td><strong>Macro · Brasil</strong></td>
+        <td>Aleatoria (50/50)</td>
+        <td class="num">1364 <span class="muted">(68,20 %)</span></td>
+        <td class="num">1079 / 285</td>
+        <td class="num" title="Actividad">29</td>
+        <td class="num" title="Tesoro">1099</td>
+        <td class="num" title="Bienestar">181</td>
+        <td class="num" title="Confianza">68</td>
+        <td class="num"><code>[49,3, 9,1, 42,3, 36,3]</code></td>
+        <td class="num"><code>[42,2, 15,9, 35,1, 33,2]</code></td>
+        <td class="num"><code>[0,7, 3,6, 1,9, 1,2]</code></td>
+      </tr><tr>
+        <td><strong>Macro · Brasil</strong></td>
+        <td>Cortoplacista (myopic)</td>
+        <td class="num">1362 <span class="muted">(68,10 %)</span></td>
+        <td class="num">443 / 919</td>
+        <td class="num" title="Actividad">0</td>
+        <td class="num" title="Tesoro">1362</td>
+        <td class="num" title="Bienestar">0</td>
+        <td class="num" title="Confianza">0</td>
+        <td class="num"><code>[39,0, 1,2, 64,4, 26,4]</code></td>
+        <td class="num"><code>[39,6, 11,3, 57,1, 24,3]</code></td>
+        <td class="num"><code>[0,2, 4,9, 0,0, 0,7]</code></td>
+      </tr><tr>
+        <td><strong>Macro · Brasil</strong></td>
+        <td>Conservadora (1 turno)</td>
+        <td class="num">630 <span class="muted">(31,50 %)</span></td>
+        <td class="num">279 / 351</td>
+        <td class="num" title="Actividad">0</td>
+        <td class="num" title="Tesoro">620</td>
+        <td class="num" title="Bienestar">0</td>
+        <td class="num" title="Confianza">12</td>
+        <td class="num"><code>[38,6, 8,0, 46,5, 18,6]</code></td>
+        <td class="num"><code>[37,3, 12,7, 43,6, 18,6]</code></td>
+        <td class="num"><code>[0,2, 4,2, 0,1, 1,9]</code></td>
+      </tr><tr>
+        <td><strong>Macro · Brasil</strong></td>
+        <td>Compromisos (mín H=3)</td>
+        <td class="num">368 <span class="muted">(18,40 %)</span></td>
+        <td class="num">354 / 14</td>
+        <td class="num" title="Actividad">0</td>
+        <td class="num" title="Tesoro">368</td>
+        <td class="num" title="Bienestar">0</td>
+        <td class="num" title="Confianza">0</td>
+        <td class="num"><code>[34,0, 10,8, 48,4, 29,3]</code></td>
+        <td class="num"><code>[33,9, 13,6, 46,5, 28,5]</code></td>
+        <td class="num"><code>[0,5, 5,8, 0,0, 0,6]</code></td>
+      </tr><tr>
+        <td><strong>Macro · Brasil</strong></td>
+        <td>Planificadora (búsqueda H=3)</td>
+        <td class="num">18 <span class="muted">(0,90 %)</span></td>
+        <td class="num">18 / 0</td>
+        <td class="num" title="Actividad">0</td>
+        <td class="num" title="Tesoro">18</td>
+        <td class="num" title="Bienestar">0</td>
+        <td class="num" title="Confianza">0</td>
+        <td class="num"><code>[58,1, 25,9, 42,0, 58,2]</code></td>
+        <td class="num"><code>[58,1, 26,2, 41,9, 58,2]</code></td>
+        <td class="num"><code>[0,0, 2,0, 0,1, 0,0]</code></td>
+      </tr><tr>
+        <td><strong>Macro · Rusia</strong></td>
+        <td>Siempre A</td>
+        <td class="num">1964 <span class="muted">(98,20 %)</span></td>
+        <td class="num">1409 / 555</td>
+        <td class="num" title="Actividad">0</td>
+        <td class="num" title="Tesoro">1964</td>
+        <td class="num" title="Bienestar">0</td>
+        <td class="num" title="Confianza">0</td>
+        <td class="num"><code>[67,2, -3,0, 93,6, 67,3]</code></td>
+        <td class="num"><code>[78,0, 4,5, 85,8, 63,5]</code></td>
+        <td class="num"><code>[0,0, 4,2, 0,0, 0,0]</code></td>
+      </tr><tr>
+        <td><strong>Macro · Rusia</strong></td>
+        <td>Siempre B</td>
+        <td class="num">1981 <span class="muted">(99,05 %)</span></td>
+        <td class="num">1981 / 0</td>
+        <td class="num" title="Actividad">32</td>
+        <td class="num" title="Tesoro">0</td>
+        <td class="num" title="Bienestar">1871</td>
+        <td class="num" title="Confianza">250</td>
+        <td class="num"><code>[28,9, 55,1, -2,4, 9,8]</code></td>
+        <td class="num"><code>[14,6, 19,9, 10,4, 6,2]</code></td>
+        <td class="num"><code>[0,7, 0,0, 4,9, 3,3]</code></td>
+      </tr><tr>
+        <td><strong>Macro · Rusia</strong></td>
+        <td>Aleatoria (50/50)</td>
+        <td class="num">1221 <span class="muted">(61,05 %)</span></td>
+        <td class="num">977 / 244</td>
+        <td class="num" title="Actividad">68</td>
+        <td class="num" title="Tesoro">890</td>
+        <td class="num" title="Bienestar">168</td>
+        <td class="num" title="Confianza">113</td>
+        <td class="num"><code>[45,0, 12,8, 42,6, 31,4]</code></td>
+        <td class="num"><code>[40,8, 16,9, 37,9, 30,0]</code></td>
+        <td class="num"><code>[1,1, 3,1, 1,8, 2,0]</code></td>
+      </tr><tr>
+        <td><strong>Macro · Rusia</strong></td>
+        <td>Cortoplacista (myopic)</td>
+        <td class="num">1452 <span class="muted">(72,60 %)</span></td>
+        <td class="num">466 / 986</td>
+        <td class="num" title="Actividad">0</td>
+        <td class="num" title="Tesoro">1452</td>
+        <td class="num" title="Bienestar">0</td>
+        <td class="num" title="Confianza">0</td>
+        <td class="num"><code>[38,7, 0,5, 63,8, 25,8]</code></td>
+        <td class="num"><code>[38,8, 11,2, 54,4, 23,1]</code></td>
+        <td class="num"><code>[0,2, 4,9, 0,0, 0,8]</code></td>
+      </tr><tr>
+        <td><strong>Macro · Rusia</strong></td>
+        <td>Conservadora (1 turno)</td>
+        <td class="num">750 <span class="muted">(37,50 %)</span></td>
+        <td class="num">347 / 403</td>
+        <td class="num" title="Actividad">0</td>
+        <td class="num" title="Tesoro">728</td>
+        <td class="num" title="Bienestar">0</td>
+        <td class="num" title="Confianza">28</td>
+        <td class="num"><code>[39,0, 6,9, 44,2, 17,3]</code></td>
+        <td class="num"><code>[37,0, 12,4, 40,6, 17,2]</code></td>
+        <td class="num"><code>[0,1, 4,3, 0,1, 2,1]</code></td>
+      </tr><tr>
+        <td><strong>Macro · Rusia</strong></td>
+        <td>Compromisos (mín H=3)</td>
+        <td class="num">425 <span class="muted">(21,25 %)</span></td>
+        <td class="num">414 / 11</td>
+        <td class="num" title="Actividad">1</td>
+        <td class="num" title="Tesoro">423</td>
+        <td class="num" title="Bienestar">0</td>
+        <td class="num" title="Confianza">1</td>
+        <td class="num"><code>[33,7, 9,9, 47,4, 28,6]</code></td>
+        <td class="num"><code>[33,6, 13,1, 44,8, 27,6]</code></td>
+        <td class="num"><code>[0,5, 6,1, 0,0, 0,6]</code></td>
+      </tr><tr>
+        <td><strong>Macro · Rusia</strong></td>
+        <td>Planificadora (búsqueda H=3)</td>
+        <td class="num">6 <span class="muted">(0,30 %)</span></td>
+        <td class="num">6 / 0</td>
+        <td class="num" title="Actividad">0</td>
+        <td class="num" title="Tesoro">6</td>
+        <td class="num" title="Bienestar">0</td>
+        <td class="num" title="Confianza">0</td>
+        <td class="num"><code>[56,6, 27,1, 43,8, 56,2]</code></td>
+        <td class="num"><code>[56,7, 27,2, 43,8, 56,2]</code></td>
+        <td class="num"><code>[0,0, 1,7, 0,1, 0,0]</code></td>
+      </tr><tr>
+        <td><strong>Macro · España</strong></td>
+        <td>Siempre A</td>
+        <td class="num">1996 <span class="muted">(99,80 %)</span></td>
+        <td class="num">1409 / 587</td>
+        <td class="num" title="Actividad">0</td>
+        <td class="num" title="Tesoro">1996</td>
+        <td class="num" title="Bienestar">0</td>
+        <td class="num" title="Confianza">0</td>
+        <td class="num"><code>[63,3, -3,2, 96,8, 71,2]</code></td>
+        <td class="num"><code>[79,8, 6,8, 89,3, 68,0]</code></td>
+        <td class="num"><code>[0,0, 4,3, 0,0, 0,0]</code></td>
+      </tr><tr>
+        <td><strong>Macro · España</strong></td>
+        <td>Siempre B</td>
+        <td class="num">1881 <span class="muted">(94,05 %)</span></td>
+        <td class="num">1881 / 0</td>
+        <td class="num" title="Actividad">120</td>
+        <td class="num" title="Tesoro">8</td>
+        <td class="num" title="Bienestar">1420</td>
+        <td class="num" title="Confianza">567</td>
+        <td class="num"><code>[21,5, 44,9, 0,5, 6,1]</code></td>
+        <td class="num"><code>[13,5, 17,1, 12,5, 7,1]</code></td>
+        <td class="num"><code>[1,8, 0,3, 5,8, 4,7]</code></td>
+      </tr><tr>
+        <td><strong>Macro · España</strong></td>
+        <td>Aleatoria (50/50)</td>
+        <td class="num">1319 <span class="muted">(65,95 %)</span></td>
+        <td class="num">1030 / 289</td>
+        <td class="num" title="Actividad">70</td>
+        <td class="num" title="Tesoro">1110</td>
+        <td class="num" title="Bienestar">67</td>
+        <td class="num" title="Confianza">82</td>
+        <td class="num"><code>[44,8, 8,1, 52,7, 36,5]</code></td>
+        <td class="num"><code>[39,3, 16,1, 42,8, 32,3]</code></td>
+        <td class="num"><code>[1,1, 3,7, 0,9, 1,3]</code></td>
+      </tr><tr>
+        <td><strong>Macro · España</strong></td>
+        <td>Cortoplacista (myopic)</td>
+        <td class="num">1485 <span class="muted">(74,25 %)</span></td>
+        <td class="num">515 / 970</td>
+        <td class="num" title="Actividad">0</td>
+        <td class="num" title="Tesoro">1485</td>
+        <td class="num" title="Bienestar">0</td>
+        <td class="num" title="Confianza">0</td>
+        <td class="num"><code>[37,9, 0,3, 67,1, 26,3]</code></td>
+        <td class="num"><code>[39,1, 11,4, 57,8, 22,9]</code></td>
+        <td class="num"><code>[0,2, 5,0, 0,0, 0,8]</code></td>
+      </tr><tr>
+        <td><strong>Macro · España</strong></td>
+        <td>Conservadora (1 turno)</td>
+        <td class="num">802 <span class="muted">(40,10 %)</span></td>
+        <td class="num">379 / 423</td>
+        <td class="num" title="Actividad">0</td>
+        <td class="num" title="Tesoro">760</td>
+        <td class="num" title="Bienestar">0</td>
+        <td class="num" title="Confianza">50</td>
+        <td class="num"><code>[39,8, 6,2, 44,6, 16,3]</code></td>
+        <td class="num"><code>[37,2, 11,6, 40,2, 16,3]</code></td>
+        <td class="num"><code>[0,2, 4,6, 0,1, 2,3]</code></td>
+      </tr><tr>
+        <td><strong>Macro · España</strong></td>
+        <td>Compromisos (mín H=3)</td>
+        <td class="num">481 <span class="muted">(24,05 %)</span></td>
+        <td class="num">466 / 15</td>
+        <td class="num" title="Actividad">2</td>
+        <td class="num" title="Tesoro">477</td>
+        <td class="num" title="Bienestar">0</td>
+        <td class="num" title="Confianza">2</td>
+        <td class="num"><code>[32,8, 9,4, 50,1, 28,2]</code></td>
+        <td class="num"><code>[33,1, 13,0, 47,1, 27,3]</code></td>
+        <td class="num"><code>[0,7, 6,3, 0,0, 0,8]</code></td>
+      </tr><tr>
+        <td><strong>Macro · España</strong></td>
+        <td>Planificadora (búsqueda H=3)</td>
+        <td class="num">13 <span class="muted">(0,65 %)</span></td>
+        <td class="num">13 / 0</td>
+        <td class="num" title="Actividad">0</td>
+        <td class="num" title="Tesoro">13</td>
+        <td class="num" title="Bienestar">0</td>
+        <td class="num" title="Confianza">0</td>
+        <td class="num"><code>[54,9, 26,9, 45,9, 56,4]</code></td>
+        <td class="num"><code>[54,9, 27,1, 45,8, 56,5]</code></td>
+        <td class="num"><code>[0,1, 1,9, 0,0, 0,0]</code></td>
+      </tr><tr>
+        <td><strong>Micro · Panadería</strong></td>
+        <td>Siempre A</td>
+        <td class="num">1684 <span class="muted">(84,20 %)</span></td>
+        <td class="num">1319 / 365</td>
+        <td class="num" title="Caja">1683</td>
+        <td class="num" title="Demanda">0</td>
+        <td class="num" title="Equipo">1</td>
+        <td class="num" title="Calidad">0</td>
+        <td class="num"><code>[-0,6, 68,9, 43,8, 52,1]</code></td>
+        <td class="num"><code>[14,4, 81,1, 29,5, 46,3]</code></td>
+        <td class="num"><code>[4,1, 0,0, 0,2, 0,0]</code></td>
+      </tr><tr>
+        <td><strong>Micro · Panadería</strong></td>
+        <td>Siempre B</td>
+        <td class="num">1640 <span class="muted">(82,00 %)</span></td>
+        <td class="num">1575 / 65</td>
+        <td class="num" title="Caja">64</td>
+        <td class="num" title="Demanda">363</td>
+        <td class="num" title="Equipo">1288</td>
+        <td class="num" title="Calidad">32</td>
+        <td class="num"><code>[36,4, 14,2, 2,1, 17,9]</code></td>
+        <td class="num"><code>[20,4, 15,9, 8,8, 27,5]</code></td>
+        <td class="num"><code>[1,2, 3,2, 5,0, 2,0]</code></td>
+      </tr><tr>
+        <td><strong>Micro · Panadería</strong></td>
+        <td>Aleatoria (50/50)</td>
+        <td class="num">1511 <span class="muted">(75,55 %)</span></td>
+        <td class="num">1289 / 222</td>
+        <td class="num" title="Caja">884</td>
+        <td class="num" title="Demanda">95</td>
+        <td class="num" title="Equipo">487</td>
+        <td class="num" title="Calidad">77</td>
+        <td class="num"><code>[14,9, 43,5, 23,6, 36,2]</code></td>
+        <td class="num"><code>[20,9, 37,9, 20,5, 33,6]</code></td>
+        <td class="num"><code>[3,3, 1,2, 2,6, 1,2]</code></td>
+      </tr><tr>
+        <td><strong>Micro · Panadería</strong></td>
+        <td>Cortoplacista (myopic)</td>
+        <td class="num">159 <span class="muted">(7,95 %)</span></td>
+        <td class="num">28 / 131</td>
+        <td class="num" title="Caja">153</td>
+        <td class="num" title="Demanda">0</td>
+        <td class="num" title="Equipo">6</td>
+        <td class="num" title="Calidad">0</td>
+        <td class="num"><code>[17,8, 34,8, 23,9, 37,4]</code></td>
+        <td class="num"><code>[19,4, 33,7, 22,2, 36,5]</code></td>
+        <td class="num"><code>[5,2, 0,4, 1,7, 0,2]</code></td>
+      </tr><tr>
+        <td><strong>Micro · Panadería</strong></td>
+        <td>Conservadora (1 turno)</td>
+        <td class="num">97 <span class="muted">(4,85 %)</span></td>
+        <td class="num">77 / 20</td>
+        <td class="num" title="Caja">46</td>
+        <td class="num" title="Demanda">4</td>
+        <td class="num" title="Equipo">35</td>
+        <td class="num" title="Calidad">16</td>
+        <td class="num"><code>[17,1, 29,6, 18,4, 25,9]</code></td>
+        <td class="num"><code>[17,7, 29,5, 18,6, 26,3]</code></td>
+        <td class="num"><code>[4,5, 1,1, 3,0, 2,1]</code></td>
+      </tr><tr>
+        <td><strong>Micro · Panadería</strong></td>
+        <td>Compromisos (mín H=3)</td>
+        <td class="num">12 <span class="muted">(0,60 %)</span></td>
+        <td class="num">12 / 0</td>
+        <td class="num" title="Caja">7</td>
+        <td class="num" title="Demanda">0</td>
+        <td class="num" title="Equipo">5</td>
+        <td class="num" title="Calidad">0</td>
+        <td class="num"><code>[20,6, 32,3, 23,1, 41,7]</code></td>
+        <td class="num"><code>[20,7, 32,3, 23,1, 41,7]</code></td>
+        <td class="num"><code>[4,1, 0,7, 1,8, 0,0]</code></td>
+      </tr><tr>
+        <td><strong>Micro · Panadería</strong></td>
+        <td>Planificadora (búsqueda H=3)</td>
+        <td class="num">13 <span class="muted">(0,65 %)</span></td>
+        <td class="num">12 / 1</td>
+        <td class="num" title="Caja">11</td>
+        <td class="num" title="Demanda">0</td>
+        <td class="num" title="Equipo">2</td>
+        <td class="num" title="Calidad">0</td>
+        <td class="num"><code>[27,4, 59,8, 30,9, 49,5]</code></td>
+        <td class="num"><code>[27,6, 59,8, 30,9, 49,5]</code></td>
+        <td class="num"><code>[4,8, 0,1, 0,5, 0,0]</code></td>
+      </tr><tr>
+        <td><strong>Micro · Heladería</strong></td>
+        <td>Siempre A</td>
+        <td class="num">1660 <span class="muted">(83,00 %)</span></td>
+        <td class="num">1309 / 351</td>
+        <td class="num" title="Caja">1659</td>
+        <td class="num" title="Demanda">0</td>
+        <td class="num" title="Equipo">1</td>
+        <td class="num" title="Calidad">0</td>
+        <td class="num"><code>[-0,3, 69,8, 43,7, 57,6]</code></td>
+        <td class="num"><code>[14,5, 81,9, 29,9, 52,0]</code></td>
+        <td class="num"><code>[4,1, 0,0, 0,2, 0,0]</code></td>
+      </tr><tr>
+        <td><strong>Micro · Heladería</strong></td>
+        <td>Siempre B</td>
+        <td class="num">1631 <span class="muted">(81,55 %)</span></td>
+        <td class="num">1569 / 62</td>
+        <td class="num" title="Caja">58</td>
+        <td class="num" title="Demanda">361</td>
+        <td class="num" title="Equipo">1291</td>
+        <td class="num" title="Calidad">1</td>
+        <td class="num"><code>[36,6, 14,4, 2,1, 22,9]</code></td>
+        <td class="num"><code>[21,3, 17,0, 8,9, 32,6]</code></td>
+        <td class="num"><code>[1,1, 3,2, 5,0, 1,0]</code></td>
+      </tr><tr>
+        <td><strong>Micro · Heladería</strong></td>
+        <td>Aleatoria (50/50)</td>
+        <td class="num">1482 <span class="muted">(74,10 %)</span></td>
+        <td class="num">1268 / 214</td>
+        <td class="num" title="Caja">870</td>
+        <td class="num" title="Demanda">94</td>
+        <td class="num" title="Equipo">511</td>
+        <td class="num" title="Calidad">24</td>
+        <td class="num"><code>[15,2, 44,1, 23,5, 41,4]</code></td>
+        <td class="num"><code>[21,4, 38,6, 20,6, 38,4]</code></td>
+        <td class="num"><code>[3,3, 1,2, 2,6, 0,7]</code></td>
+      </tr><tr>
+        <td><strong>Micro · Heladería</strong></td>
+        <td>Cortoplacista (myopic)</td>
+        <td class="num">145 <span class="muted">(7,25 %)</span></td>
+        <td class="num">25 / 120</td>
+        <td class="num" title="Caja">141</td>
+        <td class="num" title="Demanda">1</td>
+        <td class="num" title="Equipo">3</td>
+        <td class="num" title="Calidad">0</td>
+        <td class="num"><code>[18,8, 34,5, 24,2, 40,5]</code></td>
+        <td class="num"><code>[20,3, 33,5, 22,6, 39,5]</code></td>
+        <td class="num"><code>[4,8, 0,4, 1,6, 0,1]</code></td>
+      </tr><tr>
+        <td><strong>Micro · Heladería</strong></td>
+        <td>Conservadora (1 turno)</td>
+        <td class="num">72 <span class="muted">(3,60 %)</span></td>
+        <td class="num">59 / 13</td>
+        <td class="num" title="Caja">32</td>
+        <td class="num" title="Demanda">2</td>
+        <td class="num" title="Equipo">31</td>
+        <td class="num" title="Calidad">8</td>
+        <td class="num"><code>[18,4, 30,3, 19,0, 28,5]</code></td>
+        <td class="num"><code>[18,8, 30,2, 19,1, 28,7]</code></td>
+        <td class="num"><code>[4,0, 1,0, 2,9, 1,6]</code></td>
+      </tr><tr>
+        <td><strong>Micro · Heladería</strong></td>
+        <td>Compromisos (mín H=3)</td>
+        <td class="num">8 <span class="muted">(0,40 %)</span></td>
+        <td class="num">8 / 0</td>
+        <td class="num" title="Caja">2</td>
+        <td class="num" title="Demanda">0</td>
+        <td class="num" title="Equipo">6</td>
+        <td class="num" title="Calidad">0</td>
+        <td class="num"><code>[21,8, 32,4, 23,7, 44,9]</code></td>
+        <td class="num"><code>[21,8, 32,4, 23,8, 44,9]</code></td>
+        <td class="num"><code>[3,6, 0,7, 1,7, 0,0]</code></td>
+      </tr><tr>
+        <td><strong>Micro · Heladería</strong></td>
+        <td>Planificadora (búsqueda H=3)</td>
+        <td class="num">10 <span class="muted">(0,50 %)</span></td>
+        <td class="num">9 / 1</td>
+        <td class="num" title="Caja">9</td>
+        <td class="num" title="Demanda">0</td>
+        <td class="num" title="Equipo">1</td>
+        <td class="num" title="Calidad">0</td>
+        <td class="num"><code>[28,3, 60,4, 31,4, 53,5]</code></td>
+        <td class="num"><code>[28,5, 60,4, 31,4, 53,5]</code></td>
+        <td class="num"><code>[4,6, 0,1, 0,5, 0,0]</code></td>
+      </tr><tr>
+        <td><strong>Micro · Agencia de traducción</strong></td>
+        <td>Siempre A</td>
+        <td class="num">1708 <span class="muted">(85,40 %)</span></td>
+        <td class="num">1309 / 399</td>
+        <td class="num" title="Caja">1708</td>
+        <td class="num" title="Demanda">0</td>
+        <td class="num" title="Equipo">0</td>
+        <td class="num" title="Calidad">0</td>
+        <td class="num"><code>[-0,9, 58,8, 48,5, 57,4]</code></td>
+        <td class="num"><code>[13,5, 71,7, 35,2, 52,2]</code></td>
+        <td class="num"><code>[3,9, 0,0, 0,1, 0,0]</code></td>
+      </tr><tr>
+        <td><strong>Micro · Agencia de traducción</strong></td>
+        <td>Siempre B</td>
+        <td class="num">1615 <span class="muted">(80,75 %)</span></td>
+        <td class="num">1545 / 70</td>
+        <td class="num" title="Caja">5</td>
+        <td class="num" title="Demanda">1093</td>
+        <td class="num" title="Equipo">619</td>
+        <td class="num" title="Calidad">0</td>
+        <td class="num"><code>[43,1, 3,9, 9,0, 23,9]</code></td>
+        <td class="num"><code>[25,1, 12,7, 11,9, 34,1]</code></td>
+        <td class="num"><code>[0,6, 5,8, 3,9, 0,9]</code></td>
+      </tr><tr>
+        <td><strong>Micro · Agencia de traducción</strong></td>
+        <td>Aleatoria (50/50)</td>
+        <td class="num">1394 <span class="muted">(69,70 %)</span></td>
+        <td class="num">1211 / 183</td>
+        <td class="num" title="Caja">764</td>
+        <td class="num" title="Demanda">263</td>
+        <td class="num" title="Equipo">360</td>
+        <td class="num" title="Calidad">35</td>
+        <td class="num"><code>[18,8, 33,9, 27,9, 41,4]</code></td>
+        <td class="num"><code>[22,9, 33,8, 24,1, 40,1]</code></td>
+        <td class="num"><code>[2,9, 2,6, 2,1, 0,7]</code></td>
+      </tr><tr>
+        <td><strong>Micro · Agencia de traducción</strong></td>
+        <td>Cortoplacista (myopic)</td>
+        <td class="num">141 <span class="muted">(7,05 %)</span></td>
+        <td class="num">36 / 105</td>
+        <td class="num" title="Caja">135</td>
+        <td class="num" title="Demanda">0</td>
+        <td class="num" title="Equipo">6</td>
+        <td class="num" title="Calidad">0</td>
+        <td class="num"><code>[19,2, 33,8, 25,2, 40,7]</code></td>
+        <td class="num"><code>[20,7, 32,9, 23,6, 39,9]</code></td>
+        <td class="num"><code>[4,9, 0,5, 1,4, 0,1]</code></td>
+      </tr><tr>
+        <td><strong>Micro · Agencia de traducción</strong></td>
+        <td>Conservadora (1 turno)</td>
+        <td class="num">69 <span class="muted">(3,45 %)</span></td>
+        <td class="num">54 / 15</td>
+        <td class="num" title="Caja">30</td>
+        <td class="num" title="Demanda">1</td>
+        <td class="num" title="Equipo">34</td>
+        <td class="num" title="Calidad">5</td>
+        <td class="num"><code>[18,4, 29,7, 18,8, 28,7]</code></td>
+        <td class="num"><code>[18,8, 29,6, 19,1, 28,9]</code></td>
+        <td class="num"><code>[4,0, 1,1, 2,8, 1,4]</code></td>
+      </tr><tr>
+        <td><strong>Micro · Agencia de traducción</strong></td>
+        <td>Compromisos (mín H=3)</td>
+        <td class="num">11 <span class="muted">(0,55 %)</span></td>
+        <td class="num">11 / 0</td>
+        <td class="num" title="Caja">4</td>
+        <td class="num" title="Demanda">1</td>
+        <td class="num" title="Equipo">6</td>
+        <td class="num" title="Calidad">0</td>
+        <td class="num"><code>[22,3, 31,8, 24,4, 45,8]</code></td>
+        <td class="num"><code>[22,4, 31,8, 24,5, 45,8]</code></td>
+        <td class="num"><code>[3,6, 0,8, 1,5, 0,0]</code></td>
+      </tr><tr>
+        <td><strong>Micro · Agencia de traducción</strong></td>
+        <td>Planificadora (búsqueda H=3)</td>
+        <td class="num">6 <span class="muted">(0,30 %)</span></td>
+        <td class="num">5 / 1</td>
+        <td class="num" title="Caja">6</td>
+        <td class="num" title="Demanda">0</td>
+        <td class="num" title="Equipo">0</td>
+        <td class="num" title="Calidad">0</td>
+        <td class="num"><code>[29,2, 57,9, 33,2, 54,8]</code></td>
+        <td class="num"><code>[29,3, 57,9, 33,2, 54,8]</code></td>
+        <td class="num"><code>[4,3, 0,1, 0,4, 0,0]</code></td>
+      </tr><tr>
+        <td><strong>Micro · Taller de cerámica</strong></td>
+        <td>Siempre A</td>
+        <td class="num">1870 <span class="muted">(93,50 %)</span></td>
+        <td class="num">1403 / 467</td>
+        <td class="num" title="Caja">1870</td>
+        <td class="num" title="Demanda">0</td>
+        <td class="num" title="Equipo">0</td>
+        <td class="num" title="Calidad">0</td>
+        <td class="num"><code>[-2,6, 55,8, 49,7, 61,6]</code></td>
+        <td class="num"><code>[11,9, 72,6, 34,1, 56,1]</code></td>
+        <td class="num"><code>[3,7, 0,0, 0,0, 0,0]</code></td>
+      </tr><tr>
+        <td><strong>Micro · Taller de cerámica</strong></td>
+        <td>Siempre B</td>
+        <td class="num">1613 <span class="muted">(80,65 %)</span></td>
+        <td class="num">1550 / 63</td>
+        <td class="num" title="Caja">40</td>
+        <td class="num" title="Demanda">1057</td>
+        <td class="num" title="Equipo">619</td>
+        <td class="num" title="Calidad">0</td>
+        <td class="num"><code>[38,4, 4,7, 9,1, 29,1]</code></td>
+        <td class="num"><code>[22,8, 13,7, 11,9, 38,9]</code></td>
+        <td class="num"><code>[1,0, 5,8, 3,9, 0,4]</code></td>
+      </tr><tr>
+        <td><strong>Micro · Taller de cerámica</strong></td>
+        <td>Aleatoria (50/50)</td>
+        <td class="num">1514 <span class="muted">(75,70 %)</span></td>
+        <td class="num">1284 / 230</td>
+        <td class="num" title="Caja">914</td>
+        <td class="num" title="Demanda">252</td>
+        <td class="num" title="Equipo">353</td>
+        <td class="num" title="Calidad">9</td>
+        <td class="num"><code>[14,9, 34,0, 29,2, 46,9]</code></td>
+        <td class="num"><code>[20,9, 32,5, 22,8, 43,7]</code></td>
+        <td class="num"><code>[3,3, 2,5, 1,9, 0,4]</code></td>
+      </tr><tr>
+        <td><strong>Micro · Taller de cerámica</strong></td>
+        <td>Cortoplacista (myopic)</td>
+        <td class="num">205 <span class="muted">(10,25 %)</span></td>
+        <td class="num">45 / 160</td>
+        <td class="num" title="Caja">191</td>
+        <td class="num" title="Demanda">2</td>
+        <td class="num" title="Equipo">12</td>
+        <td class="num" title="Calidad">0</td>
+        <td class="num"><code>[17,4, 31,6, 23,3, 42,0]</code></td>
+        <td class="num"><code>[19,6, 30,5, 21,3, 40,8]</code></td>
+        <td class="num"><code>[5,7, 0,8, 1,9, 0,1]</code></td>
+      </tr><tr>
+        <td><strong>Micro · Taller de cerámica</strong></td>
+        <td>Conservadora (1 turno)</td>
+        <td class="num">124 <span class="muted">(6,20 %)</span></td>
+        <td class="num">101 / 23</td>
+        <td class="num" title="Caja">67</td>
+        <td class="num" title="Demanda">4</td>
+        <td class="num" title="Equipo">51</td>
+        <td class="num" title="Calidad">4</td>
+        <td class="num"><code>[16,7, 27,4, 16,7, 31,9]</code></td>
+        <td class="num"><code>[17,4, 27,4, 17,0, 32,4]</code></td>
+        <td class="num"><code>[4,8, 1,5, 3,6, 1,0]</code></td>
+      </tr><tr>
+        <td><strong>Micro · Taller de cerámica</strong></td>
+        <td>Compromisos (mín H=3)</td>
+        <td class="num">18 <span class="muted">(0,90 %)</span></td>
+        <td class="num">18 / 0</td>
+        <td class="num" title="Caja">9</td>
+        <td class="num" title="Demanda">0</td>
+        <td class="num" title="Equipo">9</td>
+        <td class="num" title="Calidad">0</td>
+        <td class="num"><code>[20,2, 29,3, 22,0, 46,6]</code></td>
+        <td class="num"><code>[20,3, 29,3, 22,2, 46,6]</code></td>
+        <td class="num"><code>[5,0, 1,5, 2,3, 0,0]</code></td>
+      </tr><tr>
+        <td><strong>Micro · Taller de cerámica</strong></td>
+        <td>Planificadora (búsqueda H=3)</td>
+        <td class="num">8 <span class="muted">(0,40 %)</span></td>
+        <td class="num">8 / 0</td>
+        <td class="num" title="Caja">8</td>
+        <td class="num" title="Demanda">0</td>
+        <td class="num" title="Equipo">0</td>
+        <td class="num" title="Calidad">0</td>
+        <td class="num"><code>[27,4, 54,0, 31,1, 56,0]</code></td>
+        <td class="num"><code>[27,5, 54,0, 31,1, 56,0]</code></td>
+        <td class="num"><code>[5,2, 0,2, 0,5, 0,0]</code></td>
+      </tr><tr>
+        <td><strong>Micro · Taller de reparación</strong></td>
+        <td>Siempre A</td>
+        <td class="num">1617 <span class="muted">(80,85 %)</span></td>
+        <td class="num">1267 / 350</td>
+        <td class="num" title="Caja">1617</td>
+        <td class="num" title="Demanda">0</td>
+        <td class="num" title="Equipo">0</td>
+        <td class="num" title="Calidad">0</td>
+        <td class="num"><code>[0,1, 64,6, 43,1, 52,5]</code></td>
+        <td class="num"><code>[15,2, 76,7, 30,0, 47,2]</code></td>
+        <td class="num"><code>[4,0, 0,0, 0,2, 0,0]</code></td>
+      </tr><tr>
+        <td><strong>Micro · Taller de reparación</strong></td>
+        <td>Siempre B</td>
+        <td class="num">1676 <span class="muted">(83,80 %)</span></td>
+        <td class="num">1610 / 66</td>
+        <td class="num" title="Caja">9</td>
+        <td class="num" title="Demanda">595</td>
+        <td class="num" title="Equipo">1168</td>
+        <td class="num" title="Calidad">16</td>
+        <td class="num"><code>[42,5, 9,5, 3,0, 18,2]</code></td>
+        <td class="num"><code>[23,3, 14,0, 9,4, 29,0]</code></td>
+        <td class="num"><code>[0,6, 4,2, 4,7, 1,8]</code></td>
+      </tr><tr>
+        <td><strong>Micro · Taller de reparación</strong></td>
+        <td>Aleatoria (50/50)</td>
+        <td class="num">1428 <span class="muted">(71,40 %)</span></td>
+        <td class="num">1253 / 175</td>
+        <td class="num" title="Caja">727</td>
+        <td class="num" title="Demanda">165</td>
+        <td class="num" title="Equipo">494</td>
+        <td class="num" title="Calidad">70</td>
+        <td class="num"><code>[19,1, 38,3, 22,8, 35,9]</code></td>
+        <td class="num"><code>[22,2, 36,2, 21,6, 35,6]</code></td>
+        <td class="num"><code>[2,9, 1,8, 2,7, 1,1]</code></td>
+      </tr><tr>
+        <td><strong>Micro · Taller de reparación</strong></td>
+        <td>Cortoplacista (myopic)</td>
+        <td class="num">114 <span class="muted">(5,70 %)</span></td>
+        <td class="num">31 / 83</td>
+        <td class="num" title="Caja">105</td>
+        <td class="num" title="Demanda">0</td>
+        <td class="num" title="Equipo">9</td>
+        <td class="num" title="Calidad">0</td>
+        <td class="num"><code>[19,1, 35,1, 23,9, 38,6]</code></td>
+        <td class="num"><code>[20,4, 34,4, 22,8, 37,9]</code></td>
+        <td class="num"><code>[4,9, 0,3, 1,6, 0,1]</code></td>
+      </tr><tr>
+        <td><strong>Micro · Taller de reparación</strong></td>
+        <td>Conservadora (1 turno)</td>
+        <td class="num">59 <span class="muted">(2,95 %)</span></td>
+        <td class="num">55 / 4</td>
+        <td class="num" title="Caja">23</td>
+        <td class="num" title="Demanda">2</td>
+        <td class="num" title="Equipo">30</td>
+        <td class="num" title="Calidad">6</td>
+        <td class="num"><code>[18,3, 30,5, 18,7, 27,2]</code></td>
+        <td class="num"><code>[18,7, 30,4, 19,0, 27,5]</code></td>
+        <td class="num"><code>[4,0, 0,9, 2,9, 1,8]</code></td>
+      </tr><tr>
+        <td><strong>Micro · Taller de reparación</strong></td>
+        <td>Compromisos (mín H=3)</td>
+        <td class="num">9 <span class="muted">(0,45 %)</span></td>
+        <td class="num">9 / 0</td>
+        <td class="num" title="Caja">1</td>
+        <td class="num" title="Demanda">1</td>
+        <td class="num" title="Equipo">7</td>
+        <td class="num" title="Calidad">0</td>
+        <td class="num"><code>[21,8, 33,0, 23,9, 43,5]</code></td>
+        <td class="num"><code>[21,9, 32,9, 24,0, 43,5]</code></td>
+        <td class="num"><code>[3,6, 0,6, 1,6, 0,0]</code></td>
+      </tr><tr>
+        <td><strong>Micro · Taller de reparación</strong></td>
+        <td>Planificadora (búsqueda H=3)</td>
+        <td class="num">4 <span class="muted">(0,20 %)</span></td>
+        <td class="num">4 / 0</td>
+        <td class="num" title="Caja">4</td>
+        <td class="num" title="Demanda">0</td>
+        <td class="num" title="Equipo">0</td>
+        <td class="num" title="Calidad">0</td>
+        <td class="num"><code>[28,3, 60,1, 32,1, 51,7]</code></td>
+        <td class="num"><code>[28,4, 60,1, 32,1, 51,7]</code></td>
+        <td class="num"><code>[4,4, 0,1, 0,4, 0,0]</code></td>
+      </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="sec-cartas" class="panel">
+      <h2>6. Mapa Contrafactual ΔQ y Frecuencia de Elección en las 50 Cartas (v2)</h2>
+      <p>
+        Evaluación contrafactual desde los estados exactos visitados por <code>planner</code>: en cada aparición de la carta se fuerza <code>A</code> vs. <code>B</code> desde el mismo estado (<i>s<sub>t</sub></i>, <i>P<sub>t</sub></i>, <i>t</i>, mazo) y se mide la diferencia en tasa de victoria ΔP(victoria | A − B), la proporción de estados donde una opción gana y la otra pierde (<code>A&gt;B / B&gt;A</code>), el cambio de elección cuando la condición está activa vs. inactiva y el comportamiento en el turno 20. Las filas resaltadas tienen una elección de <code>planner</code> ≥ 94 % o ≤ 6 %.
+      </p>
+      <div class="filter-bar">
+        <button class="filter-btn active" onclick="filterCards('all', this)">Todas (50)</button>
+        <button class="filter-btn" onclick="filterCards('macro', this)">Solo Macro (25)</button>
+        <button class="filter-btn" onclick="filterCards('micro', this)">Solo Micro (25)</button>
+        <button class="filter-btn" onclick="filterCards('lopsided', this)">Asimétricas ≥94 % (10)</button>
+      </div>
+      <div class="table-wrap" style="max-height: 680px; overflow-y: auto;">
+        <table id="cards-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Carta y vectores base (Inmediato y Diferido)</th>
+              <th class="num">% A (signos)</th>
+              <th class="num">% A (myopic)</th>
+              <th class="num">% A (conser)</th>
+              <th class="num">% A (commit)</th>
+              <th class="num">% A (planner)</th>
+              <th class="num">ΔP(Win A−B)</th>
+              <th class="num">A&gt;B / B&gt;A (estricto)</th>
+              <th class="num">% A (Cond=1 vs 0)</th>
+              <th class="num">% A (Turno 20)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr data-mode="macro" class="">
+        <td><code>MA01</code> <div class="small muted">inicio</div></td>
+        <td>
+          <strong>El puente que une dos mercados</strong>
+          <div class="card-vecs">
+            <div><span class="opt-tag opt-a">A</span> Reparar el puente: <code>[-8, -10, +4, +3] ⏳+2t: [+14, 0, +3, +2]</code></div>
+            <div><span class="opt-tag opt-b">B</span> Postergar la obra: <code>[-9, +3, -5, -4]</code></div>
+          </div>
+        </td>
+        <td class="num">74,8 %</td>
+        <td class="num">29,0 %</td>
+        <td class="num">39,2 %</td>
+        <td class="num">28,7 %</td>
+        <td class="num"><strong>63,9 %</strong></td>
+        <td class="num neg-strong">
+          -4,97 pp
+        </td>
+        <td class="num">5,68 % / 10,65 %</td>
+        <td class="num">—</td>
+        <td class="num">—</td>
+      </tr>
+<tr data-mode="macro" class="">
+        <td><code>MA02</code> <div class="small muted">inicio</div></td>
+        <td>
+          <strong>Jubilaciones bajo presión</strong>
+          <div class="card-vecs">
+            <div><span class="opt-tag opt-a">A</span> Dar un refuerzo: <code>[0, -9, +10, +4]</code></div>
+            <div><span class="opt-tag opt-b">B</span> Conservar los fondos: <code>[-3, +5, -12, -7]</code></div>
+          </div>
+        </td>
+        <td class="num">92,2 %</td>
+        <td class="num">65,6 %</td>
+        <td class="num">49,0 %</td>
+        <td class="num">66,3 %</td>
+        <td class="num"><strong>30,0 %</strong></td>
+        <td class="num neg-strong">
+          -10,44 pp
+        </td>
+        <td class="num">3,84 % / 14,28 %</td>
+        <td class="num">—</td>
+        <td class="num">—</td>
+      </tr>
+<tr data-mode="macro" class="row-lopsided">
+        <td><code>MA03</code> <div class="small muted">inicio</div></td>
+        <td>
+          <strong>Las tasas y la actividad</strong>
+          <div class="card-vecs">
+            <div><span class="opt-tag opt-a">A</span> Elevar la tasa: <code>[-10, +2, +3, +5]</code></div>
+            <div><span class="opt-tag opt-b">B</span> Reducir la tasa: <code>[+8, -3, -10, -8]</code></div>
+          </div>
+        </td>
+        <td class="num">100,0 %</td>
+        <td class="num">83,8 %</td>
+        <td class="num">72,5 %</td>
+        <td class="num">84,8 %</td>
+        <td class="num"><strong>96,8 %</strong></td>
+        <td class="num pos-strong">
+          +13,47 pp
+        </td>
+        <td class="num">18,37 % / 4,90 %</td>
+        <td class="num">—</td>
+        <td class="num">—</td>
+      </tr>
+<tr data-mode="macro" class="">
+        <td><code>MA04</code> <div class="small muted">inicio</div></td>
+        <td>
+          <strong>Un hospital sin insumos</strong>
+          <div class="card-vecs">
+            <div><span class="opt-tag opt-a">A</span> Comprar los insumos: <code>[0, -8, +9, +4]</code></div>
+            <div><span class="opt-tag opt-b">B</span> Aplazar la compra: <code>[-4, +4, -12, -8]</code></div>
+          </div>
+        </td>
+        <td class="num">91,6 %</td>
+        <td class="num">76,3 %</td>
+        <td class="num">64,6 %</td>
+        <td class="num">75,8 %</td>
+        <td class="num"><strong>69,9 %</strong></td>
+        <td class="num neg-strong">
+          -5,80 pp
+        </td>
+        <td class="num">5,20 % / 11,00 %</td>
+        <td class="num">—</td>
+        <td class="num">—</td>
+      </tr>
+<tr data-mode="macro" class="">
+        <td><code>MA05</code> <div class="small muted">inicio</div></td>
+        <td>
+          <strong>Impuestos a grandes patrimonios</strong>
+          <div class="card-vecs">
+            <div><span class="opt-tag opt-a">A</span> Aplicar el impuesto: <code>[-7, +9, +3, -6]</code></div>
+            <div><span class="opt-tag opt-b">B</span> Mantener el esquema: <code>[+5, -3, -5, +2]</code></div>
+          </div>
+        </td>
+        <td class="num">81,7 %</td>
+        <td class="num">45,1 %</td>
+        <td class="num">40,7 %</td>
+        <td class="num">46,3 %</td>
+        <td class="num"><strong>89,4 %</strong></td>
+        <td class="num pos-strong">
+          +15,36 pp
+        </td>
+        <td class="num">18,43 % / 3,07 %</td>
+        <td class="num">—</td>
+        <td class="num">—</td>
+      </tr>
+<tr data-mode="macro" class="row-lopsided">
+        <td><code>MA06</code> <div class="small muted">inicio</div></td>
+        <td>
+          <strong>La cosecha perdida</strong>
+          <div class="card-vecs">
+            <div><span class="opt-tag opt-a">A</span> Apoyar la próxima cosecha: <code>[-3, -7, -6, -2] ⏳+2t: [+10, 0, +7, +3]</code></div>
+            <div><span class="opt-tag opt-b">B</span> Importar alimentos: <code>[-3, -8, +7, +1]</code></div>
+          </div>
+        </td>
+        <td class="num">0,0 %</td>
+        <td class="num">0,0 %</td>
+        <td class="num">56,2 %</td>
+        <td class="num">0,0 %</td>
+        <td class="num"><strong>96,0 %</strong></td>
+        <td class="num pos-strong">
+          +6,78 pp
+        </td>
+        <td class="num">10,53 % / 3,75 %</td>
+        <td class="num">—</td>
+        <td class="num">—</td>
+      </tr>
+<tr data-mode="macro" class="">
+        <td><code>MA07</code> <div class="small muted">inicio</div></td>
+        <td>
+          <strong>El precio del transporte</strong>
+          <div class="card-vecs">
+            <div><span class="opt-tag opt-a">A</span> Subsidiar la tarifa: <code>[+3, -8, +7, +3]</code></div>
+            <div><span class="opt-tag opt-b">B</span> Permitir el ajuste: <code>[-5, +5, -9, -6]</code></div>
+          </div>
+        </td>
+        <td class="num">97,7 %</td>
+        <td class="num">69,9 %</td>
+        <td class="num">49,4 %</td>
+        <td class="num">69,4 %</td>
+        <td class="num"><strong>49,3 %</strong></td>
+        <td class="num neg-strong">
+          -9,23 pp
+        </td>
+        <td class="num">4,28 % / 13,51 %</td>
+        <td class="num">—</td>
+        <td class="num">—</td>
+      </tr>
+<tr data-mode="macro" class="row-lopsided">
+        <td><code>MA08</code> <div class="small muted">inicio</div></td>
+        <td>
+          <strong>Una feria para el turismo</strong>
+          <div class="card-vecs">
+            <div><span class="opt-tag opt-a">A</span> Financiar la feria: <code>[0, -6, +2, +1] ⏳+2t: [+8, +5, 0, +2]</code></div>
+            <div><span class="opt-tag opt-b">B</span> Preservar la reserva: <code>[-5, +3, -3, -3]</code></div>
+          </div>
+        </td>
+        <td class="num">87,5 %</td>
+        <td class="num">42,4 %</td>
+        <td class="num">46,7 %</td>
+        <td class="num">42,0 %</td>
+        <td class="num"><strong>94,3 %</strong></td>
+        <td class="num pos-strong">
+          +8,12 pp
+        </td>
+        <td class="num">11,88 % / 3,76 %</td>
+        <td class="num">—</td>
+        <td class="num">—</td>
+      </tr>
+<tr data-mode="macro" class="">
+        <td><code>MA09</code> <div class="small muted">desarrollo</div></td>
+        <td>
+          <strong>Crédito para sostener servicios</strong>
+          <div class="card-vecs">
+            <div><span class="opt-tag opt-a">A</span> Aceptar el préstamo: <code>[+2, +12, +4, 0] ⏳+3t: [0, -15, 0, -2]</code></div>
+            <div><span class="opt-tag opt-b">B</span> Reducir gastos ahora: <code>[-8, +5, -11, -6]</code></div>
+          </div>
+        </td>
+        <td class="num">100,0 %</td>
+        <td class="num">100,0 %</td>
+        <td class="num">100,0 %</td>
+        <td class="num">65,1 %</td>
+        <td class="num"><strong>84,6 %</strong></td>
+        <td class="num neg-strong">
+          -3,35 pp
+        </td>
+        <td class="num">1,06 % / 4,41 %</td>
+        <td class="num">—</td>
+        <td class="num">—</td>
+      </tr>
+<tr data-mode="macro" class="row-lopsided">
+        <td><code>MA10</code> <div class="small muted">desarrollo</div></td>
+        <td>
+          <strong>Recaudación que no llega</strong>
+          <div class="card-vecs">
+            <div><span class="opt-tag opt-a">A</span> Modernizar el cobro: <code>[0, -6, 0, +3] ⏳+2t: [0, +11, 0, +2]</code></div>
+            <div><span class="opt-tag opt-b">B</span> Mantener el sistema: <code>[-3, +2, -4, -8]</code></div>
+          </div>
+        </td>
+        <td class="num">26,8 %</td>
+        <td class="num">27,4 %</td>
+        <td class="num">31,9 %</td>
+        <td class="num">27,1 %</td>
+        <td class="num"><strong>98,9 %</strong></td>
+        <td class="num pos-strong">
+          +2,80 pp
+        </td>
+        <td class="num">3,68 % / 0,89 %</td>
+        <td class="num">—</td>
+        <td class="num">—</td>
+      </tr>
+<tr data-mode="macro" class="">
+        <td><code>MA11</code> <div class="small muted">desarrollo</div></td>
+        <td>
+          <strong>Precios máximos para alimentos</strong>
+          <div class="card-vecs">
+            <div><span class="opt-tag opt-a">A</span> Fijar el precio máximo: <code>[0, -3, +5, +2] ⏳+2t: [-8, 0, -10, -6]</code></div>
+            <div><span class="opt-tag opt-b">B</span> Dar ayuda focalizada: <code>[-4, -7, +5, +1]</code></div>
+          </div>
+        </td>
+        <td class="num">100,0 %</td>
+        <td class="num">100,0 %</td>
+        <td class="num">100,0 %</td>
+        <td class="num">32,9 %</td>
+        <td class="num"><strong>46,4 %</strong></td>
+        <td class="num pos-strong">
+          +3,28 pp
+        </td>
+        <td class="num">4,57 % / 1,30 %</td>
+        <td class="num">—</td>
+        <td class="num">—</td>
+      </tr>
+<tr data-mode="macro" class="">
+        <td><code>MA12</code> <div class="small muted">desarrollo</div></td>
+        <td>
+          <strong>Mercancías en la frontera</strong>
+          <div class="card-vecs">
+            <div><span class="opt-tag opt-a">A</span> Reducir los aranceles: <code>[+5, -4, +5, -2]</code></div>
+            <div><span class="opt-tag opt-b">B</span> Mantener la protección: <code>[-4, +4, -7, -2]</code></div>
+          </div>
+        </td>
+        <td class="num">21,1 %</td>
+        <td class="num">33,4 %</td>
+        <td class="num">34,0 %</td>
+        <td class="num">28,9 %</td>
+        <td class="num"><strong>14,4 %</strong></td>
+        <td class="num neg-strong">
+          -8,38 pp
+        </td>
+        <td class="num">0,33 % / 8,71 %</td>
+        <td class="num">—</td>
+        <td class="num">—</td>
+      </tr>
+<tr data-mode="macro" class="row-lopsided">
+        <td><code>MA13</code> <div class="small muted">desarrollo</div></td>
+        <td>
+          <strong>Obras con fondos limitados</strong>
+          <div class="card-vecs">
+            <div><span class="opt-tag opt-a">A</span> Ampliar el puerto: <code>[0, -9, +1, +1] ⏳+2t: [+11, +5, 0, +1]</code></div>
+            <div><span class="opt-tag opt-b">B</span> Renovar la plaza: <code>[-6, -6, +5, +2]</code></div>
+          </div>
+        </td>
+        <td class="num">100,0 %</td>
+        <td class="num">13,0 %</td>
+        <td class="num">13,5 %</td>
+        <td class="num">14,8 %</td>
+        <td class="num"><strong>97,5 %</strong></td>
+        <td class="num pos-strong">
+          +2,89 pp
+        </td>
+        <td class="num">4,36 % / 1,48 %</td>
+        <td class="num">—</td>
+        <td class="num">—</td>
+      </tr>
+<tr data-mode="macro" class="">
+        <td><code>MA14</code> <div class="small muted">desarrollo</div></td>
+        <td>
+          <strong>Trabajo y capacitación</strong>
+          <div class="card-vecs">
+            <div><span class="opt-tag opt-a">A</span> Financiar capacitación: <code>[-4, -7, -2, +1] ⏳+2t: [+10, 0, +6, +3]</code></div>
+            <div><span class="opt-tag opt-b">B</span> Crear empleo temporal: <code>[+4, -8, +5, +2]</code></div>
+          </div>
+        </td>
+        <td class="num">0,0 %</td>
+        <td class="num">1,9 %</td>
+        <td class="num">78,2 %</td>
+        <td class="num">8,3 %</td>
+        <td class="num"><strong>90,6 %</strong></td>
+        <td class="num ">
+          +0,45 pp
+        </td>
+        <td class="num">1,36 % / 0,90 %</td>
+        <td class="num">—</td>
+        <td class="num">—</td>
+      </tr>
+<tr data-mode="macro" class="row-lopsided">
+        <td><code>MA15</code> <div class="small muted">desarrollo</div></td>
+        <td>
+          <strong>Reservas para importar</strong>
+          <div class="card-vecs">
+            <div><span class="opt-tag opt-a">A</span> Priorizar importaciones: <code>[+2, -4, +5, -2]</code></div>
+            <div><span class="opt-tag opt-b">B</span> Promover exportaciones: <code>[-6, -6, -6, +1] ⏳+2t: [+9, +8, +2, +2]</code></div>
+          </div>
+        </td>
+        <td class="num">99,2 %</td>
+        <td class="num">100,0 %</td>
+        <td class="num">94,1 %</td>
+        <td class="num">94,2 %</td>
+        <td class="num"><strong>2,8 %</strong></td>
+        <td class="num neg-strong">
+          -3,96 pp
+        </td>
+        <td class="num">0,65 % / 4,61 %</td>
+        <td class="num">—</td>
+        <td class="num">—</td>
+      </tr>
+<tr data-mode="macro" class="">
+        <td><code>MA16</code> <div class="small muted">desarrollo</div></td>
+        <td>
+          <strong>La promesa de ayuda permanente</strong>
+          <div class="card-vecs">
+            <div><span class="opt-tag opt-a">A</span> Crear ayuda permanente: <code>[0, -6, +8, +3] ⏳+2t: [0, -5, +3, 0]</code></div>
+            <div><span class="opt-tag opt-b">B</span> Dar ayuda temporal: <code>[-2, -3, -5, -4]</code></div>
+          </div>
+        </td>
+        <td class="num">100,0 %</td>
+        <td class="num">93,3 %</td>
+        <td class="num">30,7 %</td>
+        <td class="num">14,3 %</td>
+        <td class="num"><strong>16,0 %</strong></td>
+        <td class="num neg-strong">
+          -9,01 pp
+        </td>
+        <td class="num">0,50 % / 9,50 %</td>
+        <td class="num">—</td>
+        <td class="num">—</td>
+      </tr>
+<tr data-mode="macro" class="row-lopsided">
+        <td><code>MA17</code> <div class="small muted">desarrollo</div></td>
+        <td>
+          <strong>Una auditoría incómoda</strong>
+          <div class="card-vecs">
+            <div><span class="opt-tag opt-a">A</span> Abrir la auditoría: <code>[-3, -5, +1, +5] ⏳+2t: [0, +8, 0, +3]</code></div>
+            <div><span class="opt-tag opt-b">B</span> Continuar los proyectos: <code>[+4, +1, -5, -11]</code></div>
+          </div>
+        </td>
+        <td class="num">0,0 %</td>
+        <td class="num">19,3 %</td>
+        <td class="num">37,1 %</td>
+        <td class="num">23,1 %</td>
+        <td class="num"><strong>99,0 %</strong></td>
+        <td class="num pos-strong">
+          +2,32 pp
+        </td>
+        <td class="num">3,79 % / 1,47 %</td>
+        <td class="num">—</td>
+        <td class="num">—</td>
+      </tr>
+<tr data-mode="macro" class="">
+        <td><code>MA18</code> <span class="badge badge-cond" title="Si Confianza es menor que 55, la devolución de «Financiar los servicios» pasa de Tesoro −12 a Tesoro −17.">Condición</span><div class="small muted">cierre</div></td>
+        <td>
+          <strong>Préstamo según tu credibilidad</strong>
+          <div class="card-vecs">
+            <div><span class="opt-tag opt-a">A</span> Financiar los servicios: <code>[+2, +10, +4, -2] ⏳+1t: [0, -12, 0, 0]</code></div>
+            <div><span class="opt-tag opt-b">B</span> No tomar nueva deuda: <code>[-6, +2, -6, -4]</code></div>
+          </div>
+        </td>
+        <td class="num">100,0 %</td>
+        <td class="num">100,0 %</td>
+        <td class="num">100,0 %</td>
+        <td class="num">20,5 %</td>
+        <td class="num"><strong>58,5 %</strong></td>
+        <td class="num ">
+          -1,56 pp
+        </td>
+        <td class="num">0,06 % / 1,61 %</td>
+        <td class="num">18,9 % vs 75,3 %</td>
+        <td class="num">100,0 %</td>
+      </tr>
+<tr data-mode="macro" class="row-lopsided">
+        <td><code>MA19</code> <span class="badge badge-cond" title="Si Actividad es 45 o más, hay cuellos de botella: el estímulo rinde menos.">Condición</span><div class="small muted">cierre</div></td>
+        <td>
+          <strong>Reactivar o conservar el margen</strong>
+          <div class="card-vecs">
+            <div><span class="opt-tag opt-a">A</span> Aplicar el estímulo: <code>[+10, -9, +5, +1]</code></div>
+            <div><span class="opt-tag opt-b">B</span> Preservar los fondos: <code>[-7, +4, -4, -3]</code></div>
+          </div>
+        </td>
+        <td class="num">4,9 %</td>
+        <td class="num">5,8 %</td>
+        <td class="num">5,5 %</td>
+        <td class="num">6,2 %</td>
+        <td class="num"><strong>0,7 %</strong></td>
+        <td class="num neg-strong">
+          -12,42 pp
+        </td>
+        <td class="num">0,00 % / 12,42 %</td>
+        <td class="num">0,2 % vs 2,3 %</td>
+        <td class="num">0,0 %</td>
+      </tr>
+<tr data-mode="macro" class="">
+        <td><code>MA20</code> <span class="badge badge-cond" title="Advertencia: si Bienestar es menor que 40, negociar sin alivio material suma Bienestar −6 y Confianza −6.">Condición</span><div class="small muted">cierre</div></td>
+        <td>
+          <strong>Una marcha frente al consejo</strong>
+          <div class="card-vecs">
+            <div><span class="opt-tag opt-a">A</span> Dar ayuda focalizada: <code>[0, -7, +7, +4]</code></div>
+            <div><span class="opt-tag opt-b">B</span> Abrir una negociación: <code>[-3, -2, -4, -2]</code></div>
+          </div>
+        </td>
+        <td class="num">100,0 %</td>
+        <td class="num">13,0 %</td>
+        <td class="num">10,7 %</td>
+        <td class="num">23,0 %</td>
+        <td class="num"><strong>47,3 %</strong></td>
+        <td class="num neg-strong">
+          -2,92 pp
+        </td>
+        <td class="num">0,23 % / 3,15 %</td>
+        <td class="num">95,0 % vs 23,6 %</td>
+        <td class="num">51,2 %</td>
+      </tr>
+<tr data-mode="macro" class="">
+        <td><code>MA21</code> <div class="small muted">cierre</div></td>
+        <td>
+          <strong>El socio que propone una alianza</strong>
+          <div class="card-vecs">
+            <div><span class="opt-tag opt-a">A</span> Firmar la alianza: <code>[+3, -6, +1, +2] ⏳+1t: [+6, +4, 0, +1]</code></div>
+            <div><span class="opt-tag opt-b">B</span> Fortalecer el mercado interno: <code>[-3, -4, +3, -3]</code></div>
+          </div>
+        </td>
+        <td class="num">100,0 %</td>
+        <td class="num">49,6 %</td>
+        <td class="num">8,7 %</td>
+        <td class="num">57,4 %</td>
+        <td class="num"><strong>88,4 %</strong></td>
+        <td class="num ">
+          +0,28 pp
+        </td>
+        <td class="num">0,57 % / 0,28 %</td>
+        <td class="num">—</td>
+        <td class="num">27,6 %</td>
+      </tr>
+<tr data-mode="macro" class="">
+        <td><code>MA22</code> <div class="small muted">cierre</div></td>
+        <td>
+          <strong>Vencimientos a la vista</strong>
+          <div class="card-vecs">
+            <div><span class="opt-tag opt-a">A</span> Pagar el vencimiento: <code>[0, -9, 0, +6]</code></div>
+            <div><span class="opt-tag opt-b">B</span> Refinanciar: <code>[-2, +4, -2, -7] ⏳+1t: [0, -13, 0, 0]</code></div>
+          </div>
+        </td>
+        <td class="num">9,6 %</td>
+        <td class="num">5,7 %</td>
+        <td class="num">9,8 %</td>
+        <td class="num">84,6 %</td>
+        <td class="num"><strong>83,9 %</strong></td>
+        <td class="num ">
+          -1,04 pp
+        </td>
+        <td class="num">0,00 % / 1,04 %</td>
+        <td class="num">—</td>
+        <td class="num">4,3 %</td>
+      </tr>
+<tr data-mode="macro" class="">
+        <td><code>MA23</code> <div class="small muted">cierre</div></td>
+        <td>
+          <strong>Energía para producir</strong>
+          <div class="card-vecs">
+            <div><span class="opt-tag opt-a">A</span> Hacer reparación urgente: <code>[+3, -6, +3, -2]</code></div>
+            <div><span class="opt-tag opt-b">B</span> Renovar la red: <code>[-5, -9, -4, 0] ⏳+2t: [+10, +6, +5, +3]</code></div>
+          </div>
+        </td>
+        <td class="num">100,0 %</td>
+        <td class="num">100,0 %</td>
+        <td class="num">97,9 %</td>
+        <td class="num">98,9 %</td>
+        <td class="num"><strong>33,1 %</strong></td>
+        <td class="num ">
+          +0,62 pp
+        </td>
+        <td class="num">0,85 % / 0,23 %</td>
+        <td class="num">—</td>
+        <td class="num">100,0 %</td>
+      </tr>
+<tr data-mode="macro" class="">
+        <td><code>MA24</code> <div class="small muted">cierre</div></td>
+        <td>
+          <strong>Señales claras para invertir</strong>
+          <div class="card-vecs">
+            <div><span class="opt-tag opt-a">A</span> Simplificar los trámites: <code>[+6, -2, -5, -3]</code></div>
+            <div><span class="opt-tag opt-b">B</span> Financiar acompañamiento: <code>[-3, -5, +4, +3]</code></div>
+          </div>
+        </td>
+        <td class="num">0,7 %</td>
+        <td class="num">93,8 %</td>
+        <td class="num">92,1 %</td>
+        <td class="num">96,1 %</td>
+        <td class="num"><strong>78,6 %</strong></td>
+        <td class="num ">
+          +1,03 pp
+        </td>
+        <td class="num">1,21 % / 0,17 %</td>
+        <td class="num">—</td>
+        <td class="num">91,5 %</td>
+      </tr>
+<tr data-mode="macro" class="row-lopsided">
+        <td><code>MA25</code> <div class="small muted">cierre</div></td>
+        <td>
+          <strong>El último presupuesto</strong>
+          <div class="card-vecs">
+            <div><span class="opt-tag opt-a">A</span> Reforzar la reserva: <code>[-4, +5, -7, -4]</code></div>
+            <div><span class="opt-tag opt-b">B</span> Dar apoyo final: <code>[+2, -6, +7, +4]</code></div>
+          </div>
+        </td>
+        <td class="num">71,7 %</td>
+        <td class="num">87,9 %</td>
+        <td class="num">92,8 %</td>
+        <td class="num">89,7 %</td>
+        <td class="num"><strong>94,1 %</strong></td>
+        <td class="num pos-strong">
+          +6,94 pp
+        </td>
+        <td class="num">7,05 % / 0,12 %</td>
+        <td class="num">—</td>
+        <td class="num">95,1 %</td>
+      </tr>
+<tr data-mode="micro" class="">
+        <td><code>MI01</code> <span class="badge badge-cond" title="Si Demanda es menor que 55, los clientes son más sensibles al precio y subirlo rinde menos.">Condición</span><div class="small muted">inicio</div></td>
+        <td>
+          <strong>El insumo se encarece</strong>
+          <div class="card-vecs">
+            <div><span class="opt-tag opt-a">A</span> Subir el precio: <code>[+6, -9, 0, -3]</code></div>
+            <div><span class="opt-tag opt-b">B</span> Absorber el costo: <code>[-8, +5, 0, +3]</code></div>
+          </div>
+        </td>
+        <td class="num">7,2 %</td>
+        <td class="num">38,9 %</td>
+        <td class="num">39,6 %</td>
+        <td class="num">40,3 %</td>
+        <td class="num"><strong>43,2 %</strong></td>
+        <td class="num ">
+          +0,06 pp
+        </td>
+        <td class="num">0,58 % / 0,52 %</td>
+        <td class="num">31,3 % vs 92,2 %</td>
+        <td class="num">—</td>
+      </tr>
+<tr data-mode="micro" class="">
+        <td><code>MI02</code> <div class="small muted">inicio</div></td>
+        <td>
+          <strong>La herramienta dejó de funcionar</strong>
+          <div class="card-vecs">
+            <div><span class="opt-tag opt-a">A</span> Reparar el equipo: <code>[-8, -4, -5, +2]</code></div>
+            <div><span class="opt-tag opt-b">B</span> Financiar uno nuevo: <code>[+2, -2, +3, +5] ⏳+3t: [-16, +3, +3, +2]</code></div>
+          </div>
+        </td>
+        <td class="num">0,0 %</td>
+        <td class="num">0,0 %</td>
+        <td class="num">0,0 %</td>
+        <td class="num">69,0 %</td>
+        <td class="num"><strong>16,1 %</strong></td>
+        <td class="num ">
+          0,00 pp
+        </td>
+        <td class="num">0,34 % / 0,34 %</td>
+        <td class="num">—</td>
+        <td class="num">—</td>
+      </tr>
+<tr data-mode="micro" class="row-lopsided">
+        <td><code>MI03</code> <div class="small muted">inicio</div></td>
+        <td>
+          <strong>El gran pedido a crédito</strong>
+          <div class="card-vecs">
+            <div><span class="opt-tag opt-a">A</span> Aceptar el pedido: <code>[-9, +4, -6, -2] ⏳+3t: [+13, +3, 0, +1]</code></div>
+            <div><span class="opt-tag opt-b">B</span> Pedir pago anticipado: <code>[+4, -9, +1, -3]</code></div>
+          </div>
+        </td>
+        <td class="num">0,0 %</td>
+        <td class="num">24,7 %</td>
+        <td class="num">38,0 %</td>
+        <td class="num">20,6 %</td>
+        <td class="num"><strong>96,5 %</strong></td>
+        <td class="num ">
+          +0,20 pp
+        </td>
+        <td class="num">0,20 % / 0,00 %</td>
+        <td class="num">—</td>
+        <td class="num">—</td>
+      </tr>
+<tr data-mode="micro" class="">
+        <td><code>MI04</code> <div class="small muted">inicio</div></td>
+        <td>
+          <strong>Turnos que agotan al equipo</strong>
+          <div class="card-vecs">
+            <div><span class="opt-tag opt-a">A</span> Contratar apoyo: <code>[-8, +3, +8, +3]</code></div>
+            <div><span class="opt-tag opt-b">B</span> Usar horas extra: <code>[+5, -2, -11, -6]</code></div>
+          </div>
+        </td>
+        <td class="num">97,9 %</td>
+        <td class="num">69,9 %</td>
+        <td class="num">57,5 %</td>
+        <td class="num">67,9 %</td>
+        <td class="num"><strong>46,6 %</strong></td>
+        <td class="num ">
+          -0,20 pp
+        </td>
+        <td class="num">0,40 % / 0,60 %</td>
+        <td class="num">—</td>
+        <td class="num">—</td>
+      </tr>
+<tr data-mode="micro" class="">
+        <td><code>MI05</code> <div class="small muted">inicio</div></td>
+        <td>
+          <strong>Una compra que reduce costos</strong>
+          <div class="card-vecs">
+            <div><span class="opt-tag opt-a">A</span> Elegir material económico: <code>[+6, -6, -2, -11]</code></div>
+            <div><span class="opt-tag opt-b">B</span> Mantener el material: <code>[-8, +4, +1, +6]</code></div>
+          </div>
+        </td>
+        <td class="num">2,4 %</td>
+        <td class="num">35,5 %</td>
+        <td class="num">47,2 %</td>
+        <td class="num">41,2 %</td>
+        <td class="num"><strong>65,2 %</strong></td>
+        <td class="num ">
+          +0,82 pp
+        </td>
+        <td class="num">0,89 % / 0,07 %</td>
+        <td class="num">—</td>
+        <td class="num">—</td>
+      </tr>
+<tr data-mode="micro" class="">
+        <td><code>MI06</code> <div class="small muted">inicio</div></td>
+        <td>
+          <strong>La promoción de apertura</strong>
+          <div class="card-vecs">
+            <div><span class="opt-tag opt-a">A</span> Lanzar el descuento: <code>[-6, +9, -6, -2]</code></div>
+            <div><span class="opt-tag opt-b">B</span> Mantener el precio: <code>[+4, -8, +1, -3]</code></div>
+          </div>
+        </td>
+        <td class="num">0,0 %</td>
+        <td class="num">40,3 %</td>
+        <td class="num">49,8 %</td>
+        <td class="num">36,0 %</td>
+        <td class="num"><strong>22,1 %</strong></td>
+        <td class="num ">
+          -1,32 pp
+        </td>
+        <td class="num">0,07 % / 1,38 %</td>
+        <td class="num">—</td>
+        <td class="num">—</td>
+      </tr>
+<tr data-mode="micro" class="">
+        <td><code>MI07</code> <div class="small muted">inicio</div></td>
+        <td>
+          <strong>Aprender una técnica nueva</strong>
+          <div class="card-vecs">
+            <div><span class="opt-tag opt-a">A</span> Capacitar al equipo: <code>[-8, -4, +3, +1] ⏳+2t: [+3, +4, +6, +7]</code></div>
+            <div><span class="opt-tag opt-b">B</span> Seguir trabajando: <code>[+4, -3, -8, -7]</code></div>
+          </div>
+        </td>
+        <td class="num">88,2 %</td>
+        <td class="num">38,7 %</td>
+        <td class="num">30,6 %</td>
+        <td class="num">36,7 %</td>
+        <td class="num"><strong>82,5 %</strong></td>
+        <td class="num ">
+          -0,27 pp
+        </td>
+        <td class="num">0,20 % / 0,47 %</td>
+        <td class="num">—</td>
+        <td class="num">—</td>
+      </tr>
+<tr data-mode="micro" class="">
+        <td><code>MI08</code> <div class="small muted">inicio</div></td>
+        <td>
+          <strong>El alquiler aumenta</strong>
+          <div class="card-vecs">
+            <div><span class="opt-tag opt-a">A</span> Renegociar el alquiler: <code>[-8, +2, +2, +1]</code></div>
+            <div><span class="opt-tag opt-b">B</span> Mudarse a otro local: <code>[-7, -10, -5, -3] ⏳+2t: [+11, 0, +1, 0]</code></div>
+          </div>
+        </td>
+        <td class="num">100,0 %</td>
+        <td class="num">100,0 %</td>
+        <td class="num">55,9 %</td>
+        <td class="num">97,6 %</td>
+        <td class="num"><strong>43,0 %</strong></td>
+        <td class="num ">
+          -0,33 pp
+        </td>
+        <td class="num">0,00 % / 0,33 %</td>
+        <td class="num">—</td>
+        <td class="num">—</td>
+      </tr>
+<tr data-mode="micro" class="">
+        <td><code>MI09</code> <span class="badge badge-cond" title="Si Demanda es menor que 50, los sobrantes no se venden: el efecto futuro de «Ampliar la producción» pasa a Caja −5 y Calidad −4.">Condición</span><div class="small muted">desarrollo</div></td>
+        <td>
+          <strong>Producir antes de vender</strong>
+          <div class="card-vecs">
+            <div><span class="opt-tag opt-a">A</span> Ampliar la producción: <code>[-8, +4, -5, 0] ⏳+2t: [+11, +3, 0, +1]</code></div>
+            <div><span class="opt-tag opt-b">B</span> Producir con prudencia: <code>[+3, -7, -3, -3]</code></div>
+          </div>
+        </td>
+        <td class="num">20,5 %</td>
+        <td class="num">15,1 %</td>
+        <td class="num">20,7 %</td>
+        <td class="num">2,9 %</td>
+        <td class="num"><strong>27,6 %</strong></td>
+        <td class="num neg-strong">
+          -5,88 pp
+        </td>
+        <td class="num">0,00 % / 5,88 %</td>
+        <td class="num">0,1 % vs 84,2 %</td>
+        <td class="num">—</td>
+      </tr>
+<tr data-mode="micro" class="">
+        <td><code>MI10</code> <div class="small muted">desarrollo</div></td>
+        <td>
+          <strong>Queja frente a otros clientes</strong>
+          <div class="card-vecs">
+            <div><span class="opt-tag opt-a">A</span> Rehacer y corregir: <code>[-8, +5, -2, +7]</code></div>
+            <div><span class="opt-tag opt-b">B</span> Devolver parte del pago: <code>[-2, -8, -3, -10]</code></div>
+          </div>
+        </td>
+        <td class="num">100,0 %</td>
+        <td class="num">80,0 %</td>
+        <td class="num">38,5 %</td>
+        <td class="num">92,6 %</td>
+        <td class="num"><strong>89,6 %</strong></td>
+        <td class="num ">
+          -0,76 pp
+        </td>
+        <td class="num">0,06 % / 0,83 %</td>
+        <td class="num">—</td>
+        <td class="num">—</td>
+      </tr>
+<tr data-mode="micro" class="">
+        <td><code>MI11</code> <span class="badge badge-cond" title="Si Calidad es menor que 45, la campaña rinde poco: su efecto futuro pasa a Demanda +2 y Calidad −2.">Condición</span><div class="small muted">desarrollo</div></td>
+        <td>
+          <strong>Publicidad o ahorro</strong>
+          <div class="card-vecs">
+            <div><span class="opt-tag opt-a">A</span> Lanzar la campaña: <code>[-8, +1, -2, 0] ⏳+2t: [+4, +10, 0, +2]</code></div>
+            <div><span class="opt-tag opt-b">B</span> Guardar el dinero: <code>[+4, -8, -3, -4]</code></div>
+          </div>
+        </td>
+        <td class="num">19,6 %</td>
+        <td class="num">20,0 %</td>
+        <td class="num">32,4 %</td>
+        <td class="num">23,5 %</td>
+        <td class="num"><strong>40,8 %</strong></td>
+        <td class="num neg-strong">
+          -4,58 pp
+        </td>
+        <td class="num">0,00 % / 4,58 %</td>
+        <td class="num">10,1 % vs 44,8 %</td>
+        <td class="num">—</td>
+      </tr>
+<tr data-mode="micro" class="">
+        <td><code>MI12</code> <div class="small muted">desarrollo</div></td>
+        <td>
+          <strong>Crédito rápido con intereses</strong>
+          <div class="card-vecs">
+            <div><span class="opt-tag opt-a">A</span> Tomar el crédito: <code>[+12, +2, +3, +1] ⏳+2t: [-18, 0, -3, -2]</code></div>
+            <div><span class="opt-tag opt-b">B</span> Ajustar gastos: <code>[+2, -6, -8, -5]</code></div>
+          </div>
+        </td>
+        <td class="num">100,0 %</td>
+        <td class="num">100,0 %</td>
+        <td class="num">100,0 %</td>
+        <td class="num">52,9 %</td>
+        <td class="num"><strong>59,4 %</strong></td>
+        <td class="num ">
+          -0,20 pp
+        </td>
+        <td class="num">0,07 % / 0,26 %</td>
+        <td class="num">—</td>
+        <td class="num">—</td>
+      </tr>
+<tr data-mode="micro" class="">
+        <td><code>MI13</code> <div class="small muted">desarrollo</div></td>
+        <td>
+          <strong>El punto de equilibrio</strong>
+          <div class="card-vecs">
+            <div><span class="opt-tag opt-a">A</span> Reducir costos fijos: <code>[+5, -5, -7, -5]</code></div>
+            <div><span class="opt-tag opt-b">B</span> Buscar más pedidos: <code>[-8, +6, -4, +1] ⏳+2t: [+9, +3, +2, +1]</code></div>
+          </div>
+        </td>
+        <td class="num">60,7 %</td>
+        <td class="num">78,8 %</td>
+        <td class="num">71,0 %</td>
+        <td class="num">72,8 %</td>
+        <td class="num"><strong>11,4 %</strong></td>
+        <td class="num pos-strong">
+          +2,22 pp
+        </td>
+        <td class="num">2,22 % / 0,00 %</td>
+        <td class="num">—</td>
+        <td class="num">—</td>
+      </tr>
+<tr data-mode="micro" class="">
+        <td><code>MI14</code> <div class="small muted">desarrollo</div></td>
+        <td>
+          <strong>El negocio vecino baja precios</strong>
+          <div class="card-vecs">
+            <div><span class="opt-tag opt-a">A</span> Igualar el precio: <code>[-6, +6, -3, -5]</code></div>
+            <div><span class="opt-tag opt-b">B</span> Mejorar el servicio: <code>[-8, +3, +3, +6]</code></div>
+          </div>
+        </td>
+        <td class="num">0,0 %</td>
+        <td class="num">15,3 %</td>
+        <td class="num">79,6 %</td>
+        <td class="num">10,4 %</td>
+        <td class="num"><strong>11,5 %</strong></td>
+        <td class="num ">
+          -0,19 pp
+        </td>
+        <td class="num">0,39 % / 0,58 %</td>
+        <td class="num">—</td>
+        <td class="num">—</td>
+      </tr>
+<tr data-mode="micro" class="row-lopsided">
+        <td><code>MI15</code> <div class="small muted">desarrollo</div></td>
+        <td>
+          <strong>El impuesto del trimestre</strong>
+          <div class="card-vecs">
+            <div><span class="opt-tag opt-a">A</span> Pagar ahora: <code>[-9, 0, +1, +1]</code></div>
+            <div><span class="opt-tag opt-b">B</span> Usar el plan de cuotas: <code>[+5, +1, +2, 0] ⏳+2t: [-17, 0, -2, -2]</code></div>
+          </div>
+        </td>
+        <td class="num">0,0 %</td>
+        <td class="num">0,0 %</td>
+        <td class="num">2,1 %</td>
+        <td class="num">90,3 %</td>
+        <td class="num"><strong>97,1 %</strong></td>
+        <td class="num ">
+          -1,04 pp
+        </td>
+        <td class="num">0,46 % / 1,50 %</td>
+        <td class="num">—</td>
+        <td class="num">—</td>
+      </tr>
+<tr data-mode="micro" class="">
+        <td><code>MI16</code> <span class="badge badge-cond" title="Advertencia: si Equipo es menor que 40, mantener el ritmo suma Equipo −5 y Calidad −6 por errores.">Condición</span><div class="small muted">desarrollo</div></td>
+        <td>
+          <strong>Un descanso necesario</strong>
+          <div class="card-vecs">
+            <div><span class="opt-tag opt-a">A</span> Reorganizar descansos: <code>[-7, -3, +9, +4]</code></div>
+            <div><span class="opt-tag opt-b">B</span> Mantener el ritmo: <code>[+4, -1, -10, -6]</code></div>
+          </div>
+        </td>
+        <td class="num">19,5 %</td>
+        <td class="num">33,0 %</td>
+        <td class="num">38,1 %</td>
+        <td class="num">50,1 %</td>
+        <td class="num"><strong>46,4 %</strong></td>
+        <td class="num neg-strong">
+          -2,18 pp
+        </td>
+        <td class="num">0,93 % / 3,11 %</td>
+        <td class="num">93,6 % vs 27,0 %</td>
+        <td class="num">—</td>
+      </tr>
+<tr data-mode="micro" class="">
+        <td><code>MI17</code> <div class="small muted">desarrollo</div></td>
+        <td>
+          <strong>Automatizar una tarea</strong>
+          <div class="card-vecs">
+            <div><span class="opt-tag opt-a">A</span> Invertir en la herramienta: <code>[-9, -2, -2, +1] ⏳+2t: [+4, +4, +8, +5]</code></div>
+            <div><span class="opt-tag opt-b">B</span> Mantener el proceso: <code>[+4, -5, -9, -4]</code></div>
+          </div>
+        </td>
+        <td class="num">0,0 %</td>
+        <td class="num">15,8 %</td>
+        <td class="num">30,6 %</td>
+        <td class="num">18,2 %</td>
+        <td class="num"><strong>64,4 %</strong></td>
+        <td class="num neg-strong">
+          -4,96 pp
+        </td>
+        <td class="num">0,00 % / 4,96 %</td>
+        <td class="num">—</td>
+        <td class="num">—</td>
+      </tr>
+<tr data-mode="micro" class="">
+        <td><code>MI18</code> <span class="badge badge-cond" title="Si Calidad es menor que 55, la línea personalizada no convence: su efecto futuro pasa a Caja +1, Demanda −5 y Calidad −2.">Condición</span><div class="small muted">cierre</div></td>
+        <td>
+          <strong>Dos servicios posibles</strong>
+          <div class="card-vecs">
+            <div><span class="opt-tag opt-a">A</span> Ampliar línea estándar: <code>[+4, +4, -6, -5]</code></div>
+            <div><span class="opt-tag opt-b">B</span> Crear línea personalizada: <code>[-7, +3, -2, +5] ⏳+1t: [+10, +4, +2, 0]</code></div>
+          </div>
+        </td>
+        <td class="num">100,0 %</td>
+        <td class="num">81,2 %</td>
+        <td class="num">59,3 %</td>
+        <td class="num">83,0 %</td>
+        <td class="num"><strong>51,2 %</strong></td>
+        <td class="num pos-strong">
+          +7,17 pp
+        </td>
+        <td class="num">7,23 % / 0,06 %</td>
+        <td class="num">94,7 % vs 19,3 %</td>
+        <td class="num">93,3 %</td>
+      </tr>
+<tr data-mode="micro" class="">
+        <td><code>MI19</code> <div class="small muted">cierre</div></td>
+        <td>
+          <strong>Socio con condiciones</strong>
+          <div class="card-vecs">
+            <div><span class="opt-tag opt-a">A</span> Aceptar al socio: <code>[+10, +2, -8, -5]</code></div>
+            <div><span class="opt-tag opt-b">B</span> Crecer con recursos propios: <code>[-7, +3, +5, +4]</code></div>
+          </div>
+        </td>
+        <td class="num">82,8 %</td>
+        <td class="num">69,9 %</td>
+        <td class="num">50,9 %</td>
+        <td class="num">62,2 %</td>
+        <td class="num"><strong>88,0 %</strong></td>
+        <td class="num pos-strong">
+          +10,39 pp
+        </td>
+        <td class="num">10,90 % / 0,51 %</td>
+        <td class="num">—</td>
+        <td class="num">83,2 %</td>
+      </tr>
+<tr data-mode="micro" class="">
+        <td><code>MI20</code> <div class="small muted">cierre</div></td>
+        <td>
+          <strong>Pago retrasado</strong>
+          <div class="card-vecs">
+            <div><span class="opt-tag opt-a">A</span> Negociar un anticipo: <code>[+4, -7, -2, -3]</code></div>
+            <div><span class="opt-tag opt-b">B</span> Conceder más plazo: <code>[-8, +4, -2, +2] ⏳+1t: [+10, +2, 0, 0]</code></div>
+          </div>
+        </td>
+        <td class="num">78,0 %</td>
+        <td class="num">87,0 %</td>
+        <td class="num">74,8 %</td>
+        <td class="num">76,9 %</td>
+        <td class="num"><strong>22,2 %</strong></td>
+        <td class="num pos-strong">
+          +8,45 pp
+        </td>
+        <td class="num">8,45 % / 0,00 %</td>
+        <td class="num">—</td>
+        <td class="num">92,7 %</td>
+      </tr>
+<tr data-mode="micro" class="">
+        <td><code>MI21</code> <span class="badge badge-cond" title="Riesgo: si Calidad es menor que 45, el control habitual suma Caja −7 y Demanda −8 por reclamos.">Condición</span><div class="small muted">cierre</div></td>
+        <td>
+          <strong>Un control de calidad final</strong>
+          <div class="card-vecs">
+            <div><span class="opt-tag opt-a">A</span> Revisar todo el lote: <code>[-7, +3, -3, +7]</code></div>
+            <div><span class="opt-tag opt-b">B</span> Usar control habitual: <code>[+4, -4, -3, -8]</code></div>
+          </div>
+        </td>
+        <td class="num">30,2 %</td>
+        <td class="num">61,0 %</td>
+        <td class="num">53,6 %</td>
+        <td class="num">57,8 %</td>
+        <td class="num"><strong>14,2 %</strong></td>
+        <td class="num neg-strong">
+          -7,96 pp
+        </td>
+        <td class="num">0,00 % / 7,96 %</td>
+        <td class="num">98,6 % vs 5,3 %</td>
+        <td class="num">13,1 %</td>
+      </tr>
+<tr data-mode="micro" class="">
+        <td><code>MI22</code> <div class="small muted">cierre</div></td>
+        <td>
+          <strong>El contrato de suministro</strong>
+          <div class="card-vecs">
+            <div><span class="opt-tag opt-a">A</span> Asegurar el suministro: <code>[-8, +4, +2, +5]</code></div>
+            <div><span class="opt-tag opt-b">B</span> Comprar de a poco: <code>[+4, -6, -5, -6]</code></div>
+          </div>
+        </td>
+        <td class="num">66,1 %</td>
+        <td class="num">44,1 %</td>
+        <td class="num">45,3 %</td>
+        <td class="num">56,5 %</td>
+        <td class="num"><strong>44,6 %</strong></td>
+        <td class="num neg-strong">
+          -7,76 pp
+        </td>
+        <td class="num">0,23 % / 8,00 %</td>
+        <td class="num">—</td>
+        <td class="num">30,4 %</td>
+      </tr>
+<tr data-mode="micro" class="">
+        <td><code>MI23</code> <div class="small muted">cierre</div></td>
+        <td>
+          <strong>Abrir un canal nuevo</strong>
+          <div class="card-vecs">
+            <div><span class="opt-tag opt-a">A</span> Abrir el canal: <code>[-7, +3, -4, -1] ⏳+1t: [+4, +7, +3, +3]</code></div>
+            <div><span class="opt-tag opt-b">B</span> Concentrarse en el local: <code>[+4, -7, -3, -3]</code></div>
+          </div>
+        </td>
+        <td class="num">2,7 %</td>
+        <td class="num">8,2 %</td>
+        <td class="num">15,7 %</td>
+        <td class="num">15,8 %</td>
+        <td class="num"><strong>49,8 %</strong></td>
+        <td class="num neg-strong">
+          -7,17 pp
+        </td>
+        <td class="num">0,00 % / 7,17 %</td>
+        <td class="num">—</td>
+        <td class="num">2,1 %</td>
+      </tr>
+<tr data-mode="micro" class="">
+        <td><code>MI24</code> <div class="small muted">cierre</div></td>
+        <td>
+          <strong>Premiar al equipo o retirar fondos</strong>
+          <div class="card-vecs">
+            <div><span class="opt-tag opt-a">A</span> Dar un bono: <code>[-8, +2, +9, +4]</code></div>
+            <div><span class="opt-tag opt-b">B</span> Retirar fondos: <code>[+4, -4, -9, -5]</code></div>
+          </div>
+        </td>
+        <td class="num">65,0 %</td>
+        <td class="num">59,4 %</td>
+        <td class="num">55,2 %</td>
+        <td class="num">74,8 %</td>
+        <td class="num"><strong>84,8 %</strong></td>
+        <td class="num neg-strong">
+          -4,86 pp
+        </td>
+        <td class="num">1,26 % / 6,12 %</td>
+        <td class="num">—</td>
+        <td class="num">83,8 %</td>
+      </tr>
+<tr data-mode="micro" class="">
+        <td><code>MI25</code> <div class="small muted">cierre</div></td>
+        <td>
+          <strong>Reservar o repartir resultados</strong>
+          <div class="card-vecs">
+            <div><span class="opt-tag opt-a">A</span> Conservar la reserva: <code>[+5, -5, -5, -5]</code></div>
+            <div><span class="opt-tag opt-b">B</span> Mejorar el servicio: <code>[-8, +6, +4, +6]</code></div>
+          </div>
+        </td>
+        <td class="num">32,4 %</td>
+        <td class="num">55,5 %</td>
+        <td class="num">57,0 %</td>
+        <td class="num">41,0 %</td>
+        <td class="num"><strong>48,1 %</strong></td>
+        <td class="num pos-strong">
+          +9,39 pp
+        </td>
+        <td class="num">9,62 % / 0,23 %</td>
+        <td class="num">—</td>
+        <td class="num">65,3 %</td>
+      </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="sec-sensibilidad" class="panel">
+      <h2>7. Sensibilidad y Protocolo de Reproducción</h2>
+      <div class="grid-2">
+        <div>
+          <h3>7.1 Sensibilidad a la función de valor y condiciones iniciales (N = 500 holdout)</h3>
+          <ul>
+            <li><strong>Peso del mínimo en la utilidad (<code>min_weight</code> ∈ {0,00; 0,05; 0,15}):</strong> En Macro, subir <code>min_weight</code> de 0,00 a 0,15 eleva la victoria de <code>myopic</code> de <strong>8,6–17,8 %</strong> a <strong>29,6–49,4 %</strong> y la de <code>commitments</code> de <strong>33,4–45,4 %</strong> a <strong>69,8–88,0 %</strong>. En Micro, bajar <code>min_weight</code> a 0,00 reduce <code>myopic</code> de <strong>86,8–94,8 %</strong> a <strong>67,6–73,2 %</strong>.</li>
+            <li><strong>Perturbación de barras iniciales (±5 en los 4 indicadores):</strong> Con −5 en todas las barras iniciales, <code>planner</code> sostiene <strong>90,8–96,8 %</strong> en Macro y <strong>97,6–99,2 %</strong> en Micro. Con +5, <code>planner</code> alcanza <strong>99,6–100,0 %</strong> en Macro y <strong>100,0 %</strong> en Micro.</li>
+            <li><strong>Condiciones de <code>prototype_micro_v2.py</code> vs <code>src/data/cardsMicro.ts</code>:</strong> Si se aplican los vectores condicionales más severos del prototipo Python en <code>MI09</code>, <code>MI11</code>, <code>MI16</code>, <code>MI18</code> y <code>MI21</code>, la victoria al azar en Micro baja de <strong>23,8–32,4 %</strong> a <strong>17,4–24,4 %</strong> y la conservadora de <strong>95,2–97,6 %</strong> a <strong>84,2–91,0 %</strong>, manteniendo <code>planner</code> en <strong>99,2–99,8 %</strong>.</li>
+          </ul>
+        </div>
+        <div>
+          <h3>7.2 Huella técnica y reproducción</h3>
+          <ul>
+            <li><strong>Commit evaluado:</strong> <code>ab22377df597c664b366553cd1bcb91a3f7f72ff</code></li>
+            <li><strong>Motor contrastado:</strong> 100 % de coincidencia en 2.000 partidas completas contra <code>decide()</code> de <code>src/engine/engine.ts</code>.</li>
+            <li><strong>Semillas:</strong> Principales <code>2026101600..2026103599</code> (N=2.000); Holdout y solvencia DFS <code>2026600000..2026600499</code> (N=500).</li>
+            <li><strong>Ejecución directa con <code>tsx</code>:</strong>
+              <pre><code>npx tsx scripts/simulate.ts 2000</code></pre>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    function filterCards(mode, btn) {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelectorAll('#cards-table tbody tr').forEach(tr => {
+        if (mode === 'all') tr.style.display = '';
+        else if (mode === 'lopsided') tr.style.display = tr.classList.contains('row-lopsided') ? '' : 'none';
+        else tr.style.display = tr.getAttribute('data-mode') === mode ? '' : 'none';
+      });
+    }
+  </script>
+</body>
+</html>
